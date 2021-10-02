@@ -1,8 +1,7 @@
 import React from 'react';
-
 import styled from "styled-components";
 
-let StyledInput = styled.input`
+let StyledInputText = styled.input`
     background-color:#FFFFFF;
 	background-position:left top;
 	padding-top:5px;
@@ -14,9 +13,9 @@ let StyledInput = styled.input`
     margin-bottom: 10px;
 `;
 
-function Input(props) {
-    return <StyledInput type={props.type}></StyledInput>;
+function InputText(props) {
+    return <StyledInputText type={props.type} value={props.value}></StyledInputText>;
 }
 
-export default Input;
+export default InputText;
 
