@@ -8,34 +8,51 @@ let ModalBackground = styled.div`
     background: #000000;
     background : rgba(0, 0, 0, 0.6);
     top:0%;
-    left:0%;
+    left:0%;    
 `
 let StyledModal = styled.div`
-    width: 400px;
-    height: 100px;
-    margin: 0px auto;
-    background-color: #00AAA0;
-    position: fixed;
+    width: 93%;
+    //min-height: 100px;
+    max-width: 400px;
+    padding-left: 20px;
+    text-align:center;
+    margin:0 auto;
+    background-color: #FFFFFF;
+    position: absolute;
+    border-radius:5px;
     top: 50%;
     left:50%;
     bottom: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%,-50%);
+    border-left:3px;
+    padding:10px;
+    display: table;
+`
+let CloseButton = styled.div`
+    position:fixed;
+    left:95%;
+    top:0%;
 `
 
 
-class FindAccontModal extends React.Component {
+class FindAccountModal extends React.Component {
+
     render() {
+
         return (
             <div>
-                <ModalBackground>
 
+                <ModalBackground>
                     <StyledModal>
-                        Hi
+                        <CloseButton onClick={this.props.onClick}>x</CloseButton>
+                        {this.props.children}
                     </StyledModal>
                 </ModalBackground>
+
+
             </div>
         )
     }
 
 }
-export default FindAccontModal;
+export default FindAccountModal;

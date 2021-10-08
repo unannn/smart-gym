@@ -2,43 +2,57 @@
 import React from 'react';
 import InputText from '../../components/InputText';
 import Box from '../../components/Box';
-import TextButton from '../../components/TextButton';
 import styled from "styled-components";
-import MyModal from '../../components/Modal';
-import FindAccontModal from '../../components/Modal';
-
+import FindAccountModal from '../../components/Modal';
+import FindId from './FindId';
+import FindPwd from './FindPwd';
+import SignUp from './SignUp';
+import ManagerLogin from './ManagerLogin';
 
 class Login extends React.Component {
 
-    state = {
-        findId: false,
-        findPwd: false,
-        signUp: false,
-        ManagerLogin: false
+    constructor(props) {
+        super(props);
+        this.state = {
+            findId: false,
+            findPwd: false,
+            signUp: false,
+            managerLogin: false
+        }
     }
 
-    select = (request) => {
-        console.log(request)
-        switch (request) {
-            case "findId":
-                this.setState({ findId: !this.state[request] })
-                break;
-            case "findPwd":
-                this.setState({ findPwd: !this.state[request] })
-                break;
-            case "signUp":
-                this.setState({ signUp: !this.state[request] })
-                break;
-            case "managerLogin":
-                this.setState({ ManagerLogin: !this.state[request] })
-                break;
-            default:
-                break;
-        }
+    closeFindId() {
+        this.setState({ findId: !this.state.findId })
+    }
+
+    closeFindPwd() {
+        this.setState({ findPwd: !this.state.findPwd })
+    }
+
+    closeSignUp() {
+        this.setState({ signUp: !this.state.signUp })
+    }
+
+    closeManagerLogin() {
+        this.setState({ managerLogin: !this.state.managerLogin })
+    }
+
+    getCurrenOpenModal() {
+        if (this.state.findId) return <FindAccountModal onClick={this.closeFindId.bind(this)}><FindId></FindId></FindAccountModal>
+        else if (this.state.findPwd) return <FindAccountModal onClick={this.closeFindPwd.bind(this)}><FindPwd></FindPwd></FindAccountModal>
+        else if (this.state.signUp) return <FindAccountModal onClick={this.closeSignUp.bind(this)}><SignUp></SignUp></FindAccountModal>
+        else if (this.state.managerLogin) return <FindAccountModal onClick={this.closeManagerLogin.bind(this)}><ManagerLogin></ManagerLogin></FindAccountModal>
+        return null;
     }
 
 
     render() {
+
+        let modal = null;
+
+        modal = this.getCurrenOpenModal();
+
+
         return (
             <div>
                 <br />
@@ -58,26 +72,26 @@ class Login extends React.Component {
                         </form>
                         <InputText type="button" value="로그인" />
                         <LoginMenu>
-                            <LoginMenuElement onClick={() => this.select("findId")}>
+                            <LoginMenuElement onClick={() => this.setState({ findId: !this.state.findId })}>
                                 아이디 찾기
                             </LoginMenuElement>
                             <StyledSpan>|</StyledSpan>
-                            <LoginMenuElement onClick={() => this.select("findPwd")}>
+                            <LoginMenuElement onClick={() => this.setState({ findPwd: !this.state.findPwd })}>
                                 비밀번호 찾기
                             </LoginMenuElement>
                             <StyledSpan>|</StyledSpan>
-                            <LoginMenuElement onClick={() => this.select("signUp")}>
+                            <LoginMenuElement onClick={() => this.setState({ signUp: !this.state.signUp })}>
                                 회원가입
                             </LoginMenuElement>
                         </LoginMenu>
                     </Box>
                 </div>
 
-                <div onClick={() => this.select("managerLogin")}>
+                <div onClick={() => this.setState({ managerLogin: !this.state.managerLogin })}>
                     관리자 로그인 {'>'}
                 </div>
 
-                {this.state.findId && <h1><FindAccontModal></FindAccontModal></h1>}
+                {modal}
 
             </div>
         )

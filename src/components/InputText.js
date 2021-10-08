@@ -14,7 +14,7 @@ let StyledInputText = styled.input`
 `;
 
 function InputText(props) {
-    return <StyledInputText type={props.type} value={props.value}></StyledInputText>;
+    return <StyledInputText type={props.type} value={props.value} placeholder={props.placeholder}></StyledInputText>;
 }
 
 export default InputText;
