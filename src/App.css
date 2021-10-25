@@ -36,3 +36,27 @@
     transform: rotate(360deg);
   }
 }
+
+@font-face {
+  font-family: "NanumSquare";
+  src: url("./fonts/NanumSquareL.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "NanumSquareB";
+  src: url("./fonts/NanumSquareB.ttf") format("truetype");
+}
+
+div,
+h1 {
+  font-weight: 600;
+  font-family: "NanumSquare";
+}
+
+.login-title {
+  font-weight: 800;
+  font-size: 50px;
+  font-family: "NanumSquareB";
+  line-height: 90%;
+  margin: 40px;
+}

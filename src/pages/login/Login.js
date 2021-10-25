@@ -8,12 +8,17 @@ import FindId from './FindId';
 import FindPwd from './FindPwd';
 import SignUp from './SignUp';
 import ManagerLogin from './ManagerLogin';
+import InputButton from '../../components/InputButton'
 
 class Login extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            account: {
+                userID: '',
+                userPassword: ''
+            },
             findId: false,
             findPwd: false,
             signUp: false,
@@ -45,6 +50,32 @@ class Login extends React.Component {
         return null;
     }
 
+    login() {
+        sessionStorage.setItem('login', 'OK');
+
+
+    }
+
+    handleChange1(event) {
+        console.log(event.type + ':' + event.target.value);
+        this.setState({
+            account: {
+                userID: event.target.value,
+            }
+        });
+    }
+    handleChange2(event) {
+        this.setState({
+            account: {
+                userPassword: event.target.value
+            }
+        });
+    }
+    handleSubmit(event) {
+        console.log('A id was submitted: ' + this.state.account.userID);
+        console.log('A pwd was submitted: ' + this.state.account.userPassword);
+        event.preventDefault();
+    }
 
     render() {
 
@@ -62,15 +93,16 @@ class Login extends React.Component {
                 <br />
                 <br />
                 <br />
-                <h1>Sejong <br />GYM</h1>
+                <div className="login-title">SEJONG<br />GYM</div>
                 <div>
                     <Box height="">
-                        <form action="submit">
-                            <InputText type='text'></InputText>
+                        <form onSubmit={this.handleSubmit.bind(this)} autoComplete={"off"}>
+                            <InputText type='text' onChange={this.handleChange1.bind(this)} value={this.state.account.userID} placeholder="아이디 입력"></InputText>
                             <br />
-                            <InputText type='password'></InputText>
+                            <InputText type='password' onChange={this.handleChange2.bind(this)} value={this.state.account.userPassword} placeholder="비밀번호 입력"></InputText>
+                            <InputButton type="submit" value="로그인" onClick={this.login} />
                         </form>
-                        <InputText type="button" value="로그인" />
+
                         <LoginMenu>
                             <LoginMenuElement onClick={() => this.setState({ findId: !this.state.findId })}>
                                 아이디 찾기
@@ -85,11 +117,11 @@ class Login extends React.Component {
                             </LoginMenuElement>
                         </LoginMenu>
                     </Box>
+                    <MangerLoginDiv onClick={() => this.setState({ managerLogin: !this.state.managerLogin })}>
+                        관리자 로그인 {'>'}
+                    </MangerLoginDiv>
                 </div>
 
-                <div onClick={() => this.setState({ managerLogin: !this.state.managerLogin })}>
-                    관리자 로그인 {'>'}
-                </div>
 
                 {modal}
 
@@ -102,12 +134,21 @@ class Login extends React.Component {
 let LoginMenu = styled.ul`
     text-align:center;
     padding-left:0;
+    margin:3px;
 `
 let LoginMenuElement = styled.li`
     position: relative;
     display: inline-block;
+    font-size:14px;
 `
 
+let MangerLoginDiv = styled.div`
+   max-width: 400px;
+   margin: 0 auto;
+   text-align:left;
+   margin-top:10px;
+   font-size:14px;
+`
 let StyledSpan = styled.span`
     display: inline-block;
     width: 1px;
