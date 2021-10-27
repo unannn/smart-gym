@@ -7,10 +7,9 @@ import Listpage from "./component/lp";
 import ManagerBar from './component/menubar.js';
 import DetailE from './component/detailedEquipment';
 let EquiList = styled.div`
-   position: absolute;
-   margin: 0.5px;
-   left: 80px;
-   top: 100px;
+ position: relative;
+ left: -250px;
+   margin: 0.3px;
    width: 700px;
    height: 500px;
    font-size: 10pt;
@@ -20,21 +19,35 @@ let EquiList = styled.div`
    `;
 let EquiCheck = styled.div`
    position: absolute;
+   left: 0px;
+   top: 10px;
    margin: 0.5px;
-   left: 80px;
-   top: 70px;
-   width: 500px;
+   width: 700px;
    height: 50px;
-   font-size: 8pt;
+   font-size: 15pt;
    text-align: center;
    `;
-
+let BodyBox = styled.div`
+   position: relative;
+   width: 1200px;
+   top: 60px;
+   margin: 0.5px;
+   `;
 class EquipmentM extends React.Component {
     // 제일 common한 state값 초기 셋팅
-    state = {
+    constructor(props) {
+        super(props);
+        this.categoryRead = this.categoryRead.bind(this);
+        this.state = {
+            loading: false,
+            ItemList: [],
+            flog: "전체", // 스프린트에서는 fakedata값이 있어서 그내용을 넣어두었었다.
+        };
+    }
+    /*state = {
         loading: false,
         ItemList: [], // 처음 Itemlist는 있는 상태로 기획 []
-    };
+    };*/
     loadItem = async () => {
         // Json Data 불러오기
         axios.get('http://localhost:8080/equipment/readAll') // json을 가져온다음
@@ -43,8 +56,8 @@ class EquipmentM extends React.Component {
                 console.log(data.data)
                 this.setState({
                     loading: true, // load되었으니 true,
-                    ItemList: data.data // 비어있던 Itemlist는 data에 Item객체를 찾아넣어준다. ( Item : json파일에 있는 항목)
-                    //여기서 운동부위 관련해서 함수를 하나 설정해서 다시 넣어주기
+                    ItemList: data.data,
+                    flog: "전체" // 비어있던 Itemlist는 data에 Item객체를 찾아넣어준다. ( Item : json파일에 있는 항목)
                 });
             })
             .catch(e => {
@@ -55,40 +68,71 @@ class EquipmentM extends React.Component {
                 });
             });
     };
+    categoryRead = function () {
+        console.log("categoryRead");
+        const CR = $('input[name="equiPartR"]:checked').val();
+        console.log(CR);
+        axios.post('http://localhost:8080/equipment/readByCategory',
+            {
+                equipmentCategorySelect: $('input[name="equiPartR"]:checked').val()
+            },
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            }
+        )
+            .then((response) => {
+                console.log(response.data)
+                this.setState((prev) => ({
+                    ItemList: response.data,
+                    flog: CR
+                })
+
+                );
+                console.log(CR + " done")
+            })
+            .catch((response) => {
+                console.log('Error!');
+                console.log(response);
+            });
+    }
 
     componentDidMount() {
         this.loadItem();
     }
-
-    readTheList = function () {
-        console.log("운동부위 재 설정");//axios
-    }
     render() {
         const { ItemList } = this.state;
-        console.log(ItemList);
+        //console.log(ItemList);
         return (
             <div>
                 <ManagerBar></ManagerBar>
-                <EquiCheck>
-                    <label><input type="checkbox" name="equiPart" value="chest" />가슴</label>
-                    <label><input type="checkbox" name="equiPart" value="back" />등</label>
-                    <label><input type="checkbox" name="equiPart" value="neck" />목</label>
-                    <label><input type="checkbox" name="equiPart" value="stomach" />복부</label>
-                    <label><input type="checkbox" name="equiPart" value="triceps" />삼두</label>
-                    <label><input type="checkbox" name="equiPart" value="trapezius" />승모근</label>
-                    <label><input type="checkbox" name="equiPart" value="shoulder" />어께</label>
-                    <label><input type="checkbox" name="equiPart" value="aerobic" />유산소</label>
-                    <label><input type="checkbox" name="equiPart" value="biceps" />이두</label>
-                    <label><input type="checkbox" name="equiPart" value="lower_body" />하체</label>
-                    <label><input type="checkbox" name="equiPart" value="waist" />허리</label>
-                    <label><input type="checkbox" name="equiPart" value="etc" />기타</label>
-                </EquiCheck>
-                <div>
-                    <EquiList>
-                        <Listpage Itemcard={ItemList} />
-                    </EquiList>
-                    <DetailE></DetailE>
-                </div>
+                <center>
+                    <BodyBox>
+                        <EquiCheck>
+                            <label>전체<input type="radio" name="equiPartR" value="전체" checked={(this.state).flog === "전체" ? true : false} onClick={this.loadItem} /></label>
+                            <label>가슴<input type="radio" name="equiPartR" value="가슴" checked={(this.state).flog === "가슴" ? true : false} onClick={this.categoryRead} /></label>
+                            <label>등<input type="radio" name="equiPartR" value="등" checked={(this.state).flog === "등" ? true : false} onClick={this.categoryRead} /></label>
+                            <label>목<input type="radio" name="equiPartR" value="목" checked={(this.state).flog === "목" ? true : false} onClick={this.categoryRead} /></label>
+                            <label>복부<input type="radio" name="equiPartR" value="복부" checked={(this.state).flog === "복부" ? true : false} onClick={this.categoryRead} /></label>
+                            <label>삼두<input type="radio" name="equiPartR" value="삼두" checked={(this.state).flog === "삼두" ? true : false} onClick={this.categoryRead} /></label>
+                            <label>승모근<input type="radio" name="equiPartR" value="승모근" checked={(this.state).flog === "승모근" ? true : false} onClick={this.categoryRead} /></label>
+                            <label>어깨<input type="radio" name="equiPartR" value="어깨" checked={(this.state).flog === "어깨" ? true : false} onClick={this.categoryRead} /></label>
+                            <label>유산소<input type="radio" name="equiPartR" value="유산소" checked={(this.state).flog === "유산소" ? true : false} onClick={this.categoryRead} /></label>
+                            <label>이두<input type="radio" name="equiPartR" value="이두" checked={(this.state).flog === "이두" ? true : false} onClick={this.categoryRead} /></label>
+                            <label>하체<input type="radio" name="equiPartR" value="하체" checked={(this.state).flog === "하체" ? true : false} onClick={this.categoryRead} /></label>
+                            <label>허리<input type="radio" name="equiPartR" value="허리" checked={(this.state).flog === "허리" ? true : false} onClick={this.categoryRead} /></label>
+                            <label>기타<input type="radio" name="equiPartR" value="기타" checked={(this.state).flog === "기타" ? true : false} onClick={this.categoryRead} /></label>
+                        </EquiCheck>
+                        <div>
+                            <EquiList>
+                                <Listpage Itemcard={ItemList} />
+                            </EquiList>
+                            <DetailE></DetailE>
+                        </div>
+                    </BodyBox>
+                </center>
             </div >
         )
     }

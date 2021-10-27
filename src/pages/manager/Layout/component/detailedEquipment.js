@@ -7,8 +7,8 @@ import axios from "axios";
 let EquiInfo = styled.div`
    position: absolute;
    margin: 0.5px;
-   right: 100px;
-   top: 100px;
+   top: 50px;
+   left: 750px;
    width: 450px;
    height: 500px;
    font-size: 10pt;
@@ -66,20 +66,31 @@ class DetailE extends React.Component {
                 <EquiInfo>
                     <img id="Eimg" name="Eimg" src="https://png.pngtree.com/png-clipart/20190904/original/pngtree-flat-fitness-machine-png-image_4491374.jpg" height="300" width="300" alt="EquiIcon" /><br />
                     <input type="file" name="file" id="imageFileOpenInput" accept="image/*" /><br />
-                    <label>Name: <input type="text" id="Ename" name="Ename" /></label><br />
+                    <label>name: </label>
+                    <input type="text" name="Ename" id="Ename" />
+                    <label>nth: </label>
+                    <input type="text" name="ENth" id="ENth" style={{ width: "40px" }} /><br />
                     <label>State:
                         <label>On
-                            <input type="radio" id="EquiStateOn" name="EquiState" value="on" />
+                            <input type="radio" name="EquiState" value="on" />
                         </label>
                         <label>Off
-                            <input type="radio" id="EquiStateOff" name="EquiState" value="off" />
+                            <input type="radio" name="EquiState" value="off" />
                         </label>
                     </label>
                     <div>
-                        <label><input type="checkbox" id="equiPart1" name="equiPart1" value="upper" />상체</label>
-                        <label><input type="checkbox" id="equiPart2" name="equiPart2" value="lower" />하체</label>
-                        <label><input type="checkbox" id="equiPart3" name="equiPart3" value="leg" />다리</label>
-                        <label><input type="checkbox" id="equiPart4" name="equiPart4" value="etc" />기타</label>
+                        <label>가슴<input type="checkbox" name="equiPart" value="chest" /></label>
+                        <label>등<input type="checkbox" name="equiPart" value="back" /></label>
+                        <label>목<input type="checkbox" name="equiPart" value="neck" /></label>
+                        <label>복부<input type="checkbox" name="equiPart" value="stomach" /></label>
+                        <label>삼두<input type="checkbox" name="equiPart" value="triceps" /></label>
+                        <label>승모근<input type="checkbox" name="equiPart" value="trapezius" /></label><br />
+                        <label>어께<input type="checkbox" name="equiPart" value="shoulder" /></label>
+                        <label>유산소<input type="checkbox" name="equiPart" value="aerobic" /></label>
+                        <label>이두<input type="checkbox" name="equiPart" value="biceps" /></label>
+                        <label>하체<input type="checkbox" name="equiPart" value="lower_body" /></label>
+                        <label>허리<input type="checkbox" name="equiPart" value="waist" /></label>
+                        <label>기타<input type="checkbox" name="equiPart" value="etc" /></label>
                     </div>
                     <input type="hidden" id="Eid" name="Eid" />
                     <input type="hidden" id="Ecategory" name="Ecategory" />

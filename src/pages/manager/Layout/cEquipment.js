@@ -15,6 +15,7 @@ let EquiInfo = styled.div`
    background: lightgreen;
    `;
 const CList = ["chest", "back", "neck", "stomach", "triceps", "trapezius", "shoulder", "aerobic", "biceps", "lower_body", "waist", "etc"];
+const KorCList = ["가슴", "등", "목", "복부", "삼두", "승모근", "어깨", "유산소", "이두", "하체", "허리", "기타"];
 class CreateEqui extends React.Component {
 
     createEquipment = function () {
@@ -27,16 +28,27 @@ class CreateEqui extends React.Component {
         else {
             flag = 2;
         }
-        for (let i = 0; i < 12; i++) {
-            if ($('input[name="equiPart"]:checked').val() === CList[i]) {
-                ECList += CList[i];
+        var chk_arr = [];
+        $("input[name=equiPart]:checked").each(function () {
+            var chk = $(this).val();
+            chk_arr.push(chk);
+        })
+        console.log(chk_arr);
+        for (let i = 0; i < chk_arr.length; i++) {
+            for (let j = 0; j < 12; j++) {
+                if (chk_arr[i] === CList[j]) {
+                    console.log(CList[j])
+                    ECList = ECList + KorCList[j] + " ";
+                    console.log(ECList);
+                }
             }
         }
+
         axios.post('http://localhost:8080/equipment/create',
             {
                 equipmentName: $("#Ename").val(),
                 equipmentNameNth: $("#ENth").val(),
-                equipmentCategoryList: '0101',
+                equipmentCategoryList: ECList,
                 equipmentImage: $("#Eimg").val(),//일단 값이 잘 드렁가는 짐난 확인
                 equipmentAvailable: flag
             },
@@ -73,18 +85,18 @@ class CreateEqui extends React.Component {
                             </label>
                         </label>
                         <div>
-                            <label><input type="checkbox" name="equiPart" value="chest" />가슴</label>
-                            <label><input type="checkbox" name="equiPart" value="back" />등</label>
-                            <label><input type="checkbox" name="equiPart" value="neck" />목</label>
-                            <label><input type="checkbox" name="equiPart" value="stomach" />복부</label>
-                            <label><input type="checkbox" name="equiPart" value="triceps" />삼두</label>
-                            <label><input type="checkbox" name="equiPart" value="trapezius" />승모근</label><br />
-                            <label><input type="checkbox" name="equiPart" value="shoulder" />어께</label>
-                            <label><input type="checkbox" name="equiPart" value="aerobic" />유산소</label>
-                            <label><input type="checkbox" name="equiPart" value="biceps" />이두</label>
-                            <label><input type="checkbox" name="equiPart" value="lower_body" />하체</label>
-                            <label><input type="checkbox" name="equiPart" value="waist" />허리</label>
-                            <label><input type="checkbox" name="equiPart" value="etc" />기타</label>
+                            <label>가슴<input type="checkbox" name="equiPart" value="chest" /> </label>
+                            <label>등<input type="checkbox" name="equiPart" value="back" /></label>
+                            <label>목<input type="checkbox" name="equiPart" value="neck" /></label>
+                            <label>복부<input type="checkbox" name="equiPart" value="stomach" /></label>
+                            <label>삼두<input type="checkbox" name="equiPart" value="triceps" /></label>
+                            <label>승모근<input type="checkbox" name="equiPart" value="trapezius" /></label><br />
+                            <label>어께<input type="checkbox" name="equiPart" value="shoulder" /></label>
+                            <label>유산소<input type="checkbox" name="equiPart" value="aerobic" /></label>
+                            <label>이두<input type="checkbox" name="equiPart" value="biceps" /></label>
+                            <label>하체<input type="checkbox" name="equiPart" value="lower_body" /></label>
+                            <label>허리<input type="checkbox" name="equiPart" value="waist" /></label>
+                            <label>기타<input type="checkbox" name="equiPart" value="etc" /></label>
                         </div>
                         <button onClick={this.createEquipment}>등록</button>
                     </EquiInfo>

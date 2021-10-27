@@ -5,7 +5,9 @@ import { Link } from 'react-router-dom';
 let MenuBar = styled.li`
 &:hover {                
     background: #545454;
-  }
+  }  
+   position: sticky;
+   top:0px;
    float: left;
    width: 10%;
    height: 100%;
