@@ -8,6 +8,7 @@ class Listpage extends Component {
     state = {};
     render() {
         const { Itemcard } = this.props;
+        console.log(Itemcard);
         return (
             <ul className="list__itemview">
                 {Itemcard &&
@@ -18,6 +19,7 @@ class Listpage extends Component {
                                 EquipmentId={itemdata.equipmentID}
                                 EquipmentName={itemdata.equipmentName}
                                 Category={itemdata.equipmentCategoryList}
+                                EnthNumber={itemdata.equipmentNameNth}
                             />
                         );
                     })}
