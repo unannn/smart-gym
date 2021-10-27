@@ -47,7 +47,10 @@
   src: url("./fonts/NanumSquareB.ttf") format("truetype");
 }
 
-div,
+div {
+  font-family: "NanumSquare";
+}
+
 h1 {
   font-weight: 600;
   font-family: "NanumSquare";

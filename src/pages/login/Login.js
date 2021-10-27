@@ -97,9 +97,9 @@ class Login extends React.Component {
                 <div>
                     <Box height="">
                         <form onSubmit={this.handleSubmit.bind(this)} autoComplete={"off"}>
-                            <InputText type='text' onChange={this.handleChange1.bind(this)} value={this.state.account.userID} placeholder="아이디 입력"></InputText>
+                            <InputText type='text' onChange={(event) => this.handleChange1(event)} value={this.state.account.userID} placeholder="아이디 입력"></InputText>
                             <br />
-                            <InputText type='password' onChange={this.handleChange2.bind(this)} value={this.state.account.userPassword} placeholder="비밀번호 입력"></InputText>
+                            <InputText type='password' onChange={(event) => this.handleChange2(event)} value={this.state.account.userPassword} placeholder="비밀번호 입력"></InputText>
                             <InputButton type="submit" value="로그인" onClick={this.login} />
                         </form>
 
