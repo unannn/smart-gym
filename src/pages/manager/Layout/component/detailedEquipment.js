@@ -15,14 +15,24 @@ let EquiInfo = styled.div`
    text-align: center;
    background: pink;
    `;
+const CList = ["chest", "back", "neck", "stomach", "triceps", "trapezius", "shoulder", "aerobic", "biceps", "lower_body", "waist", "etc"];
+const KorCList = ["가슴", "등", "목", "복부", "삼두", "승모근", "어깨", "유산소", "이두", "하체", "허리", "기타"];
+let Ccategory = "";
 class DetailE extends React.Component {
     updateEquipment = function () {
         console.log("update");//axios
+        for (let i = 0; i < 12; i++) {
+            if ($("input:checkbox[name='equiPart']:checkbox[value=" + CList[i] + "]").is(":checked") == true) {
+                Ccategory = Ccategory + " " + KorCList[i];
+                console.log(Ccategory);
+            }
+        }
         axios.post('http://localhost:8080/equipment/update',
             {
                 equipmentID: $("#Eid").val(),
                 equipmentName: $("#Ename").val(),
-                equipmentCategoryList: $("#Ecategory").val(),
+                equipmentNameNth: $("#ENth").val(),
+                equipmentCategoryList: Ccategory,
                 equipmentImage: $("#Eimg").val(),//일단 값이 잘 드렁가는 짐난 확인
                 equipmentAvailable: $("#Estate").val()
             },
@@ -33,7 +43,10 @@ class DetailE extends React.Component {
                 }
             }
         )
-            .then((response) => { console.log(response.data); })
+            .then((response) => {
+                console.log(response.data);
+                window.location.reload()
+            })
             .catch((response) => {
                 console.log('Error!')
             });

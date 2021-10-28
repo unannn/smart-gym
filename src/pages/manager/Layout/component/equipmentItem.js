@@ -17,7 +17,6 @@ let InfoBox = styled.div`
    text-align: center;
    background: pink;
    `;
-//const CList = ["aerobic", "back", "biceps", "chest", "etc", "lower_body", "neck", "shoulder", "stomach", "trapezius", "triceps", "waist"];
 const CList = ["chest", "back", "neck", "stomach", "triceps", "trapezius", "shoulder", "aerobic", "biceps", "lower_body", "waist", "etc"];
 const KorCList = ["가슴", "등", "목", "복부", "삼두", "승모근", "어깨", "유산소", "이두", "하체", "허리", "기타"];
 let aaa = "equipmentCategoryAerobic";
@@ -43,10 +42,7 @@ const detailedRead = (EquipmentId, e) => {
             }*/
             let i = -1;
             for (var key in (response.data[0])) {
-                //console.log(key);//이름
-                //console.log("i=" + i);
                 if ((response.data[0])[key] === 1) {
-                    //console.log((response.data[0])[key]);
                     $("input:checkbox[name='equiPart']:checkbox[value=" + CList[i] + "]").prop('checked', true);
                 }
                 else {

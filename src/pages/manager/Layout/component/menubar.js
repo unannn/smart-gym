@@ -6,7 +6,7 @@ let MenuBar = styled.li`
 &:hover {                
     background: #545454;
   }  
-   position: sticky;
+   position: relative;
    top:0px;
    float: left;
    width: 10%;
