@@ -20,10 +20,10 @@ let EquiList = styled.div`
 let EquiCheck = styled.div`
    position: absolute;
    left: 0px;
-   top: 10px;
+   top: 15px;
    margin: 0.5px;
    width: 700px;
-   height: 50px;
+   height: 40px;
    font-size: 15pt;
    text-align: center;
    `;
@@ -31,7 +31,6 @@ let BodyBox = styled.div`
    position: relative;
    width: 1200px;
    top: 60px;
-   margin: 0.5px;
    `;
 class EquipmentM extends React.Component {
     // 제일 common한 state값 초기 셋팅

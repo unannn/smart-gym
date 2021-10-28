@@ -1,19 +1,24 @@
-import React, { Component } from "react";
-import axios from "axios";
-import Listpage from "./component/lp";
-import $ from "jquery";
-import jquery from 'jquery';
-import StaticTimePickerLandscape from './component/timePicker.js';
-class Prac extends Component {
+import * as React from 'react';
+import TextField from '@mui/material/TextField';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import StaticTimePicker from '@mui/lab/StaticTimePicker';
 
-    // APP.js 컴포넌트의 최종 보여지는 render값 정의
-    render() {
-        return (
-            <div>
-                <StaticTimePickerLandscape />
-            </div>
-        );
-    }
+export default function StaticTimePickerLandscape() {
+    const [value, setValue] = React.useState(new Date());
+
+    return (
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <StaticTimePicker
+                ampm
+                orientation="landscape"
+                openTo="minutes"
+                value={value}
+                onChange={(newValue) => {
+                    setValue(newValue);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+            />
+        </LocalizationProvider>
+    );
 }
-
-export default Prac;
