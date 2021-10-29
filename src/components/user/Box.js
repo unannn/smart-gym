@@ -9,6 +9,7 @@ let StyledBox = styled.div`
     max-width: 400px;
     text-align:center;
     margin:0 auto;
+    margin-bottom:10px;
     
 `;
 
