@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import TopBar from '../../../components/TopBar';
-import Modal from '../../../components/Modal';
+import TopBar from '../../../components/user/TopBar';
+import Modal from '../../../components/user/Modal';
 import styled from 'styled-components';
 
 class TimeSelectionModal extends Component {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import TopBar from '../../components/TopBar';
-import EquipList from '../../components/EquipList';
+import TopBar from '../../components/user/TopBar';
+import EquipList from '../../components/user/EquipList';
 
 class EquiptionGuide extends Component {
     render() {

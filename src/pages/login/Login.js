@@ -1,14 +1,14 @@
 /* eslint-disable no-duplicate-case */
 import React from 'react';
-import InputText from '../../components/InputText';
-import Box from '../../components/Box';
+import InputText from '../../components/user/InputText';
+import Box from '../../components/user/Box';
 import styled from "styled-components";
-import FindAccountModal from '../../components/Modal';
+import FindAccountModal from '../../components/user/Modal';
 import FindId from './FindId';
 import FindPwd from './FindPwd';
 import SignUp from './SignUp';
 import ManagerLogin from './ManagerLogin';
-import InputButton from '../../components/InputButton'
+import InputButton from '../../components/user/InputButton'
 
 class Login extends React.Component {
 

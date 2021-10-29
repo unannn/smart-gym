@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import TopBar from '../../../components/TopBar';
+import TopBar from '../../../components/user/TopBar';
 import styled from "styled-components";
-import Calendar from '../../../components/Calendar';
-import ReservationEquipList from '../../../components/ReservationEquipList';
+import Calendar from '../../../components/user/Calendar';
+import ReservationEquipList from '../../../components/user/ReservationEquipList';
 
 class DateSelection extends Component {
     render() {

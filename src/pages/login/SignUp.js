@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import InputText from '../../components/InputText';
-import InputButton from '../../components/InputButton'
-import Box from '../../components/Box'
+import InputText from '../../components/user/InputText';
+import InputButton from '../../components/user/InputButton'
+import Box from '../../components/user/Box'
 let ModalContent = styled.div`
     display: table-row;
 `

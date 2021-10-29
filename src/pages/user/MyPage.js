@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import TopBar from '../../components/TopBar';
-import Box from '../../components/Box';
+import TopBar from '../../components/user/TopBar';
+import Box from '../../components/user/Box';
 import styled from "styled-components";
-import InputText from '../../components/InputText';
-import InputButton from '../../components/InputButton'
+import InputText from '../../components/user/InputText';
+import InputButton from '../../components/user/InputButton'
 
 class MyPage extends Component {
     render() {

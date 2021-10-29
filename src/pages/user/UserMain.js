@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from "styled-components";
-import TopBar from '../../components/TopBar';
+import TopBar from '../../components/user/TopBar';
 import { Link } from 'react-router-dom';
-import ReservationEquipList from '../../components/ReservationEquipList';
+import ReservationEquipList from '../../components/user/ReservationEquipList';
 class UserMain extends React.Component {
     render() {
         return (
