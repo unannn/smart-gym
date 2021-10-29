@@ -35,7 +35,7 @@ let CloseButton = styled.div`
 `
 
 
-class FindAccountModal extends React.Component {
+class Modal extends React.Component {
 
     render() {
 
@@ -55,4 +55,4 @@ class FindAccountModal extends React.Component {
     }
 
 }
-export default FindAccountModal;
+export default Modal;
