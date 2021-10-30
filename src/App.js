@@ -15,7 +15,6 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Switch>
-          {/* {isAuthorized !== 'OK' ? <Redirect to="/login" /> : <Redirect to="/user" />} */}
           <Route exact path='/'>
             <LoginDemo></LoginDemo>
           </Route>
