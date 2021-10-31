@@ -3,12 +3,12 @@ import styled from 'styled-components';
 
 let ModalBackground = styled.div`
     position: fixed;
-    width:100%;
-    height:100%;
+    top:0px;
+    left:0px;
+    width:100vw;
+    height:100vh;
     background: #000000;
     background : rgba(0, 0, 0, 0.6);
-    top:0%;
-    left:0%;    
 `
 let StyledModal = styled.div`
     width: 93%;
