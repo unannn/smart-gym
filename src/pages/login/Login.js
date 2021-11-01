@@ -23,6 +23,7 @@ class Login extends React.Component {
                 userPW: ''
             },
             loginError: false,
+            loginErrorMessage: '',
             findId: false,
             findPwd: false,
             signUp: false,
@@ -55,7 +56,6 @@ class Login extends React.Component {
     }
 
     handleIDChange(event) {
-        console.log(event.type + ':' + event.target.value);
         this.setState({
             account: {
                 userID: event.target.value,
@@ -64,8 +64,6 @@ class Login extends React.Component {
         });
     }
     handlePWChange(event) {
-        console.log(event.type + ':' + event.target.value);
-
         this.setState({
             account: {
                 userID: this.state.account.userID,
@@ -77,63 +75,61 @@ class Login extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
 
-        var loginAccount = { userID: 'asdf', userPW: '1234' };
+        axios.post('http://localhost:8080/allowedUser/login',
+            this.state.account
+            ,
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            }
+        )
+            .then((response) => {
+                console.log(response.data)
+                let code = response.data;
+                switch (code) {
+                    case 0: //로그인 완료
+                        window.sessionStorage.setItem('id', this.state.account.userID);
+                        window.location.reload();
+                        break;
 
-        if (Object.entries(loginAccount).toString() === Object.entries(this.state.account).toString()) {
-            window.sessionStorage.setItem('id', this.state.account.userID);
-            window.location.reload();
+                    case 1: //비밀번호 불일치
+                        this.setState({
+                            loginError: true,
+                            loginErrorMessage: '아이디 또는 비밀번호가 잘못 입력 되었습니다.'
+                        });
+                        break;
 
+                    case 2: //관리자 승인 전
+                        this.setState({
+                            loginError: true,
+                            loginErrorMessage: '회원가입 허가 전 입니다.'
+                        });
+                        break;
 
-        } else {
-            this.setState({ loginError: true });
-        }
+                    case 3: //해당 id 회원 정보 없음
+                        this.setState({
+                            loginError: true,
+                            loginErrorMessage: '아이디 또는 비밀번호가 잘못 입력 되었습니다.!'
+                        });
+                        break;
 
-        // axios.post('http://localhost:8080/allowedUser/login',
-        //     this.state.account
-        //     ,
-        //     {
-        //         headers: {
-        //             'Content-type': 'application/json',
-        //             'Accept': 'application/json'
-        //         }
-        //     }
-        // )
-        //     .then((response) => {
-        //         console.log(response.data)
-        //         let code = response.data;
-        //         switch (code) {
-        //             case 0: //로그인 완료
-        // window.sessionStorage.setItem('id', this.state.account.userID);
-        // window.location.reload();
-        //                 break;
-
-        //             case 1: //비밀번호 불일치
-        //                 this.setState({ loginError: true });
-        //                 break;
-
-        //             case 2: //관리자 승인 전
-        // window.sessionStorage.setItem('id', this.state.account.userID);
-        // window.location.reload();
-        //                 break;
-
-        //             case 3: //해당 id 회원 정보 없음
-        // this.setState({ loginError: true });
-        //                 break;
-
-        //             default:
-        //                 this.setState({ loginError: true });
-        //                 break;
-        //         }
-        //     })
-        //     .catch((response) => {
-        //         console.log('Error');
-        //         console.log(response);
-        //     });
-
+                    default:
+                        this.setState({
+                            loginError: true,
+                            loginErrorMessage: '아이디 또는 비밀번호가 잘못 입력 되었습니다.'
+                        });
+                        break;
+                }
+            })
+            .catch((response) => {
+                console.log('Error');
+                console.log(response);
+            });
     }
 
     render() {
-        let loginFailedMessage = '아이디 또는 비밀번호가 잘못 입력 되었습니다';
 
         let modal = this.getCurrenOpenModal();
 
@@ -146,7 +142,7 @@ class Login extends React.Component {
                             <InputText type='text' name="id" onChange={(event) => this.handleIDChange(event)} value={this.state.account.userID || ''} placeholder="아이디 입력"></InputText>
                             <br />
                             <InputText type='password' name="password" onChange={(event) => this.handlePWChange(event)} value={this.state.account.userPW || ''} placeholder="비밀번호 입력"></InputText>
-                            {this.state.loginError ? <LoginErrorLog> {loginFailedMessage}</LoginErrorLog> : ''}
+                            {this.state.loginError ? <LoginErrorLog> {this.state.loginErrorMessage}</LoginErrorLog> : ''}
                             <InputButton type="submit" value="로그인" onClick={this.login} />
                         </form>
 
