@@ -9,16 +9,20 @@ import FindPwd from './FindPwd';
 import SignUp from './SignUp';
 import ManagerLogin from './ManagerLogin';
 import InputButton from '../../components/user/InputButton'
+import axios from "axios";
+import $ from "jquery";
 
 class Login extends React.Component {
+
 
     constructor(props) {
         super(props);
         this.state = {
             account: {
                 userID: '',
-                userPassword: ''
+                userPW: ''
             },
+            loginError: false,
             findId: false,
             findPwd: false,
             signUp: false,
@@ -50,56 +54,99 @@ class Login extends React.Component {
         return null;
     }
 
-    login() {
-        sessionStorage.setItem('login', 'OK');
-
-
-    }
-
-    handleChange1(event) {
+    handleIDChange(event) {
         console.log(event.type + ':' + event.target.value);
         this.setState({
             account: {
                 userID: event.target.value,
+                userPW: this.state.account.userPW
             }
         });
     }
-    handleChange2(event) {
+    handlePWChange(event) {
+        console.log(event.type + ':' + event.target.value);
+
         this.setState({
             account: {
-                userPassword: event.target.value
+                userID: this.state.account.userID,
+                userPW: event.target.value
             }
         });
     }
+
     handleSubmit(event) {
-        console.log('A id was submitted: ' + this.state.account.userID);
-        console.log('A pwd was submitted: ' + this.state.account.userPassword);
         event.preventDefault();
+
+        var loginAccount = { userID: 'asdf', userPW: '1234' };
+
+        if (Object.entries(loginAccount).toString() === Object.entries(this.state.account).toString()) {
+            window.sessionStorage.setItem('id', this.state.account.userID);
+            window.location.reload();
+
+
+        } else {
+            this.setState({ loginError: true });
+        }
+
+        // axios.post('http://localhost:8080/allowedUser/login',
+        //     this.state.account
+        //     ,
+        //     {
+        //         headers: {
+        //             'Content-type': 'application/json',
+        //             'Accept': 'application/json'
+        //         }
+        //     }
+        // )
+        //     .then((response) => {
+        //         console.log(response.data)
+        //         let code = response.data;
+        //         switch (code) {
+        //             case 0: //로그인 완료
+        // window.sessionStorage.setItem('id', this.state.account.userID);
+        // window.location.reload();
+        //                 break;
+
+        //             case 1: //비밀번호 불일치
+        //                 this.setState({ loginError: true });
+        //                 break;
+
+        //             case 2: //관리자 승인 전
+        // window.sessionStorage.setItem('id', this.state.account.userID);
+        // window.location.reload();
+        //                 break;
+
+        //             case 3: //해당 id 회원 정보 없음
+        // this.setState({ loginError: true });
+        //                 break;
+
+        //             default:
+        //                 this.setState({ loginError: true });
+        //                 break;
+        //         }
+        //     })
+        //     .catch((response) => {
+        //         console.log('Error');
+        //         console.log(response);
+        //     });
+
     }
 
     render() {
+        let loginFailedMessage = '아이디 또는 비밀번호가 잘못 입력 되었습니다';
 
-        let modal = null;
-
-        modal = this.getCurrenOpenModal();
-
+        let modal = this.getCurrenOpenModal();
 
         return (
-            <div>
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <div className="login-title">SEJONG<br />GYM</div>
+            <LoginStyle>
+                <TitleStyle>SEJONG<br />GYM</TitleStyle>
                 <div>
-                    <Box height="">
+                    <Box>
                         <form onSubmit={this.handleSubmit.bind(this)} autoComplete={"off"}>
-                            <InputText type='text' onChange={(event) => this.handleChange1(event)} value={this.state.account.userID} placeholder="아이디 입력"></InputText>
+                            <InputText type='text' name="id" onChange={(event) => this.handleIDChange(event)} value={this.state.account.userID || ''} placeholder="아이디 입력"></InputText>
                             <br />
-                            <InputText type='password' onChange={(event) => this.handleChange2(event)} value={this.state.account.userPassword} placeholder="비밀번호 입력"></InputText>
+                            <InputText type='password' name="password" onChange={(event) => this.handlePWChange(event)} value={this.state.account.userPW || ''} placeholder="비밀번호 입력"></InputText>
+                            {this.state.loginError ? <LoginErrorLog> {loginFailedMessage}</LoginErrorLog> : ''}
                             <InputButton type="submit" value="로그인" onClick={this.login} />
                         </form>
 
@@ -121,15 +168,38 @@ class Login extends React.Component {
                         관리자 로그인 {'>'}
                     </MangerLoginDiv>
                 </div>
-
-
                 {modal}
-
-            </div>
+            </LoginStyle>
         )
     }
+
 }
 
+let LoginStyle = styled.div`
+    position:relative;
+    max-width:450px;
+    margin: 0 auto;
+    /* left:50%;
+    transform: translateX(-50%); */
+    /* position: absolute;
+    display:flex;
+    align-items:center;
+    justify-content:center; */
+`;
+
+let TitleStyle = styled.div`
+  font-weight: 800;
+  font-size: 50px;
+  font-family: "NanumSquareB";
+  line-height: 90%;
+  margin: 40px;
+  margin-top:100px;
+`;
+
+let LoginErrorLog = styled.div`
+    color:red;
+    font-size:12px;
+`;
 
 let LoginMenu = styled.ul`
     text-align:center;

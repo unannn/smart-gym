@@ -17,8 +17,8 @@ let StyledInputText = styled.input`
 `;
 
 function InputText(props) {
-    return <StyledInputText type={props.type} value={props.value}
-        placeholder={props.placeholder} backgroundColor={props.backgroundColor}>
+    return <StyledInputText name={props.name} type={props.type} value={props.value} onChange={props.onChange}
+        placeholder={props.placeholder} backgroundColor={props.backgroundColor} onBlur={props.onBlur}>
     </StyledInputText>;
 }
 

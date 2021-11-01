@@ -17,10 +17,18 @@ import OperPolicy from './pages/manager/Layout/operPolicy';
 import Prac from './pages/manager/Layout/prac';
 import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
+
+  let logged = window.sessionStorage.getItem('id');
+  console.log(logged);
   return (
     <BrowserRouter>
       <div className="App">
         <Switch>
+          {/* <Route exact path='/root'>
+            <LoginDemo></LoginDemo>
+          </Route> */}
+          {logged ? <Redirect path="/root" to='/user' /> : <Redirect path="/root" to='/login' />}
+          {logged ? <Redirect path="/login" to='/user' /> : <Redirect path="/user" to='/login' />}
           <Route exact path='/'>
             <LoginDemo></LoginDemo>
           </Route>
@@ -64,6 +72,7 @@ function App() {
           <Route exact path='/prac'>
             <Prac></Prac>
           </Route>
+
         </Switch>
 
       </div>
