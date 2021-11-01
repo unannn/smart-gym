@@ -54,7 +54,7 @@ class Login extends React.Component {
         return null;
     }
 
-    handleChange1(event) {
+    handleIDChange(event) {
         console.log(event.type + ':' + event.target.value);
         this.setState({
             account: {
@@ -63,7 +63,7 @@ class Login extends React.Component {
             }
         });
     }
-    handleChange2(event) {
+    handlePWChange(event) {
         console.log(event.type + ':' + event.target.value);
 
         this.setState({
@@ -143,9 +143,9 @@ class Login extends React.Component {
                 <div>
                     <Box>
                         <form onSubmit={this.handleSubmit.bind(this)} autoComplete={"off"}>
-                            <InputText type='text' name="id" onChange={(event) => this.handleChange1(event)} value={this.state.account.userID || ''} placeholder="아이디 입력"></InputText>
+                            <InputText type='text' name="id" onChange={(event) => this.handleIDChange(event)} value={this.state.account.userID || ''} placeholder="아이디 입력"></InputText>
                             <br />
-                            <InputText type='password' name="password" onChange={(event) => this.handleChange2(event)} value={this.state.account.userPW || ''} placeholder="비밀번호 입력"></InputText>
+                            <InputText type='password' name="password" onChange={(event) => this.handlePWChange(event)} value={this.state.account.userPW || ''} placeholder="비밀번호 입력"></InputText>
                             {this.state.loginError ? <LoginErrorLog> {loginFailedMessage}</LoginErrorLog> : ''}
                             <InputButton type="submit" value="로그인" onClick={this.login} />
                         </form>
