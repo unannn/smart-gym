@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import InputText from '../../components/user/InputText';
 import InputButton from '../../components/user/InputButton'
 import axios from "axios";
-import $ from "jquery";
 
 let ModalContent = styled.div`
     display: table-row;

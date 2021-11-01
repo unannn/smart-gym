@@ -4,7 +4,6 @@ import InputText from '../../components/user/InputText';
 import InputButton from '../../components/user/InputButton'
 import Box from '../../components/user/Box'
 import axios from "axios";
-import $ from "jquery";
 
 let ModalContent = styled.div`
     display: table-row;
