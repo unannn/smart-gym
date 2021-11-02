@@ -9,10 +9,8 @@ import DetailE from './component/detailedEquipment';
 let EquiList = styled.div`
  position: relative;
  left: -250px;
-   margin: 0.3px;
-   width: 700px;
+   width: 670px;
    height: 500px;
-   font-size: 10pt;
    text-align: center;
    background: pink;
    overflow:auto;
@@ -24,7 +22,7 @@ let EquiCheck = styled.div`
    margin: 0.5px;
    width: 700px;
    height: 40px;
-   font-size: 15pt;
+   font-size: 13pt;
    text-align: center;
    `;
 let BodyBox = styled.div`
@@ -125,9 +123,11 @@ class EquipmentM extends React.Component {
                             <label>기타<input type="radio" name="equiPartR" value="기타" checked={(this.state).flog === "기타" ? true : false} onClick={this.categoryRead} /></label>
                         </EquiCheck>
                         <div>
-                            <EquiList>
-                                <Listpage Itemcard={ItemList} />
-                            </EquiList>
+                            <center>
+                                <EquiList>
+                                    <Listpage Itemcard={ItemList} />
+                                </EquiList>
+                            </center>
                             <DetailE></DetailE>
                         </div>
                     </BodyBox>

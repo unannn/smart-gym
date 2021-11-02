@@ -19,7 +19,6 @@ const KorCList = ["가슴", "등", "목", "복부", "삼두", "승모근", "어�
 class CreateEqui extends React.Component {
 
     createEquipment = function () {
-        console.log("suu");//axios
         let flag = 0;
         let ECList = "";
         if ($('input[name="EquiState"]:checked').val() === "on") {
@@ -43,15 +42,23 @@ class CreateEqui extends React.Component {
                 }
             }
         }
+        var fileInput = document.querySelector("#imageFileOpenInput");
+        const formData = new FormData();
+        formData.append('equipmentInfoCreateDTO.equipmentName', $("#Ename").val());
+        formData.append('equipmentInfoCreateDTO.equipmentNameNth', $("#ENth").val());
+        formData.append('equipmentImage', fileInput.files[0]);
+        formData.append('equipmentInfoCreateDTO.equipmentAvailable', flag);
+        formData.append('equipmentInfoCreateDTO.equipmentCategoryList', ECList);
 
-        axios.post('http://localhost:8080/equipment/create',
-            {
-                equipmentName: $("#Ename").val(),
-                equipmentNameNth: $("#ENth").val(),
-                equipmentCategoryList: ECList,
-                equipmentImage: $("#Eimg").val(),//일단 값이 잘 드렁가는 짐난 확인
-                equipmentAvailable: flag
-            },
+        for (var key of formData.keys()) {
+            console.log(key);
+        }
+
+        for (var value of formData.values()) {
+            console.log(value);
+        }
+
+        axios.post('http://localhost:8080/equipment/create', formData,
             {
                 headers: {
                     'Content-type': 'application/json',

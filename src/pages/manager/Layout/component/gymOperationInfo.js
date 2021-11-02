@@ -46,13 +46,13 @@ function StaticTimePickerLandscape({ id, start, end, RholiyD, reserveD }) {
         <div>
             <br />
             < Stack component="form" noValidate spacing={3} style={{ display: "inline" }}>
-                <TextField id="OpenTime" label="Opne" type="time" key={start} defaultValue={start} InputLabelProps={{ shrink: true, }} inputProps={{ step: 300, /* 5 min*/ }} sx={{ width: 150 }} />
+                <TextField color="secondary" variant="standard" id="OpenTime" label="Opne" type="time" key={start} defaultValue={start} InputLabelProps={{ shrink: true, }} inputProps={{ step: 300, /* 5 min*/ }} sx={{ width: 150 }} />
             </Stack >
             &nbsp;&nbsp;&nbsp;
             < Stack component="form" noValidate spacing={3} style={{ display: "inline" }}>
-                <TextField id="CloseTime" label="Close" type="time" key={end} defaultValue={end} InputLabelProps={{ shrink: true, }} inputProps={{ step: 300, /* 5 min*/ }} sx={{ width: 150 }} />
-            </Stack >
-            <input type="text" id="ReDu" name="ReDu" /><br />
+                <TextField color="secondary" variant="standard" id="CloseTime" label="Close" type="time" key={end} defaultValue={end} InputLabelProps={{ shrink: true, }} inputProps={{ step: 300, /* 5 min*/ }} sx={{ width: 150 }} />
+            </Stack ><br /><br />
+            <TextField required id="standard-required" label="Reservation Duration(day)" variant="standard" key={reserveD} defaultValue={reserveD} name="Redu" color="secondary" /><br /><br />
             <div>
                 <label>월<input type="checkbox" name="ReHoliyDay" value="Mon" /></label>
                 <label>화<input type="checkbox" name="ReHoliyDay" value="Tue" /></label>

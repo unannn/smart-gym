@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import EquipmentItem from "./equipmentItem";
 import EquipmentItemL from "./equipmentItemL";
 import axios from "axios";
 import $ from "jquery";
@@ -15,7 +14,7 @@ class Listpage extends Component {
                 {Itemcard &&
                     Itemcard.map((itemdata, insertIndex) => {
                         return (
-                            <EquipmentItem
+                            <EquipmentItemL
                                 key={insertIndex}
                                 EquipmentId={itemdata.equipmentID}
                                 EquipmentName={itemdata.equipmentName}
