@@ -13,7 +13,7 @@ import UserM from './pages/manager/Layout/userManage';
 import EquipmentM from './pages/manager/Layout/equipment';
 import CreateEqui from './pages/manager/Layout/cEquipment';
 import OperPolicy from './pages/manager/Layout/operPolicy';
-
+import LayoutE from './pages/manager/Layout/equipmentLayout';
 import Prac from './pages/manager/Layout/prac';
 import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
@@ -68,7 +68,9 @@ function App() {
           <Route exact path='/cEquipment'>
             <CreateEqui></CreateEqui>
           </Route>
-
+          <Route exact path='/equipmentLayout'>
+            <LayoutE></LayoutE>
+          </Route>
           <Route exact path='/prac'>
             <Prac></Prac>
           </Route>

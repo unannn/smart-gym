@@ -38,9 +38,11 @@ class ManagerBar extends React.Component {
                                 회원관리
                             </MenuBar>
                         </Link>
-                        <MenuBar>
-                            배치도 등록
-                        </MenuBar>
+                        <Link to="/equipmentLayout">
+                            <MenuBar>
+                                배치도 등록
+                            </MenuBar>
+                        </Link>
                         <Link to='equipment'>
                             <MenuBar>
                                 운동기구 관리

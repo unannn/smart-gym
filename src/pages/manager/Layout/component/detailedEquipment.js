@@ -15,11 +15,39 @@ let EquiInfo = styled.div`
    text-align: center;
    background: pink;
    `;
+let ImgBox = styled.div`
+   position: relative;
+   margin: 0.5px;
+   width: 320px;
+   height: 320px;
+   font-size: 10pt;
+   text-align: center;
+   `;
 const CList = ["chest", "back", "neck", "stomach", "triceps", "trapezius", "shoulder", "aerobic", "biceps", "lower_body", "waist", "etc"];
 const KorCList = ["가슴", "등", "목", "복부", "삼두", "승모근", "어깨", "유산소", "이두", "하체", "허리", "기타"];
 let Ccategory = "";
 class DetailE extends React.Component {
     updateEquipment = function () {
+        var fileInput = document.querySelector("#imageFileOpenInput");
+        const formData = new FormData();
+        let flag = 0;
+        let ECList = "";
+        if ($('input[name="EquiState"]:checked').val() === "on") {
+            flag = 1;
+        }
+        else {
+            flag = 2;
+        }
+        var chk_arr = [];
+        $("input[name=equiPart]:checked").each(function () {
+            var chk = $(this).val();
+            chk_arr.push(chk);
+        })
+        formData.append('equipmentInfoUpdateDTO.equipmentID', $("#Eid").val());
+        formData.append('equipmentInfoUpdateDTO.equipmentName', $("#Ename").val());
+        formData.append('equipmentInfoUpdateDTO.equipmentNameNth', $("#ENth").val());
+        formData.append('equipmentImage', fileInput.files[0]);
+        formData.append('equipmentInfoUpdateDTO.equipmentAvailable', flag);
         console.log("update");//axios
         for (let i = 0; i < 12; i++) {
             if ($("input:checkbox[name='equiPart']:checkbox[value=" + CList[i] + "]").is(":checked") == true) {
@@ -27,15 +55,19 @@ class DetailE extends React.Component {
                 console.log(Ccategory);
             }
         }
-        axios.post('http://localhost:8080/equipment/update',
-            {
-                equipmentID: $("#Eid").val(),
-                equipmentName: $("#Ename").val(),
-                equipmentNameNth: $("#ENth").val(),
-                equipmentCategoryList: Ccategory,
-                equipmentImage: $("#Eimg").val(),//일단 값이 잘 드렁가는 짐난 확인
-                equipmentAvailable: $("#Estate").val()
-            },
+        formData.append('equipmentInfoUpdateDTO.equipmentCategoryList', Ccategory);
+        for (var key of formData.keys()) {
+
+            console.log(key);
+
+        }
+
+        for (var value of formData.values()) {
+
+            console.log(value);
+
+        }
+        axios.post('http://localhost:8080/equipment/update', formData,
             {
                 headers: {
                     'Content-type': 'application/json',
@@ -46,6 +78,7 @@ class DetailE extends React.Component {
             .then((response) => {
                 console.log(response.data);
                 window.location.reload()
+                //window.location.reload()
             })
             .catch((response) => {
                 console.log('Error!')
@@ -77,7 +110,11 @@ class DetailE extends React.Component {
         return (
             <div>
                 <EquiInfo>
-                    <img id="Eimg" name="Eimg" src="https://png.pngtree.com/png-clipart/20190904/original/pngtree-flat-fitness-machine-png-image_4491374.jpg" height="300" width="300" alt="EquiIcon" /><br />
+                    <center>
+                        <ImgBox>
+                            <img id="Eimg" name="Eimg" src="image/FoundNotImage.png" height="320" width="320" alt="EquiIcon" /><br />
+                        </ImgBox>
+                    </center>
                     <input type="file" name="file" id="imageFileOpenInput" accept="image/*" /><br />
                     <label>name: </label>
                     <input type="text" name="Ename" id="Ename" />

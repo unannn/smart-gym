@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import EquipmentItem from "./equipmentItem";
-import EquipmentItemL from "./equipmentItemL";
+import UserItem from "./userItem";
 import axios from "axios";
 import $ from "jquery";
 import jquery from 'jquery';
-class Listpage extends Component {
+class UserListpage extends Component {
     id = 1;
     state = {};
     render() {
@@ -15,7 +14,7 @@ class Listpage extends Component {
                 {Itemcard &&
                     Itemcard.map((itemdata, insertIndex) => {
                         return (
-                            <EquipmentItem
+                            <UserItem
                                 key={insertIndex}
                                 EquipmentId={itemdata.equipmentID}
                                 EquipmentName={itemdata.equipmentName}
@@ -28,4 +27,4 @@ class Listpage extends Component {
         );
     }
 }
-export default Listpage;
+export default UserListpage;

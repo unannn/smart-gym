@@ -8,9 +8,9 @@ let InfoBox = styled.div`
 &:hover {                
     background: skyblue;
   }
-  left: -2%;
+  left: -6%;
    position: relative;
-   width: 630px;
+   width: 270px;
    height: 40px;
    `;
 const CList = ["chest", "back", "neck", "stomach", "triceps", "trapezius", "shoulder", "aerobic", "biceps", "lower_body", "waist", "etc"];
@@ -66,17 +66,16 @@ const detailedRead = (EquipmentId, e) => {
             console.log('Error!')
         });
 }
-function EquipmentItem({ key, EquipmentId, EquipmentName, Category, EnthNumber }) {
+function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber }) {
     return (
         <div>
             <div onClick={(e) => { detailedRead(EquipmentId, e) }}>
                 <InfoBox className="component component--item_card" key={key}>
                     <input type="hidden" id="Eid" value={EquipmentId} />
-                    <label style={{ float: 'left', fontSize: '20px' }} id="nameE">{EquipmentName} {EnthNumber}</label>
-                    <label style={{ float: 'right', fontSize: '20px' }}>{Category}</label>
+                    <label style={{ fontSize: '20px' }} id="nameE">{EquipmentName} {EnthNumber}</label>
                 </ InfoBox >
             </div >
         </div>
     );
 }
-export default EquipmentItem;
+export default EquipmentItemL;
