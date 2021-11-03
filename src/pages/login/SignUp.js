@@ -63,7 +63,8 @@ class SignUp extends Component {
             }
         )
             .then((response) => {
-                if (response.data) { //회원가입 성공
+                const content = response.data;
+                if (content.data) { //회원가입 성공
                     alert('회원가입 성공헀습니다.');
                     window.location.reload();
                 }
@@ -128,7 +129,9 @@ class SignUp extends Component {
             }
         )
             .then((response) => {
-                if (response.data) { //사용가능한 아이디
+                const content = response.data;
+
+                if (content.data) { //사용가능한 아이디
                     this.setState({
                         isValidID: true,
                         IDMessage: '사용 가능한 아이디 입니다.'
@@ -169,7 +172,9 @@ class SignUp extends Component {
             }
         )
             .then((response) => {
-                if (response.data) { //사용가능한 휴대번호
+                const content = response.data;
+
+                if (content.data) { //사용가능한 휴대번호                    
                     this.setState({
                         isValidPhone: true,
                         phoneMessage: '사용 가능한 휴대번호 입니다.'
@@ -214,8 +219,9 @@ class SignUp extends Component {
             }
         )
             .then((response) => {
-                if (response.data) { //사용가능한 이메일
-                    console.log("여기 왜들어오지")
+                const content = response.data;
+
+                if (content.data) { //사용가능한 이메일
                     this.setState({
                         isValidEmail: true,
                         emailMessage: '사용 가능한 이메일 입니다.'

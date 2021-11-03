@@ -22,11 +22,7 @@ class FindId extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        let [id, email] = ['asdf', 'asdf@sejong.ac.kr']
 
-        if (id === this.tate.userID && email === this.state.userEmail) {
-
-        }
         axios.post('http://localhost:8080/allowedUser/findPW',
             {
                 userID: this.state.userID,
@@ -40,8 +36,17 @@ class FindId extends Component {
             }
         )
             .then((response) => {
-                console.log(response.data)
-                this.setState({ isValid: !this.state.isValid, userID: "내 비밀번호 : " + response.data });
+                const content = response.data;
+
+                if (content.success) {
+                    if (content.code === 1) {
+                        this.setState({ isValid: true, userPW: "내 비밀번호 : " + content.data });
+                    } else {
+                        this.setState({ isValid: false });
+                    }
+                } else {
+                    throw content;
+                }
             })
             .catch((response) => {
                 console.log('Error');
@@ -82,11 +87,17 @@ class FindId extends Component {
 let ErrorMessageStyle = styled.div`
     color:red;
     font-size:13px;
+    text-align:left;
+    margin: 0 auto;
+    width:225px;
 `;
 
 let UserIDStyle = styled.div`
     position:relative;
     font-size:13px;
+    text-align:left;
+    margin: 0 auto;
+    width:225px;
 `;
 
 export default FindId;

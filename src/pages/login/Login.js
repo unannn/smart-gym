@@ -1,5 +1,5 @@
 /* eslint-disable no-duplicate-case */
-import React from 'react';
+import React, { useRef } from 'react';
 import InputText from '../../components/user/InputText';
 import Box from '../../components/user/Box';
 import styled from "styled-components";
@@ -10,7 +10,6 @@ import SignUp from './SignUp';
 import ManagerLogin from './ManagerLogin';
 import InputButton from '../../components/user/InputButton'
 import axios from "axios";
-import $ from "jquery";
 
 class Login extends React.Component {
 
@@ -75,6 +74,23 @@ class Login extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
 
+        console.log(this.state.account)
+        if (this.state.account.userID.length === 0) {
+            this.setState({
+                loginError: true,
+                loginErrorMessage: ' 아이디를 입력해 주세요.'
+            })
+            return;
+        }
+
+        if (this.state.account.userPW.length === 0) {
+            this.setState({
+                loginError: true,
+                loginErrorMessage: ' 비밀번호를 입력해 주세요.'
+            })
+            return;
+        }
+
         axios.post('http://localhost:8080/allowedUser/login',
             this.state.account
             ,
@@ -87,8 +103,8 @@ class Login extends React.Component {
         )
             .then((response) => {
                 console.log(response.data)
-                let code = response.data;
-                switch (code) {
+                const content = response.data;
+                switch (content.data) {
                     case 0: //로그인 완료
                         window.sessionStorage.setItem('id', this.state.account.userID);
                         window.location.reload();
@@ -111,7 +127,7 @@ class Login extends React.Component {
                     case 3: //해당 id 회원 정보 없음
                         this.setState({
                             loginError: true,
-                            loginErrorMessage: '아이디 또는 비밀번호가 잘못 입력 되었습니다.!'
+                            loginErrorMessage: '아이디 또는 비밀번호가 잘못 입력 되었습니다.'
                         });
                         break;
 
@@ -195,6 +211,9 @@ let TitleStyle = styled.div`
 let LoginErrorLog = styled.div`
     color:red;
     font-size:12px;
+    text-align:left;
+    margin: 0 auto;
+    width:225px;
 `;
 
 let LoginMenu = styled.ul`

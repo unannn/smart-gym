@@ -56,11 +56,3 @@ h1 {
   font-weight: 600;
   font-family: "NanumSquare";
 }
-
-.login-title {
-  font-weight: 800;
-  font-size: 50px;
-  font-family: "NanumSquareB";
-  line-height: 90%;
-  margin: 40px;
-}

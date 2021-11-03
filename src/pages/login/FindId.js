@@ -33,16 +33,19 @@ class FindId extends Component {
                     'Content-type': 'application/json',
                     'Accept': 'application/json'
                 }
-            }
-        )
+            })
             .then((response) => {
-                console.log(response.data === '')
-                if (!response.data === '') {
-                    this.setState({ isValid: true, userID: "내 아이디 : " + response.data });
-                } else {
-                    this.setState({ isValid: false });
-                }
+                const content = response.data;
 
+                if (content.success) {
+                    if (content.code === 1) {
+                        this.setState({ isValid: true, userID: "내 아이디 : " + content.data });
+                    } else {
+                        this.setState({ isValid: false });
+                    }
+                } else {
+                    throw content;
+                }
             })
             .catch((response) => {
                 console.log('Error');
