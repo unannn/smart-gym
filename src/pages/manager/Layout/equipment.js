@@ -3,9 +3,9 @@ import axios from "axios";
 import $ from "jquery";
 import jquery from "jquery";
 import styled from 'styled-components';
-import Listpage from "./component/lp";
+import Listpage from "./Equipment/lp";
 import ManagerBar from './component/menubar.js';
-import DetailE from './component/detailedEquipment';
+import DetailE from './Equipment/detailedEquipment';
 let EquiList = styled.div`
  position: relative;
  left: -250px;

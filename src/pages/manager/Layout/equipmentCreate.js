@@ -9,9 +9,9 @@ import ManagerBar from './component/menubar.js';
 let EquiInfo = styled.div`
    position: relative;
    margin: 0.5px;
-   top: 45px;
-   width: 650px;
-   height: 450px;
+   top: 60px;
+   width: 800px;
+   height: 500px;
    font-size: 10pt;
    text-align: center;
    border-radius: 10px;
@@ -22,48 +22,56 @@ let EquiInfo = styled.div`
    `;
 
 let InfoInput = styled.input`
-   font-size: 10pt;
-   border-radius: 5px;
-   padding: 3px;
-   margin:0 auto;
-   margin-bottom:10px;
+   background-color: #FFFFFF;
+	background-position:left top;
+	padding-top:5px;
+	font-family:tahoma;
+	font-size:16px;
+	color:#000000;
+    resize:none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    border-width: 0px;
+    width:225px;
+    height:30px;
    `;
 
 let ImageBox = styled.div`
    position: relative;
    margin: 0.5px;
-   top: 0px;
-   width: 320px;
-   height: 320px;
+   top: 50px;
+   left: 100px;
+   width: 135px;
+   height: 40px;
    font-size: 10pt;
    text-align: center;
    `;
 let InputInfoBox = styled.div`
    position: relative;
    margin: 0.5px;
-   top: -250px;
-   left: 335px;
-   width: 280px;
-   height: 150px;
+   top: -280px;
+   left: 380px;
+   width: 360px;
+   height: 200px;
    font-size: 10pt;
    text-align: center;
    `;
 let RegisterBox = styled.div`
    position: relative;
    margin: 0.5px;
-   top: -90px;
-   left: 550px;
+   top: -155px;
+   left: 700px;
    width: 65px;
    height: 45px;
    font-size: 10pt;
    text-align: center;
    `;
 let LayoutBox = styled.div`
-   position: absolute;
-   width: 710px;
-   height: 460px;
-   top: 50px;
-   left: 450px;
+   position: relative;
+   width: 330px;
+   height: 330px;
+   top: 10px;
+   left: -200px;
    background: gray;
    border-radius: 2px;
    padding:5px;
@@ -75,12 +83,12 @@ const KorCList = ["가슴", "등", "목", "복부", "삼두", "승모근", "어�
 class CreateEqui extends React.Component {
 
     createEquipment = function () {
-        let flag = 0;
+        let flag = -1;
         let ECList = "";
         if ($('input[name="EquiState"]:checked').val() === "on") {
             flag = 2;
         }
-        else {
+        else if ($('input[name="EquiState"]:checked').val() === "off") {
             flag = 0;
         }
         var chk_arr = [];
@@ -105,43 +113,50 @@ class CreateEqui extends React.Component {
         formData.append('equipmentImage', fileInput.files[0]);
         formData.append('equipmentInfoCreateDTO.equipmentAvailable', flag);
         formData.append('equipmentInfoCreateDTO.equipmentCategoryList', ECList);
+        //console.log(fileInput.files[0]);
 
-        for (var key of formData.keys()) {
+        /*for (var key of formData.keys()) {
             console.log(key);
         }
 
         for (var value of formData.values()) {
             console.log(value);
+        }*/
+
+        if (fileInput.files[0] == null) {
+            console.log("null!!");
+            alert("이미지가 없습니다. 이미지를 먼저 등록해주세요.")
         }
+        else {
+            axios.post('http://localhost:8080/equipment/create', formData,
+                {
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                }
+            )
+                .then((response) => {
+                    console.log(response.data);
 
-        axios.post('http://localhost:8080/equipment/create', formData,
-            {
-                headers: {
-                    'Content-type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            }
-        )
-            .then((response) => {
-                console.log(response.data);
+                    if (response.data == 1) {
+                        alert("빈 값이 있습니다. 확인 후 다시 등록해 주세요.");
+                    }
+                    else if (response.data == 2) {
+                        alert("nth값이 중복됩니다. 다시 입력해 주세요.")
+                    }
+                    else if (response.data == 3) {
+                        alert("error! 운동기구 정보 등록에 실패했습니다.")
+                    }
+                    else {
+                        alert("운동기구 정보가 등록되었습니다.")
+                    }
 
-                if (response.data == 1) {
-                    alert("빈 값이 있습니다. 확인 후 다시 등록해 주세요.");
-                }
-                else if (response.data == 2) {
-                    alert("nth값이 중복됩니다. 다시 입력해 주세요.")
-                }
-                else if (response.data == 3) {
-                    alert("운동기구 등록에 실패했습니다.")
-                }
-                else {
-                    alert("운동기구가 등록되었습니다.")
-                }
-
-            })
-            .catch((response) => {
-                console.log('Error!')
-            });
+                })
+                .catch((response) => {
+                    console.log('Error!')
+                });
+        }
     }
     rePrintImage = function (e) {
         console.log("rePrint");
@@ -155,8 +170,10 @@ class CreateEqui extends React.Component {
                 <ManagerBar></ManagerBar><br />
                 <center>
                     <EquiInfo>
-                        <ImageBox>
+                        <LayoutBox>
                             <img id="Eimg" name="Eimg" src="image/FoundNotImage.png" height="320" width="320" alt="EquiIcon" /><br /><br />
+                        </LayoutBox>
+                        <ImageBox>
                             <label className="btn btn-secondary" for="imageFileOpenInput">
                                 아이콘 불러오기
                             </label>
@@ -166,7 +183,7 @@ class CreateEqui extends React.Component {
                             <label>name: </label>
                             <InfoInput type="text" name="Ename" id="Ename" />&nbsp;&nbsp;
                             <label>nth: </label>
-                            <InfoInput type="text" name="ENth" id="ENth" style={{ width: "40px" }} /><br />
+                            <InfoInput type="text" name="ENth" id="ENth" style={{ width: "40px" }} /><br /><br />
 
                             <label>State:&nbsp;
                                 <label>On

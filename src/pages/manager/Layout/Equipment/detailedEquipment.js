@@ -53,6 +53,12 @@ class DetailE extends React.Component {
         const formData = new FormData();
         let flag = 0;
         let ECList = "";
+
+        if (fileInput.files[0] == null) {
+            console.log(fileInput.files[0]);
+            console.log($("#Eimg").val());
+
+        }
         if ($('input[name="EquiState"]:checked').val() === "on") {
             flag = 2;
         }
@@ -88,6 +94,7 @@ class DetailE extends React.Component {
             console.log(value);
 
         }
+
         axios.post('http://localhost:8080/equipment/update', formData,
             {
                 headers: {
@@ -98,12 +105,25 @@ class DetailE extends React.Component {
         )
             .then((response) => {
                 console.log(response.data);
+                if (response.data == 1) {
+                    alert("빈 값이 있습니다. 확인 후 다시 등록해 주세요.");
+                }
+                else if (response.data == 2) {
+                    alert("nth값이 중복됩니다. 다시 입력해 주세요.")
+                }
+                else if (response.data == 3) {
+                    alert("error! 운동기구 등록에 실패했습니다.")
+                }
+                else {
+                    alert("운동기구 정보가 수정되었습니다.")
+                }
                 window.location.reload()
                 //window.location.reload()
             })
             .catch((response) => {
                 console.log('Error!')
             });
+
     }
     deleteEquipment = function () {
         console.log("delete" + $("#Eid").val());

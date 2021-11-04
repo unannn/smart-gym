@@ -35,6 +35,21 @@ const operationUpdate = (start, end, e) => {
     )
         .then((response) => {
             console.log(response.data);
+            if (response.data == 1) {
+                alert("빈 값이 있습니다. 확인 후 다시 등록해 주세요.");
+            }
+            else if (response.data == 2) {
+                alert("Open Time과 Close Time을 다시 확인해 주세요.");
+            }
+            else if (response.data == 3) {
+                alert("정기휴무를 일주일 내내로 선택할 수 없습니다. 다시 선택해주세요.");
+            }
+            else if (response.data == 4) {
+                alert("error! 헬스장 운영정보를 등록할 수 없습니다.");
+            }
+            else {
+                alert("헬스장 운영정보가 정상적으로 등록되었습니다.");
+            }
         })
         .catch((response) => {
             console.log('Error!')

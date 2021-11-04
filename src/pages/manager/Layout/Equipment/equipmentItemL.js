@@ -6,12 +6,18 @@ import jquery from "jquery";
 import axios from "axios";
 let InfoBox = styled.div`
 &:hover {                
-    background: skyblue;
+    background: #7988DF;
   }
   left: -17%;
    position: relative;
    width: 270px;
    height: 40px;
+
+   text-align: center;
+   border-radius: 5px;
+   padding:0px;
+   margin:0 auto;
+   margin-bottom:5px;
    `;
 const CList = ["chest", "back", "neck", "stomach", "triceps", "trapezius", "shoulder", "aerobic", "biceps", "lower_body", "waist", "etc"];
 const KorCList = ["가슴", "등", "목", "복부", "삼두", "승모근", "어깨", "유산소", "이두", "하체", "허리", "기타"];
