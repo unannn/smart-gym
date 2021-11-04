@@ -1,18 +1,74 @@
 import React from 'react';
 import axios from 'axios';
 import $ from "jquery";
+import { Button } from 'react-bootstrap';
 import jquery from 'jquery';
 import styled from 'styled-components';
 import ManagerBar from './component/menubar.js';
 
 let EquiInfo = styled.div`
+   position: relative;
    margin: 0.5px;
-   top: 100px;
-   width: 450px;
-   height: 500px;
+   top: 45px;
+   width: 650px;
+   height: 450px;
    font-size: 10pt;
    text-align: center;
-   background: lightgreen;
+   border-radius: 10px;
+   padding:20px;
+   margin:0 auto;
+   margin-bottom:10px;
+   background: #F2F2F2;
+   `;
+
+let InfoInput = styled.input`
+   font-size: 10pt;
+   border-radius: 5px;
+   padding: 3px;
+   margin:0 auto;
+   margin-bottom:10px;
+   `;
+
+let ImageBox = styled.div`
+   position: relative;
+   margin: 0.5px;
+   top: 0px;
+   width: 320px;
+   height: 320px;
+   font-size: 10pt;
+   text-align: center;
+   `;
+let InputInfoBox = styled.div`
+   position: relative;
+   margin: 0.5px;
+   top: -250px;
+   left: 335px;
+   width: 280px;
+   height: 150px;
+   font-size: 10pt;
+   text-align: center;
+   `;
+let RegisterBox = styled.div`
+   position: relative;
+   margin: 0.5px;
+   top: -90px;
+   left: 550px;
+   width: 65px;
+   height: 45px;
+   font-size: 10pt;
+   text-align: center;
+   `;
+let LayoutBox = styled.div`
+   position: absolute;
+   width: 710px;
+   height: 460px;
+   top: 50px;
+   left: 450px;
+   background: gray;
+   border-radius: 2px;
+   padding:5px;
+   margin:0 auto;
+   margin-bottom:10px;
    `;
 const CList = ["chest", "back", "neck", "stomach", "triceps", "trapezius", "shoulder", "aerobic", "biceps", "lower_body", "waist", "etc"];
 const KorCList = ["가슴", "등", "목", "복부", "삼두", "승모근", "어깨", "유산소", "이두", "하체", "허리", "기타"];
@@ -22,10 +78,10 @@ class CreateEqui extends React.Component {
         let flag = 0;
         let ECList = "";
         if ($('input[name="EquiState"]:checked').val() === "on") {
-            flag = 1;
+            flag = 2;
         }
         else {
-            flag = 2;
+            flag = 0;
         }
         var chk_arr = [];
         $("input[name=equiPart]:checked").each(function () {
@@ -66,10 +122,32 @@ class CreateEqui extends React.Component {
                 }
             }
         )
-            .then((response) => { console.log(response.data); })
+            .then((response) => {
+                console.log(response.data);
+
+                if (response.data == 1) {
+                    alert("빈 값이 있습니다. 확인 후 다시 등록해 주세요.");
+                }
+                else if (response.data == 2) {
+                    alert("nth값이 중복됩니다. 다시 입력해 주세요.")
+                }
+                else if (response.data == 3) {
+                    alert("운동기구 등록에 실패했습니다.")
+                }
+                else {
+                    alert("운동기구가 등록되었습니다.")
+                }
+
+            })
             .catch((response) => {
                 console.log('Error!')
             });
+    }
+    rePrintImage = function (e) {
+        console.log("rePrint");
+        const imageFile = e.target.files[0];
+        const imageUrl = URL.createObjectURL(imageFile);
+        $("#Eimg").attr("src", imageUrl);
     }
     render() {
         return (
@@ -77,35 +155,45 @@ class CreateEqui extends React.Component {
                 <ManagerBar></ManagerBar><br />
                 <center>
                     <EquiInfo>
-                        <img id="Eimg" name="Eimg" src="https://png.pngtree.com/png-clipart/20190904/original/pngtree-flat-fitness-machine-png-image_4491374.jpg" height="300" width="300" alt="EquiIcon" /><br />
-                        <input type="file" name="file" id="imageFileOpenInput" accept="image/*" /><br />
-                        <label>name: </label>
-                        <input type="text" name="Ename" id="Ename" />
-                        <label>nth: </label>
-                        <input type="text" name="ENth" id="ENth" style={{ width: "40px" }} /><br />
-                        <label>State:
-                            <label>On
-                                <input type="radio" name="EquiState" value="on" />
+                        <ImageBox>
+                            <img id="Eimg" name="Eimg" src="image/FoundNotImage.png" height="320" width="320" alt="EquiIcon" /><br /><br />
+                            <label className="btn btn-secondary" for="imageFileOpenInput">
+                                아이콘 불러오기
                             </label>
-                            <label>Off
-                                <input type="radio" name="EquiState" value="off" />
-                            </label>
-                        </label>
-                        <div>
-                            <label>가슴<input type="checkbox" name="equiPart" value="chest" /> </label>
-                            <label>등<input type="checkbox" name="equiPart" value="back" /></label>
-                            <label>목<input type="checkbox" name="equiPart" value="neck" /></label>
-                            <label>복부<input type="checkbox" name="equiPart" value="stomach" /></label>
-                            <label>삼두<input type="checkbox" name="equiPart" value="triceps" /></label>
-                            <label>승모근<input type="checkbox" name="equiPart" value="trapezius" /></label><br />
-                            <label>어께<input type="checkbox" name="equiPart" value="shoulder" /></label>
-                            <label>유산소<input type="checkbox" name="equiPart" value="aerobic" /></label>
-                            <label>이두<input type="checkbox" name="equiPart" value="biceps" /></label>
-                            <label>하체<input type="checkbox" name="equiPart" value="lower_body" /></label>
-                            <label>허리<input type="checkbox" name="equiPart" value="waist" /></label>
-                            <label>기타<input type="checkbox" name="equiPart" value="etc" /></label>
-                        </div>
-                        <button onClick={this.createEquipment}>등록</button>
+                            <input type="file" id="imageFileOpenInput" style={{ display: "none" }} accept="image/*" onChange={(e) => { this.rePrintImage(e) }} />&nbsp;&nbsp;<br /><br />
+                        </ImageBox>
+                        <InputInfoBox>
+                            <label>name: </label>
+                            <InfoInput type="text" name="Ename" id="Ename" />&nbsp;&nbsp;
+                            <label>nth: </label>
+                            <InfoInput type="text" name="ENth" id="ENth" style={{ width: "40px" }} /><br />
+
+                            <label>State:&nbsp;
+                                <label>On
+                                    <input type="radio" name="EquiState" value="on" />
+                                </label>&nbsp;&nbsp;
+                                <label>Off
+                                    <input type="radio" name="EquiState" value="off" />
+                                </label>
+                            </label><br /><br />
+                            <div>
+                                <label>가슴 <input type="checkbox" name="equiPart" value="chest" /> </label>&nbsp;&nbsp;
+                                <label>등 <input type="checkbox" name="equiPart" value="back" /></label>&nbsp;&nbsp;
+                                <label>목 <input type="checkbox" name="equiPart" value="neck" /></label>&nbsp;&nbsp;
+                                <label>복부 <input type="checkbox" name="equiPart" value="stomach" /></label>&nbsp;&nbsp;
+                                <label>삼두 <input type="checkbox" name="equiPart" value="triceps" /></label>&nbsp;&nbsp;
+                                <label>승모근 <input type="checkbox" name="equiPart" value="trapezius" /></label><br />
+                                <label>어께 <input type="checkbox" name="equiPart" value="shoulder" /></label>&nbsp;&nbsp;
+                                <label>유산소 <input type="checkbox" name="equiPart" value="aerobic" /></label>&nbsp;&nbsp;
+                                <label>이두 <input type="checkbox" name="equiPart" value="biceps" /></label>&nbsp;&nbsp;
+                                <label>하체 <input type="checkbox" name="equiPart" value="lower_body" /></label>&nbsp;&nbsp;
+                                <label>허리 <input type="checkbox" name="equiPart" value="waist" /></label>&nbsp;&nbsp;
+                                <label>기타 <input type="checkbox" name="equiPart" value="etc" /></label>&nbsp;&nbsp;
+                            </div><br />
+                        </InputInfoBox>
+                        <RegisterBox>
+                            <Button variant="btn btn-secondary" onClick={this.createEquipment}>등록</Button>
+                        </RegisterBox>
                     </EquiInfo>
                 </center>
             </div >

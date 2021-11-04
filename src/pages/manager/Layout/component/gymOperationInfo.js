@@ -1,15 +1,16 @@
 import React, { useState } from "react";
+import { Button } from 'react-bootstrap';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import $ from "jquery";
 import jquery from "jquery";
 import axios from "axios";
-
+//정기휴무 제외하고 빈 상태면 날라가지 않게 알럿창 띄우고 서버요청 안하기
 const RDList = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const KorRDList = ["월", "화", "수", "목", "금", "토", "일"];
 const operationUpdate = (start, end, e) => {
     console.log("OperUpdate");
-    console.log(start);
+    console.log($('input[name="Redu"]').val());
     let RHD = "";
     for (let i = 0; i < 7; i++) {
         console.log($("input:checkbox[name='ReHoliyDay']:checkbox[value=" + RDList[i] + "]").is(":checked"));
@@ -20,7 +21,7 @@ const operationUpdate = (start, end, e) => {
     }
     axios.post('http://localhost:8080/gymOperationInfo/update',
         {
-            gymOperationInfoReservationDuration: $('#ReDu').val(),
+            gymOperationInfoReservationDuration: $('input[name="Redu"]').val(),
             gymOperationInfoRegularHoliday: RHD,
             gymOperationInfoOperatingStartTime: start,
             gymOperationInfoOperatingEndTime: end
@@ -41,7 +42,7 @@ const operationUpdate = (start, end, e) => {
 }
 function StaticTimePickerLandscape({ id, start, end, RholiyD, reserveD }) {
     const [value, setValue] = React.useState(new Date());
-    console.log(start);
+    console.log(reserveD);
     return (
         <div>
             <br />
@@ -62,8 +63,7 @@ function StaticTimePickerLandscape({ id, start, end, RholiyD, reserveD }) {
                 <label>토<input type="checkbox" name="ReHoliyDay" value="Sat" /></label>
                 <label>일<input type="checkbox" name="ReHoliyDay" value="Sun" /></label>
             </div>
-            <button onClick={(e) => { operationUpdate($("#OpenTime").val(), $("#CloseTime").val(), e) }}>수정</button>
-            <button onClick={""}>운영정보 조회</button>
+            <Button variant="btn btn-secondary" onClick={(e) => { operationUpdate($("#OpenTime").val(), $("#CloseTime").val(), e) }}>수정</Button>
         </div>
     );
 }

@@ -20,6 +20,10 @@ let GyminfoBox = styled.div`
    font-size: 9pt;
    text-align: center;
    background: pink;
+   border-radius: 10px;
+   padding:20px;
+   margin:0 auto;
+   margin-bottom:10px;
    `;
 let GymOperinfoBox = styled.div`
    position: relative;
@@ -31,6 +35,10 @@ let GymOperinfoBox = styled.div`
    font-size: 10pt;
    text-align: center;
    background: pink;
+   border-radius: 10px;
+   padding:20px;
+   margin:0 auto;
+   margin-bottom:10px;
    `;
 let GymHoliyDay = styled.div`
    position: absolute;
@@ -198,6 +206,12 @@ class OperPolicy extends React.Component {
         const { ItemList } = (this.state);
         console.log(ItemList);
         console.log(this.state.InfoList);
+        /*
+                                <label>휴무일 입력</label><input type="text" id="holiy" name="hoily" />
+                        <button onClick={this.holiyCreate}>등록</button>
+                        <button onClick={this.holiyRead}>조회</button>
+                        <button onClick={this.holiyDelete}>삭제</button>
+        */
         return (
             <div>
                 <ManagerBar></ManagerBar>
@@ -221,10 +235,6 @@ class OperPolicy extends React.Component {
                                 reserveD={ItemList.gymOperationInfoReservationDuration}
                             />
                         </GymOperinfoBox>
-                        <label>휴무일 입력</label><input type="text" id="holiy" name="hoily" />
-                        <button onClick={this.holiyCreate}>등록</button>
-                        <button onClick={this.holiyRead}>조회</button>
-                        <button onClick={this.holiyDelete}>삭제</button>
                     </BodyBox>
                 </center>
             </div >

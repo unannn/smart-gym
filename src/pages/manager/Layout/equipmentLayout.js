@@ -6,7 +6,6 @@ import { Button } from 'react-bootstrap';
 import styled from 'styled-components';
 import Listpage from "./component/lpL";
 import ManagerBar from './component/menubar.js';
-//여기에 꼭 운동 부위까지 나와야 할까? 운동기구 리스트에?
 let EquiList = styled.div`
  position: relative;
  left: -400px;
@@ -15,8 +14,12 @@ let EquiList = styled.div`
    height: 500px;
    font-size: 10pt;
    text-align: center;
-   background: pink;
+   background: #F2F2F2;
    overflow:auto;
+   border-radius: 10px;
+   padding:20px;
+   margin:0 auto;
+   margin-bottom:10px;
    `;
 let BodyBox = styled.div`
    position: relative;
@@ -25,19 +28,22 @@ let BodyBox = styled.div`
    `;
 let LayoutBox = styled.div`
    position: absolute;
-   width: 700px;
-   height: 450px;
+   width: 710px;
+   height: 460px;
    top: 50px;
    left: 450px;
-   background: black;
+   background: gray;
+   border-radius: 2px;
+   padding:5px;
+   margin:0 auto;
+   margin-bottom:10px;
    `;
 let ButtonBox = styled.div`
    position: absolute;
-   width: 600px;
+   width: 300px;
    height: 50px;
-   top: 10px;
-   left: 570px;
-   background: pink;
+   top: 0px;
+   left: 650px;
    `;
 let InputButton = styled.input`
     background-color:#404040;
@@ -160,15 +166,15 @@ class LayoutE extends React.Component {
                             </EquiList>
                         </div>
                         <ButtonBox>
-                            <label className="btn btn-outline-secondary" for="input-file">
-                                업로드
+                            <label className="btn btn-secondary" for="input-file">
+                                새 배치도 불러오기
                             </label>
-                            <input type="file" id="input-file" style={{ display: "none" }} />&nbsp;&nbsp;
-                            <Button variant="btn btn-outline-secondary" onClick={this.layoutUpload}>등록</Button>&nbsp;&nbsp;
-                            <Button variant="btn btn-outline-secondary" onClick={this.layoutCancel}>취소</Button>&nbsp;&nbsp;
+                            <input type="file" id="input-file" style={{ display: "none" }} />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <Button variant="btn btn-secondary" onClick={this.layoutUpload}>등록</Button>&nbsp;&nbsp;
+                            <Button variant="btn btn-secondary" onClick={this.layoutCancel}>취소</Button>&nbsp;&nbsp;
                         </ButtonBox>
                         <LayoutBox>
-                            <img src="" id="layoutImg" />
+                            <img src="" id="layoutImg" width="700px" height="450px" />
                         </LayoutBox>
                     </BodyBox>
                 </center>
