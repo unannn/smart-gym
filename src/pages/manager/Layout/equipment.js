@@ -80,6 +80,7 @@ class EquipmentM extends React.Component {
                 this.setState({
                     loading: false // 이때는 load 가 false 유지
                 });
+                alert("error! 운동기구 목록 조회에 실패했습니다.");
             });
     };
     categoryRead = function () {
@@ -102,14 +103,16 @@ class EquipmentM extends React.Component {
                 this.setState((prev) => ({
                     ItemList: response.data,
                     flog: CR
-                })
-
-                );
+                }));
                 console.log(CR + " done")
             })
             .catch((response) => {
+                this.setState({
+                    flog: CR
+                });
                 console.log('Error!');
                 console.log(response);
+                alert("error! 해당 카테고리 조회에 실패했습니다.");
             });
     }
 

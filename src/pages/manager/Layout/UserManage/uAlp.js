@@ -16,10 +16,8 @@ class UserApprovalListpage extends Component {
                         return (
                             <UserApprovalItem
                                 key={insertIndex}
-                                EquipmentId={itemdata.equipmentID}
-                                EquipmentName={itemdata.equipmentName}
-                                Category={itemdata.equipmentCategoryList}
-                                EnthNumber={itemdata.equipmentNameNth}
+                                UserApprovalId={itemdata.userID}
+                                UserApprovalName={itemdata.userName}
                             />
                         );
                     })}

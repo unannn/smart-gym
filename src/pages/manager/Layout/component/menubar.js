@@ -26,7 +26,7 @@ class ManagerBar extends React.Component {
                     <div style={{ width: '1100px', }}>
                         <Link to="/manager" style={{ color: "black" }}>
                             <MenuBar>
-                                Home
+                                <img src="image/home_black.png" width="40%" height="100%" />
                             </MenuBar>
                         </Link>
                         <Link to="/userApproval" style={{ color: "black" }}>

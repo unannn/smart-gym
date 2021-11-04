@@ -43,9 +43,9 @@ function GymInfo({ id, name, add, phone }) {
     console.log(id, name, phone, add);
     return (
         <div>
-            <TextField color="secondary" required id="standard-required" label="Gym Name" defaultValue=" " variant="standard" name="GName" size="small" /><br /><br />
-            <TextField color="secondary" required id="standard-required" label="Gym Phone Number" defaultValue=" " variant="standard" name="GPhone" size="small" /><br /><br />
-            <TextField color="secondary" required id="standard-required" label="Gym Address" defaultValue=" " variant="standard" name="GAddress" size="small" /><br /><br />
+            <TextField color="secondary" required id="standard-required" label="Gym Name" defaultValue=" " variant="standard" name="GName" size="small" style={{ width: "350px" }} /><br /><br />
+            <TextField color="secondary" required id="standard-required" label="Gym Phone Number" defaultValue=" " variant="standard" name="GPhone" size="small" style={{ width: "350px" }} /><br /><br />
+            <TextField color="secondary" required id="standard-required" label="Gym Address" defaultValue=" " variant="standard" name="GAddress" size="small" style={{ width: "350px" }} /><br /><br />
             <Button variant="btn btn-secondary" onClick={(e) => { informationUpdate($("input[name=GName]").val(), $("input[name=GAddress]").val(), $("input[name=GPhone]").val(), e) }}>등록</Button>
         </div >
     )
