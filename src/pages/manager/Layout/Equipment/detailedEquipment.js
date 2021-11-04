@@ -12,20 +12,11 @@ let EquiInfo = styled.div`
    height: 540px;
    font-size: 10pt;
    text-align: center;
-   background: pink;
+   background: #FFD2D5;
    border-radius: 10px;
    padding:20px;
    margin:0 auto;
    margin-bottom:10px;
-   `;
-let ImgBox = styled.div`
-   position: relative;
-   top: -10px;
-   margin: 0.5px;
-   width: 320px;
-   height: 320px;
-   font-size: 10pt;
-   text-align: center;
    `;
 let InfoInput = styled.input`
    font-size: 10pt;
@@ -37,23 +28,32 @@ let InfoInput = styled.input`
 let ButtonBox = styled.div`
    position: relative;
    margin: 0.5px;
-   top: -2px;
+   top: -5px;
    left: -10px;
    width: 430px;
    height: 45px;
    font-size: 10pt;
    text-align: center;
    `;
+let ImgBox = styled.div`
+    position: relative;
+   top: -10px;
+   width: 310px;
+   height: 310px;
+   background: gray;
+   border-radius: 2px;
+   padding:5px;
+   margin:0 auto;
+   margin-bottom:10px;
+   `;
 const CList = ["chest", "back", "neck", "stomach", "triceps", "trapezius", "shoulder", "aerobic", "biceps", "lower_body", "waist", "etc"];
 const KorCList = ["가슴", "등", "목", "복부", "삼두", "승모근", "어깨", "유산소", "이두", "하체", "허리", "기타"];
-let Ccategory = "";
 class DetailE extends React.Component {
     updateEquipment = function () {
         var fileInput = document.querySelector("#imageFileOpenInput");
         const formData = new FormData();
-        let flag = 0;
-        let ECList = "";
-
+        let flag = -1;
+        let Ccategory = "";
         if (fileInput.files[0] == null) {
             console.log(fileInput.files[0]);
             console.log($("#Eimg").val());
@@ -62,7 +62,7 @@ class DetailE extends React.Component {
         if ($('input[name="EquiState"]:checked').val() === "on") {
             flag = 2;
         }
-        else {
+        else if ($('input[name="EquiState"]:checked').val() === "off") {
             flag = 0;
         }
         var chk_arr = [];
@@ -83,7 +83,7 @@ class DetailE extends React.Component {
             }
         }
         formData.append('equipmentInfoUpdateDTO.equipmentCategoryList', Ccategory);
-        for (var key of formData.keys()) {
+        /*for (var key of formData.keys()) {
 
             console.log(key);
 
@@ -93,7 +93,7 @@ class DetailE extends React.Component {
 
             console.log(value);
 
-        }
+        }*/
 
         axios.post('http://localhost:8080/equipment/update', formData,
             {
@@ -115,13 +115,14 @@ class DetailE extends React.Component {
                     alert("error! 운동기구 등록에 실패했습니다.")
                 }
                 else {
-                    alert("운동기구 정보가 수정되었습니다.")
+                    alert("운동기구 정보가 수정되었습니다.");
+                    window.location.reload();
                 }
-                window.location.reload()
-                //window.location.reload()
+
             })
             .catch((response) => {
-                console.log('Error!')
+                console.log('Error!');
+                alert("error! 운동기구 등록에 실패했습니다.")
             });
 
     }
@@ -159,7 +160,7 @@ class DetailE extends React.Component {
                 <EquiInfo>
                     <center>
                         <ImgBox>
-                            <img id="Eimg" name="Eimg" src="image/FoundNotImage.png" height="320" width="320" alt="EquiIcon" /><br />
+                            <img id="Eimg" name="Eimg" src="image/ImageNotFound.png" height="300" width="300" alt="EquiIcon" /><br />
                         </ImgBox>
                     </center>
                     <label className="btn btn-secondary" for="imageFileOpenInput">

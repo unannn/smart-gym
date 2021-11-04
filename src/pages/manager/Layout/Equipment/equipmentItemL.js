@@ -6,7 +6,7 @@ import jquery from "jquery";
 import axios from "axios";
 let InfoBox = styled.div`
 &:hover {                
-    background: #7988DF;
+    background: #FFD2D5;
   }
   left: -17%;
    position: relative;
@@ -69,7 +69,8 @@ const detailedRead = (EquipmentId, e) => {
             }
         })
         .catch((response) => {
-            console.log('Error!')
+            console.log('Error!');
+            alert("error! 해당 운동기구에 대한 조회를 할 수 없습니다.");
         });
 }
 function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber }) {

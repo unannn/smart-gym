@@ -171,7 +171,7 @@ class CreateEqui extends React.Component {
                 <center>
                     <EquiInfo>
                         <LayoutBox>
-                            <img id="Eimg" name="Eimg" src="image/FoundNotImage.png" height="320" width="320" alt="EquiIcon" /><br /><br />
+                            <img id="Eimg" name="Eimg" src="image/ImageNotFound.png" height="320" width="320" alt="EquiIcon" /><br /><br />
                         </LayoutBox>
                         <ImageBox>
                             <label className="btn btn-secondary" for="imageFileOpenInput">

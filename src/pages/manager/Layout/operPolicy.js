@@ -19,7 +19,7 @@ let GyminfoBox = styled.div`
    height: 270px;
    font-size: 9pt;
    text-align: center;
-   background: pink;
+   background: #F2F2F2;
    border-radius: 10px;
    padding:20px;
    margin:0 auto;
@@ -34,7 +34,7 @@ let GymOperinfoBox = styled.div`
    height: 250px;
    font-size: 10pt;
    text-align: center;
-   background: pink;
+   background: #F2F2F2;
    border-radius: 10px;
    padding:20px;
    margin:0 auto;
@@ -175,6 +175,7 @@ class OperPolicy extends React.Component {
                 this.setState({
                     loading: false // 이때는 load 가 false 유지
                 });
+                alert("error! 헬스장 운영정보 조회에 실패했습니다.");
             });
         //gyminformation Read
         axios.get('http://localhost:8080/gymInfo/read') // json을 가져온다음
@@ -194,6 +195,7 @@ class OperPolicy extends React.Component {
                 this.setState({
                     loading: false
                 });
+                alert("error! 헬스장 정보 조회에 실패했습니다.");
             });
     };
 

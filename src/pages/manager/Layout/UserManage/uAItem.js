@@ -44,15 +44,15 @@ const detailedRead = (EquipmentId, e) => {
             console.log('Error!')
         });
 }
-function UserApprovalItem({ key, EquipmentId, EquipmentName, Category, EnthNumber }) {
+function UserApprovalItem({ key, UserApprovalId, UserApprovalName }) {
     return (
         <div>
-            <div onClick={(e) => { detailedRead(EquipmentId, e) }}>
+            <div onClick={(e) => { detailedRead(UserApprovalId, e) }}>
                 <InfoBox className="component component--item_card" key={key}>
-                    <input type="hidden" id="Eid" value={EquipmentId} />
-                    <label style={{ float: 'left', fontSize: '23px' }} id="nameE">id name</label>
+                    <input type="hidden" id="Eid" value={UserApprovalId} />
+                    <label style={{ float: 'left', fontSize: '23px' }} id="nameE">{UserApprovalId}  {UserApprovalName}</label>
                     <div style={{ float: 'right' }}>
-                        <Button variant="btn btn-secondary" style={{ height: '40px' }} >승인허가</Button>&nbsp;&nbsp;
+                        <Button variant="btn btn-secondary" style={{ height: '40px' }}>승인허가</Button>&nbsp;&nbsp;
                         <Button variant="btn btn-secondary" style={{ height: '40px' }}>승인불가</Button>
                     </div>
                 </ InfoBox >

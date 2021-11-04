@@ -1,7 +1,13 @@
 import React from 'react';
 import axios from "axios";
+import $ from "jquery";
+import jquery from "jquery";
 import styled from 'styled-components';
 import { Button } from 'react-bootstrap';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import NativeSelect from '@mui/material/NativeSelect';
 import ManagerBar from './component/menubar.js';
 import UserListpage from "./UserManage/uAlp";
 
@@ -40,9 +46,17 @@ let BodyBox = styled.div`
    width: 1200px;
    top: 60px;
    `;
+let FilterBox = styled.div`
+   position: relative;
+   width: 100px;
+   height: 70px;
+   top: -25px;
+   left: -300px;
+   `;
 class UserA extends React.Component {
     constructor(props) {
         super(props);
+        this.filterSearch = this.filterSearch.bind(this);
         this.state = {
             loading: false,
             ItemList: [],
@@ -51,7 +65,7 @@ class UserA extends React.Component {
     }
     loadItem = async () => {
         // Json Data 불러오기
-        axios.get('http://localhost:8080/equipment/readAll') // json을 가져온다음
+        axios.get('http://localhost:8080/unAllowedUser/readAll') // json을 가져온다음
             .then((data) => {
                 // data라는 이름으로 json 파일에 있는 값에 state값을 바꿔준다.
                 console.log(data.data)
@@ -69,6 +83,60 @@ class UserA extends React.Component {
                 });
             });
     };
+    filterSearch = function () {
+        console.log("rePrint");
+        console.log($("#FilterID").val());
+        console.log($("#searchValue").val());
+        if ($("#FilterID").val() == 0)//Id
+        {
+            axios.post('http://localhost:8080/unAllowedUser/readByID',
+                {
+                    userID: $("#searchValue").val()
+                },
+                {
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                }
+            )
+                .then((response) => {
+                    console.log(response.data)
+                    this.setState((prev) => ({
+                        loading: true, // load되었으니 true,
+                        ItemList: response.data,
+                    }));
+                })
+                .catch((response) => {
+                    console.log('Error!');
+                    console.log(response);
+                });
+        }
+        else {
+            axios.post('http://localhost:8080/unAllowedUser/readByName',
+                {
+                    userName: $("#searchValue").val()
+                },
+                {
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                }
+            )
+                .then((response) => {
+                    console.log(response.data)
+                    this.setState((prev) => ({
+                        loading: true, // load되었으니 true,
+                        ItemList: response.data,
+                    }));
+                })
+                .catch((response) => {
+                    console.log('Error!');
+                    console.log(response);
+                });
+        }
+    }
     componentDidMount() {
         this.loadItem();
     }
@@ -80,8 +148,28 @@ class UserA extends React.Component {
                 <center>
                     <BodyBox>
                         <div>
-                            <SearchBox />&nbsp;&nbsp;&nbsp;&nbsp;
-                            <Button variant="btn btn-secondary" style={{ position: "relative", top: "-39px" }}>검색</Button>
+                            <FilterBox>
+                                <Box sx={{ minWidth: 10 }}>
+                                    <FormControl style={{ width: "80px" }}>
+                                        <InputLabel variant="standard" htmlFor="uncontrolled-native" color="secondary">
+                                            Filter
+                                        </InputLabel>
+                                        <NativeSelect
+                                            defaultValue={0}
+                                            inputProps={{
+                                                name: 'FilterID',
+                                                id: 'FilterID',
+                                            }}
+                                            color="secondary"
+                                        >
+                                            <option value={0}>ID</option>
+                                            <option value={1}>Name</option>
+                                        </NativeSelect>
+                                    </FormControl>
+                                </Box>
+                            </FilterBox>
+                            <SearchBox id="searchValue" name="searchValue" />&nbsp; &nbsp; &nbsp; &nbsp;
+                            <Button variant="btn btn-secondary" style={{ position: "relative", top: "-39px" }} onClick={this.filterSearch}>검색</Button>
                             <center>
                                 <EquiList>
                                     <UserListpage Itemcard={ItemList} />
