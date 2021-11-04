@@ -6,20 +6,41 @@ import jquery from "jquery";
 import axios from "axios";
 let EquiInfo = styled.div`
    position: absolute;
-   margin: 0.5px;
-   top: 50px;
+   top: 10px;
    left: 750px;
    width: 450px;
-   height: 500px;
+   height: 540px;
    font-size: 10pt;
    text-align: center;
    background: pink;
+   border-radius: 10px;
+   padding:20px;
+   margin:0 auto;
+   margin-bottom:10px;
    `;
 let ImgBox = styled.div`
    position: relative;
+   top: -10px;
    margin: 0.5px;
    width: 320px;
    height: 320px;
+   font-size: 10pt;
+   text-align: center;
+   `;
+let InfoInput = styled.input`
+   font-size: 10pt;
+   border-radius: 5px;
+   padding: 3px;
+   margin:0 auto;
+   margin-bottom:10px;
+   `;
+let ButtonBox = styled.div`
+   position: relative;
+   margin: 0.5px;
+   top: -2px;
+   left: -10px;
+   width: 430px;
+   height: 45px;
    font-size: 10pt;
    text-align: center;
    `;
@@ -33,10 +54,10 @@ class DetailE extends React.Component {
         let flag = 0;
         let ECList = "";
         if ($('input[name="EquiState"]:checked').val() === "on") {
-            flag = 1;
+            flag = 2;
         }
         else {
-            flag = 2;
+            flag = 0;
         }
         var chk_arr = [];
         $("input[name=equiPart]:checked").each(function () {
@@ -106,6 +127,12 @@ class DetailE extends React.Component {
                 console.log('Error!')
             });
     }
+    rePrintImage = function (e) {
+        console.log("rePrint");
+        const imageFile = e.target.files[0];
+        const imageUrl = URL.createObjectURL(imageFile);
+        $("#Eimg").attr("src", imageUrl);
+    }
     render() {
         return (
             <div>
@@ -115,11 +142,14 @@ class DetailE extends React.Component {
                             <img id="Eimg" name="Eimg" src="image/FoundNotImage.png" height="320" width="320" alt="EquiIcon" /><br />
                         </ImgBox>
                     </center>
-                    <input type="file" name="file" id="imageFileOpenInput" accept="image/*" /><br />
+                    <label className="btn btn-secondary" for="imageFileOpenInput">
+                        아이콘 불러오기
+                    </label>
+                    <input type="file" id="imageFileOpenInput" style={{ display: "none" }} accept="image/*" onChange={(e) => { this.rePrintImage(e) }} />&nbsp;&nbsp;<br /><br />
                     <label>name: </label>
-                    <input type="text" name="Ename" id="Ename" />
+                    <InfoInput type="text" name="Ename" id="Ename" />&nbsp;&nbsp;&nbsp;
                     <label>nth: </label>
-                    <input type="text" name="ENth" id="ENth" style={{ width: "40px" }} /><br />
+                    <InfoInput type="text" name="ENth" id="ENth" style={{ width: "40px" }} /><br />
                     <label>State:
                         <label>On
                             <input type="radio" name="EquiState" value="on" />
@@ -127,25 +157,27 @@ class DetailE extends React.Component {
                         <label>Off
                             <input type="radio" name="EquiState" value="off" />
                         </label>
-                    </label>
+                    </label><br />
                     <div>
-                        <label>가슴<input type="checkbox" name="equiPart" value="chest" /></label>
-                        <label>등<input type="checkbox" name="equiPart" value="back" /></label>
-                        <label>목<input type="checkbox" name="equiPart" value="neck" /></label>
-                        <label>복부<input type="checkbox" name="equiPart" value="stomach" /></label>
-                        <label>삼두<input type="checkbox" name="equiPart" value="triceps" /></label>
+                        <label>가슴<input type="checkbox" name="equiPart" value="chest" /></label>&nbsp;&nbsp;
+                        <label>등<input type="checkbox" name="equiPart" value="back" /></label>&nbsp;&nbsp;
+                        <label>목<input type="checkbox" name="equiPart" value="neck" /></label>&nbsp;&nbsp;
+                        <label>복부<input type="checkbox" name="equiPart" value="stomach" /></label>&nbsp;&nbsp;
+                        <label>삼두<input type="checkbox" name="equiPart" value="triceps" /></label>&nbsp;&nbsp;
                         <label>승모근<input type="checkbox" name="equiPart" value="trapezius" /></label><br />
-                        <label>어께<input type="checkbox" name="equiPart" value="shoulder" /></label>
-                        <label>유산소<input type="checkbox" name="equiPart" value="aerobic" /></label>
-                        <label>이두<input type="checkbox" name="equiPart" value="biceps" /></label>
-                        <label>하체<input type="checkbox" name="equiPart" value="lower_body" /></label>
-                        <label>허리<input type="checkbox" name="equiPart" value="waist" /></label>
-                        <label>기타<input type="checkbox" name="equiPart" value="etc" /></label>
+                        <label>어께<input type="checkbox" name="equiPart" value="shoulder" /></label>&nbsp;&nbsp;
+                        <label>유산소<input type="checkbox" name="equiPart" value="aerobic" /></label>&nbsp;&nbsp;
+                        <label>이두<input type="checkbox" name="equiPart" value="biceps" /></label>&nbsp;&nbsp;
+                        <label>하체<input type="checkbox" name="equiPart" value="lower_body" /></label>&nbsp;&nbsp;
+                        <label>허리<input type="checkbox" name="equiPart" value="waist" /></label>&nbsp;&nbsp;
+                        <label>기타<input type="checkbox" name="equiPart" value="etc" /></label>&nbsp;&nbsp;
                     </div>
                     <input type="hidden" id="Eid" name="Eid" />
                     <input type="hidden" id="Ecategory" name="Ecategory" />
-                    <button onClick={this.updateEquipment}>수정</button>
-                    <button onClick={this.deleteEquipment}>삭제</button>
+                    <ButtonBox>
+                        <Button variant="btn btn-secondary" onClick={this.updateEquipment} style={{ float: 'right' }}>수정</Button>
+                        <Button variant="btn btn-secondary" onClick={this.deleteEquipment} style={{ float: 'left' }}>삭제</Button>
+                    </ButtonBox>
                 </EquiInfo>
             </div>
         )

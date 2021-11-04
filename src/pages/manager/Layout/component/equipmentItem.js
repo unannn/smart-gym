@@ -6,9 +6,9 @@ import jquery from "jquery";
 import axios from "axios";
 let InfoBox = styled.div`
 &:hover {                
-    background: skyblue;
+    background: gray;
   }
-  left: -2%;
+  left: -5%;
    position: relative;
    width: 630px;
    height: 40px;

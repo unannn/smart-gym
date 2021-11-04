@@ -8,7 +8,7 @@ let InfoBox = styled.div`
 &:hover {                
     background: skyblue;
   }
-  left: -6%;
+  left: -17%;
    position: relative;
    width: 270px;
    height: 40px;

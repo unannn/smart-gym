@@ -4,52 +4,29 @@ import styled from 'styled-components';
 import { Button } from 'react-bootstrap';
 import ManagerBar from './component/menubar.js';
 import UserListpage from "./component/ulp";
-let InfoBox = styled.div`
-&:hover {                
-    background: skyblue;
-  }
-   position: relative;
-   display: block;
-   float: left;
-   width: 650px;
-   height: 40px;
-   font-size: 10pt;
-   text-align: center;
-   background: pink;
-   `;
 
-let MoreInfo = styled.div`
-   position: relative;
-   margin: 0.5px;
-   right: -800px;
-   top: 30px;
-   width: 30%;
-   height: 450px;
-   font-size: 10pt;
-   text-align: center;
-   background: black;
-   `;
 let SearchBox = styled.input`
    inline: block;
    width: 400px;
    `;
 
-let ListBox = styled.div`
-   position: relative;
-   left: 50px;
-   top: -420px;
-   width: 670px;
-   height: 1000px;
-   overflow:auto;
-   `;
 let EquiList = styled.div`
  position: relative;
  left: -250px;
-   width: 670px;
+   width: 520px;
    height: 500px;
    text-align: center;
-   background: pink;
+   background-color:#F2F2F2;
    overflow:auto;
+   border-radius: 10px;
+   padding:20px;
+   margin:0 auto;
+   margin-bottom:10px;
+   `;
+let BodyBox = styled.div`
+   position: relative;
+   width: 1200px;
+   top: 15px;
    `;
 class UserM extends React.Component {
     constructor(props) {
@@ -87,22 +64,19 @@ class UserM extends React.Component {
         const { ItemList } = this.state;
         return (
             <div>
-                <ManagerBar></ManagerBar>
-                <br />
-                <SearchBox />
-                <Button variant="light">검색</Button>
-                <br />
-                <MoreInfo />
-                <ListBox>
-                    <UserListpage />
-                </ListBox>
-                <div>
-                    <center>
-                        <EquiList>
-                            <UserListpage Itemcard={ItemList} />
-                        </EquiList>
-                    </center>
-                </div>
+                <center>
+                    <ManagerBar></ManagerBar>
+                    <BodyBox>
+                        <SearchBox />&nbsp;&nbsp;
+                        <Button variant="btn btn-secondary">검색</Button>
+                        <br />
+                        <div>
+                            <EquiList>
+                                <UserListpage Itemcard={ItemList} />
+                            </EquiList>
+                        </div>
+                    </BodyBox>
+                </center>
             </div >
         )
     }
