@@ -5,17 +5,17 @@ import jquery from "jquery";
 import axios from "axios";
 import { Button } from 'react-bootstrap';
 import ManagerBar from './component/menubar.js';
-import StaticTimePickerLandscape from './component/gymOperationInfo.js';
-import GymInfo from './component/gymInformation';
+import StaticTimePickerLandscape from './OperationPolicy/gymOperationInfo';
+import GymInfo from './OperationPolicy/gymInformation';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
 let GyminfoBox = styled.div`
    position: relative;
    margin: 0.3px;
-   left: -400px;
+   left: -375px;
    top: 0px;
-   width:250px;
+   width:450px;
    height: 270px;
    font-size: 9pt;
    text-align: center;

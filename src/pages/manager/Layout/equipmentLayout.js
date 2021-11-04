@@ -4,7 +4,7 @@ import $ from "jquery";
 import jquery from "jquery";
 import { Button } from 'react-bootstrap';
 import styled from 'styled-components';
-import Listpage from "./component/lpL";
+import Listpage from "./Equipment/lpL";
 import ManagerBar from './component/menubar.js';
 let EquiList = styled.div`
  position: relative;

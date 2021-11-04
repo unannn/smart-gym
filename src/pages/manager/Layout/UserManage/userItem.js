@@ -6,7 +6,7 @@ import jquery from "jquery";
 import axios from "axios";
 let InfoBox = styled.div`
 &:hover {                
-    background: skyblue;
+    background: #E87878;
   }
    position: relative;
    display: block;
@@ -16,7 +16,10 @@ let InfoBox = styled.div`
    height: 40px;
    font-size: 10pt;
    text-align: center;
-   background: pink;
+   border-radius: 5px;
+   padding:0px;
+   margin:0 auto;
+   margin-bottom:5px;
    `;
 
 const detailedRead = (EquipmentId, e) => {
@@ -48,8 +51,10 @@ function UserItem({ key, EquipmentId, EquipmentName, Category, EnthNumber }) {
                 <InfoBox className="component component--item_card" key={key}>
                     <input type="hidden" id="Eid" value={EquipmentId} />
                     <label style={{ float: 'left', fontSize: '23px' }} id="nameE">id name</label>
-                    <Button variant="btn btn-secondary" style={{ float: 'right' }}>예약권한</Button>&nbsp;&nbsp;
-                    <Button variant="btn btn-secondary" style={{ float: 'right' }}>회원탈퇴</Button>
+                    <div style={{ float: 'right' }}>
+                        <Button variant="btn btn-secondary" style={{ height: '40px' }}>예약권한</Button>&nbsp;&nbsp;
+                        <Button variant="btn btn-secondary" style={{ height: '40px' }}>회원탈퇴</Button>
+                    </div>
                 </ InfoBox >
             </div >
         </div>

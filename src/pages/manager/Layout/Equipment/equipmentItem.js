@@ -6,12 +6,16 @@ import jquery from "jquery";
 import axios from "axios";
 let InfoBox = styled.div`
 &:hover {                
-    background: gray;
+    background: #7988DF;
   }
   left: -5%;
    position: relative;
    width: 630px;
    height: 40px;
+   border-radius: 5px;
+   padding:0px;
+   margin:0 auto;
+   margin-bottom:5px;
    `;
 const CList = ["chest", "back", "neck", "stomach", "triceps", "trapezius", "shoulder", "aerobic", "biceps", "lower_body", "waist", "etc"];
 const KorCList = ["가슴", "등", "목", "복부", "삼두", "승모근", "어깨", "유산소", "이두", "하체", "허리", "기타"];
@@ -50,7 +54,7 @@ const detailedRead = (EquipmentId, e) => {
             $("#Eid").val((response.data[0]).equipmentCategoryID.equipmentID);
             $("#Ename").val((response.data[0]).equipmentCategoryID.equipmentName);
             $("#ENth").val((response.data[0]).equipmentCategoryID.equipmentNameNth);
-            //$("#Eimg").val((response.data[0]).equipmentCategoryID.equipmentImage);
+            //$("#imageFileOpenInput").val((response.data[0]).equipmentCategoryID.equipmentImage);
             $("#ES3").val((response.data[0]).equipmentCategoryID.equipmentImage);
             $("#Eimg").attr("src", (response.data[0]).equipmentCategoryID.equipmentImage);
             if ((response.data[0]).equipmentCategoryID.equipmentAvailable === 1) {

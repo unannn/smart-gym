@@ -3,7 +3,7 @@ import axios from "axios";
 import styled from 'styled-components';
 import { Button } from 'react-bootstrap';
 import ManagerBar from './component/menubar.js';
-import UserListpage from "./UserManage/ulp";
+import UserListpage from "./UserManage/uAlp";
 
 let SearchBox = styled.input`
  position: relative;
@@ -24,9 +24,8 @@ let SearchBox = styled.input`
 
 let EquiList = styled.div`
  position: relative;
- left: -250px;
- top: -20px;
-   width: 520px;
+top: -20px;
+   width: 700px;
    height: 450px;
    text-align: center;
    background-color:#F2F2F2;
@@ -41,7 +40,7 @@ let BodyBox = styled.div`
    width: 1200px;
    top: 60px;
    `;
-class UserM extends React.Component {
+class UserA extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -96,4 +95,4 @@ class UserM extends React.Component {
     }
 }
 
-export default UserM;
+export default UserA;

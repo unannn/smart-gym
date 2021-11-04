@@ -3,7 +3,7 @@ import axios from "axios";
 import $ from "jquery";
 import jquery from "jquery";
 import styled from 'styled-components';
-import Listpage from "./component/lp";
+import Listpage from "./lp";
 class CategoryR extends React.Component {
     // 제일 common한 state값 초기 셋팅
     state = {
