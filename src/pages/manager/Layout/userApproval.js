@@ -18,28 +18,41 @@ let SearchBox = styled.input`
 	padding-top:5px;
 	font-family:tahoma;
 	font-size:16px;
-	color:#000000;
+	color:#FFFFFF;
     resize:none;
     border-radius: 5px;
     margin-bottom: 10px;
     border-width: 0px;
     width:400px;
     height:38px;
-    top: -35px;
+    top: -130px;
+    left: 30px;
    `;
 
 let EquiList = styled.div`
  position: relative;
-top: -20px;
+top: -140px;
    width: 700px;
-   height: 450px;
+   height: 440px;
    text-align: center;
-   background-color:#F2F2F2;
    overflow:auto;
    border-radius: 10px;
    padding:20px;
    margin:0 auto;
    margin-bottom:10px;
+   `;
+let ListKey = styled.div`
+ position: relative;
+top: -120px;
+   width: 710px;
+   height: 50px;
+   text-align: center;
+   overflow:auto;
+   border-radius: 5px;
+   padding: 16px;
+   margin:0 auto;
+   margin-bottom:10px;
+   font-size: 20px;
    `;
 let BodyBox = styled.div`
    position: relative;
@@ -50,8 +63,16 @@ let FilterBox = styled.div`
    position: relative;
    width: 100px;
    height: 70px;
-   top: -25px;
+   top: -70px;
    left: -300px;
+   `;
+let RowLineBox = styled.div`
+    position: absolute;
+    top: 5px;
+    left: 8px;
+    width: 660px;
+    height: 1.5px;
+    background: black;
    `;
 class UserA extends React.Component {
     constructor(props) {
@@ -81,60 +102,73 @@ class UserA extends React.Component {
                 this.setState({
                     loading: false // 이때는 load 가 false 유지
                 });
+                alert("error! 가입대기자 목록 조회에 실패했습니다.");
             });
     };
     filterSearch = function () {
         console.log("rePrint");
         console.log($("#FilterID").val());
         console.log($("#searchValue").val());
-        if ($("#FilterID").val() == 0)//Id
+        if ($("#FilterID").val() == 0)//All
         {
-            axios.post('http://localhost:8080/unAllowedUser/readByID',
-                {
-                    userID: $("#searchValue").val()
-                },
-                {
-                    headers: {
-                        'Content-type': 'application/json',
-                        'Accept': 'application/json'
-                    }
-                }
-            )
-                .then((response) => {
-                    console.log(response.data)
-                    this.setState((prev) => ({
-                        loading: true, // load되었으니 true,
-                        ItemList: response.data,
-                    }));
-                })
-                .catch((response) => {
-                    console.log('Error!');
-                    console.log(response);
-                });
+            this.loadItem();
+        }
+        else if ($("#searchValue").val() == "") {
+            alert("검색어가 비어져 있습니다. \n검색어를 입력해주세요.");
         }
         else {
-            axios.post('http://localhost:8080/unAllowedUser/readByName',
-                {
-                    userName: $("#searchValue").val()
-                },
-                {
-                    headers: {
-                        'Content-type': 'application/json',
-                        'Accept': 'application/json'
+            if ($("#FilterID").val() == 1)//Id
+            {
+                axios.post('http://localhost:8080/unAllowedUser/readByID',
+                    {
+                        userID: $("#searchValue").val()
+                    },
+                    {
+                        headers: {
+                            'Content-type': 'application/json',
+                            'Accept': 'application/json'
+                        }
                     }
-                }
-            )
-                .then((response) => {
-                    console.log(response.data)
-                    this.setState((prev) => ({
-                        loading: true, // load되었으니 true,
-                        ItemList: response.data,
-                    }));
-                })
-                .catch((response) => {
-                    console.log('Error!');
-                    console.log(response);
-                });
+                )
+                    .then((response) => {
+                        console.log(response.data)
+                        this.setState((prev) => ({
+                            loading: true, // load되었으니 true,
+                            ItemList: response.data,
+                        }));
+                    })
+                    .catch((response) => {
+                        console.log('Error!');
+                        console.log(response);
+                        alert("error! 해당 ID에 대해 검색에 실패했습니다.");
+                    });
+            }
+            else {
+                axios.post('http://localhost:8080/unAllowedUser/readByName',
+                    {
+                        userName: $("#searchValue").val()
+                    },
+                    {
+                        headers: {
+                            'Content-type': 'application/json',
+                            'Accept': 'application/json'
+                        }
+                    }
+                )
+                    .then((response) => {
+                        console.log(response.data)
+                        this.setState((prev) => ({
+                            loading: true, // load되었으니 true,
+                            ItemList: response.data,
+                        }));
+                    })
+                    .catch((response) => {
+                        console.log('Error!');
+                        console.log(response);
+
+                        alert("error! 해당 이름에 대해 검색에 실패했습니다.");
+                    });
+            }
         }
     }
     componentDidMount() {
@@ -162,17 +196,25 @@ class UserA extends React.Component {
                                             }}
                                             color="secondary"
                                         >
-                                            <option value={0}>ID</option>
-                                            <option value={1}>Name</option>
+                                            <option value={0}>ALL</option>
+                                            <option value={1}>ID</option>
+                                            <option value={2}>Name</option>
                                         </NativeSelect>
                                     </FormControl>
                                 </Box>
                             </FilterBox>
-                            <SearchBox id="searchValue" name="searchValue" />&nbsp; &nbsp; &nbsp; &nbsp;
-                            <Button variant="btn btn-secondary" style={{ position: "relative", top: "-39px" }} onClick={this.filterSearch}>검색</Button>
+                            <SearchBox id="searchValue" name="searchValue" />
+                            <Button variant="btn btn-secondary" style={{ position: "relative", top: "-132px", left: "70px" }} onClick={this.filterSearch}>대기자 검색</Button>
                             <center>
+                                <ListKey>
+                                    <div >
+                                        <label style={{ float: "left", position: "relative", top: "-10px" }}>&nbsp; ID Name</label>
+                                        <label style={{ float: "right", position: "relative", top: "-10px" }}>Approval&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </label>
+                                    </div>
+                                </ListKey>
                                 <EquiList>
                                     <UserListpage Itemcard={ItemList} />
+                                    <RowLineBox />
                                 </EquiList>
                             </center>
                         </div>

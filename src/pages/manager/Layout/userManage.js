@@ -10,6 +10,7 @@ import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 import ManagerBar from './component/menubar.js';
 import UserListpage from "./UserManage/ulp";
+import DetailU from "./UserManage/detailedUser";
 
 let SearchBox = styled.input`
  position: relative;
@@ -18,7 +19,7 @@ let SearchBox = styled.input`
 	padding-top:5px;
 	font-family:tahoma;
 	font-size:16px;
-	color:#000000;
+	color:#FFFFFF;
     resize:none;
     border-radius: 5px;
     margin-bottom: 10px;
@@ -32,8 +33,8 @@ let EquiList = styled.div`
  position: relative;
  left: -250px;
  top: -20px;
-   width: 520px;
-   height: 450px;
+   width: 600px;
+   height: 440px;
    text-align: center;
    background-color:#F2F2F2;
    overflow:auto;
@@ -65,22 +66,19 @@ class UserM extends React.Component {
         };
     }
     loadItem = async () => {
-        // Json Data 불러오기
-        axios.get('http://localhost:8080/equipment/readAll') // json을 가져온다음
+        axios.get('http://localhost:8080/allowedUser/readAll')
             .then((data) => {
-                // data라는 이름으로 json 파일에 있는 값에 state값을 바꿔준다.
-                console.log(data.data)
+                console.log(data.data.data)
                 this.setState({
-                    loading: true, // load되었으니 true,
-                    ItemList: data.data,
-                    flog: "전체" // 비어있던 Itemlist는 data에 Item객체를 찾아넣어준다. ( Item : json파일에 있는 항목)
+                    loading: true,
+                    ItemList: data.data.data,
+                    flog: "전체"
                 });
             })
             .catch(e => {
-                // json이 로드되지않은 시간엔
-                console.error(e); // 에러표시
+                console.error(e);
                 this.setState({
-                    loading: false // 이때는 load 가 false 유지
+                    loading: false
                 });
             });
     };
@@ -88,54 +86,66 @@ class UserM extends React.Component {
         console.log("rePrint");
         console.log($("#FilterID").val());
         console.log($("#searchValue").val());
-        if ($("#FilterID").val() == 0)//Id
+        if ($("#FilterID").val() == 0)//All
         {
-            axios.post('http://localhost:8080/unAllowedUser/readByID',
-                {
-                    userID: $("#searchValue").val()
-                },
-                {
-                    headers: {
-                        'Content-type': 'application/json',
-                        'Accept': 'application/json'
-                    }
-                }
-            )
-                .then((response) => {
-                    console.log(response.data)
-                    this.setState((prev) => ({
-                        loading: true, // load되었으니 true,
-                        ItemList: response.data,
-                    }));
-                })
-                .catch((response) => {
-                    console.log('Error!');
-                    console.log(response);
-                });
+            this.loadItem();
+        }
+        else if ($("#searchValue").val() == "") {
+            alert("검색어가 비어져 있습니다. \n검색어를 입력해주세요.");
         }
         else {
-            axios.post('http://localhost:8080/unAllowedUser/readByName',
-                {
-                    userName: $("#searchValue").val()
-                },
-                {
-                    headers: {
-                        'Content-type': 'application/json',
-                        'Accept': 'application/json'
+            if ($("#FilterID").val() == 1)//Id
+            {
+                axios.post('http://localhost:8080/allowedUser/readByID',
+                    {
+                        userID: $("#searchValue").val()
+                    },
+                    {
+                        headers: {
+                            'Content-type': 'application/json',
+                            'Accept': 'application/json'
+                        }
                     }
-                }
-            )
-                .then((response) => {
-                    console.log(response.data)
-                    this.setState((prev) => ({
-                        loading: true, // load되었으니 true,
-                        ItemList: response.data,
-                    }));
-                })
-                .catch((response) => {
-                    console.log('Error!');
-                    console.log(response);
-                });
+                )
+                    .then((response) => {
+                        console.log(response.data.data)
+                        this.setState((prev) => ({
+                            loading: true, // load되었으니 true,
+                            ItemList: response.data.data,
+                        }));
+                    })
+                    .catch((response) => {
+                        console.log('Error!');
+                        console.log(response);
+                        alert("error! 해당 ID에 대해 검색에 실패했습니다.");
+                    });
+            }
+            else {
+                axios.post('http://localhost:8080/allowedUser/readByName',
+                    {
+                        userName: $("#searchValue").val()
+                    },
+                    {
+                        headers: {
+                            'Content-type': 'application/json',
+                            'Accept': 'application/json'
+                        }
+                    }
+                )
+                    .then((response) => {
+                        console.log(response.data.data)
+                        this.setState((prev) => ({
+                            loading: true, // load되었으니 true,
+                            ItemList: response.data.data,
+                        }));
+                    })
+                    .catch((response) => {
+                        console.log('Error!');
+                        console.log(response);
+
+                        alert("error! 해당 이름에 대해 검색에 실패했습니다.");
+                    });
+            }
         }
     }
     componentDidMount() {
@@ -163,8 +173,9 @@ class UserM extends React.Component {
                                             }}
                                             color="secondary"
                                         >
-                                            <option value={0}>ID</option>
-                                            <option value={1}>Name</option>
+                                            <option value={0}>ALL</option>
+                                            <option value={1}>ID</option>
+                                            <option value={2}>Name</option>
                                         </NativeSelect>
                                     </FormControl>
                                 </Box>
@@ -176,6 +187,7 @@ class UserM extends React.Component {
                                     <UserListpage Itemcard={ItemList} />
                                 </EquiList>
                             </center>
+                            <DetailU />
                         </div>
                     </BodyBox>
                 </center>

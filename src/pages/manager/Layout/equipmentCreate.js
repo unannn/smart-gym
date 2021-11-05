@@ -84,12 +84,15 @@ class CreateEqui extends React.Component {
 
     createEquipment = function () {
         let flag = -1;
+        let textFlag = "none";
         let ECList = "";
         if ($('input[name="EquiState"]:checked').val() === "on") {
             flag = 2;
+            textFlag = "on";
         }
         else if ($('input[name="EquiState"]:checked').val() === "off") {
             flag = 0;
+            textFlag = "off";
         }
         var chk_arr = [];
         $("input[name=equiPart]:checked").each(function () {
@@ -128,34 +131,43 @@ class CreateEqui extends React.Component {
             alert("이미지가 없습니다. 이미지를 먼저 등록해주세요.")
         }
         else {
-            axios.post('http://localhost:8080/equipment/create', formData,
-                {
-                    headers: {
-                        'Content-type': 'application/json',
-                        'Accept': 'application/json'
+            if (window.confirm("해당 운동기구 정보를 등록하시겠습니까?\nName: " + $("#Ename").val() +
+                "\nNth: " + $("#ENth").val() +
+                "\nAvailable: " + textFlag +
+                "\nCategory: " + ECList)) {
+                axios.post('http://localhost:8080/equipment/create', formData,
+                    {
+                        headers: {
+                            'Content-type': 'application/json',
+                            'Accept': 'application/json'
+                        }
                     }
-                }
-            )
-                .then((response) => {
-                    console.log(response.data);
+                )
+                    .then((response) => {
+                        console.log(response.data);
 
-                    if (response.data == 1) {
-                        alert("빈 값이 있습니다. 확인 후 다시 등록해 주세요.");
-                    }
-                    else if (response.data == 2) {
-                        alert("nth값이 중복됩니다. 다시 입력해 주세요.")
-                    }
-                    else if (response.data == 3) {
-                        alert("error! 운동기구 정보 등록에 실패했습니다.")
-                    }
-                    else {
-                        alert("운동기구 정보가 등록되었습니다.")
-                    }
+                        if (response.data == 1) {
+                            alert("빈 값이 있습니다. 확인 후 다시 등록해 주세요.");
+                        }
+                        else if (response.data == 2) {
+                            alert("nth값이 중복됩니다. 다시 입력해 주세요.");
+                        }
+                        else if (response.data == 3) {
+                            alert("error! 운동기구 정보 등록에 실패했습니다.");
+                        }
+                        else {
+                            alert("운동기구 정보가 등록되었습니다.");
+                            window.location.reload();
+                        }
 
-                })
-                .catch((response) => {
-                    console.log('Error!')
-                });
+                    })
+                    .catch((response) => {
+                        console.log('Error!')
+                    });
+            }
+            else {
+                alert("운동기구 정보 등록이 취소되었습니다.");
+            }
         }
     }
     rePrintImage = function (e) {

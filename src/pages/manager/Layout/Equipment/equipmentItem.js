@@ -10,7 +10,7 @@ let InfoBox = styled.div`
   }
   left: -5%;
    position: relative;
-   width: 630px;
+   width: 610px;
    height: 40px;
    border-radius: 5px;
    padding:0px;
@@ -68,7 +68,8 @@ const detailedRead = (EquipmentId, e) => {
         })
         .catch((response) => {
             console.log('Error!');
-            alert("error! 해당 운동기구에 대한 조회를 할 수 없습니다.");
+            alert("error! 해당 운동기구에 대한 조회를 할 수 없습니다.\n페이지를 새로고침합니다.");
+            window.location.reload();
         });
 }
 function EquipmentItem({ key, EquipmentId, EquipmentName, Category, EnthNumber }) {

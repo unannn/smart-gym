@@ -6,7 +6,7 @@ import jquery from "jquery";
 import axios from "axios";
 let InfoBox = styled.div`
 &:hover {                
-    background: #E87878;
+    background: #B5D7FF;
   }
    position: relative;
    display: block;
@@ -22,12 +22,37 @@ let InfoBox = styled.div`
    margin-bottom:5px;
    `;
 
-const detailedRead = (EquipmentId, e) => {
-    console.log(EquipmentId)
-    console.log("detailed Read");
-    axios.post('http://localhost:8080/equipment/detailedRead',
+const approvalUser = (UserApprovalId, e) => {
+    console.log(UserApprovalId);
+    console.log("approvalUser");
+
+    axios.post('http://localhost:8080/unAllowedUser/approve',
         {
-            equipmentID: EquipmentId
+            userID: UserApprovalId
+        },
+        {
+            headers: {
+                'Content-type': 'application/json',
+                'Accept': 'application/json'
+            }
+        }
+    )
+        .then((response) => {
+            console.log(response.data);
+
+        })
+        .catch((response) => {
+            console.log('Error!')
+        });
+}
+
+const notApprovalUser = (UserApprovalId, e) => {
+    console.log(UserApprovalId);
+    console.log("notApprovalUser");
+
+    axios.post('http://localhost:8080/unAllowedUser/unApprove',
+        {
+            userID: UserApprovalId
         },
         {
             headers: {
@@ -47,13 +72,13 @@ const detailedRead = (EquipmentId, e) => {
 function UserApprovalItem({ key, UserApprovalId, UserApprovalName }) {
     return (
         <div>
-            <div onClick={(e) => { detailedRead(UserApprovalId, e) }}>
+            <div>
                 <InfoBox className="component component--item_card" key={key}>
                     <input type="hidden" id="Eid" value={UserApprovalId} />
                     <label style={{ float: 'left', fontSize: '23px' }} id="nameE">{UserApprovalId}  {UserApprovalName}</label>
                     <div style={{ float: 'right' }}>
-                        <Button variant="btn btn-secondary" style={{ height: '40px' }}>승인허가</Button>&nbsp;&nbsp;
-                        <Button variant="btn btn-secondary" style={{ height: '40px' }}>승인불가</Button>
+                        <Button variant="btn btn-secondary" style={{ height: '40px' }} onClick={(e) => { approvalUser(UserApprovalId, e) }}>승인허가</Button>&nbsp;&nbsp;
+                        <Button variant="btn btn-secondary" style={{ height: '40px' }} onClick={(e) => { notApprovalUser(UserApprovalId, e) }}>승인불가</Button>
                     </div>
                 </ InfoBox >
             </div >

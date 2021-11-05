@@ -6,13 +6,13 @@ import jquery from "jquery";
 import axios from "axios";
 let InfoBox = styled.div`
 &:hover {                
-    background: #E87878;
+    background: #B5D7FF;
   }
    position: relative;
    display: block;
    float: left;
-   left: -9.5%;
-   width: 500px;
+   left: -5%;
+   width: 550px;
    height: 40px;
    font-size: 10pt;
    text-align: center;
@@ -22,9 +22,10 @@ let InfoBox = styled.div`
    margin-bottom:5px;
    `;
 
-const detailedRead = (EquipmentId, e) => {
+const approvalAuthority = (EquipmentId, e) => {
     console.log(EquipmentId)
-    console.log("detailed Read");
+    console.log("approvalAuthority");
+    /*
     axios.post('http://localhost:8080/equipment/detailedRead',
         {
             equipmentID: EquipmentId
@@ -42,18 +43,42 @@ const detailedRead = (EquipmentId, e) => {
         })
         .catch((response) => {
             console.log('Error!')
-        });
+        });*/
 }
-function UserItem({ key, EquipmentId, EquipmentName, Category, EnthNumber }) {
+
+const deleteUser = (EquipmentId, e) => {
+    console.log(EquipmentId);
+    console.log("deleteUser");
+    /*
+    axios.post('http://localhost:8080/equipment/detailedRead',
+        {
+            equipmentID: EquipmentId
+        },
+        {
+            headers: {
+                'Content-type': 'application/json',
+                'Accept': 'application/json'
+            }
+        }
+    )
+        .then((response) => {
+            console.log(response.data);
+
+        })
+        .catch((response) => {
+            console.log('Error!')
+        });*/
+}
+function UserItem({ key, UserId, UserName }) {
     return (
         <div>
-            <div onClick={(e) => { detailedRead(EquipmentId, e) }}>
+            <div>
                 <InfoBox className="component component--item_card" key={key}>
-                    <input type="hidden" id="Eid" value={EquipmentId} />
-                    <label style={{ float: 'left', fontSize: '23px' }} id="nameE">id name</label>
+                    <input type="hidden" id="Eid" value={UserId} />
+                    <label style={{ float: 'left', fontSize: '23px' }} id="nameE">{UserId} {UserName}</label>
                     <div style={{ float: 'right' }}>
-                        <Button variant="btn btn-secondary" style={{ height: '40px' }}>예약권한</Button>&nbsp;&nbsp;
-                        <Button variant="btn btn-secondary" style={{ height: '40px' }}>회원탈퇴</Button>
+                        <Button variant="btn btn-secondary" style={{ height: '40px' }} onClick={(e) => { approvalAuthority(UserId, e) }}>예약권한</Button>&nbsp;&nbsp;
+                        <Button variant="btn btn-secondary" style={{ height: '40px' }} onClick={(e) => { deleteUser(UserId, e) }}>회원탈퇴</Button>
                     </div>
                 </ InfoBox >
             </div >
