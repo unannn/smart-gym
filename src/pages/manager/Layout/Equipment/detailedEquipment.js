@@ -13,17 +13,24 @@ let EquiInfo = styled.div`
    font-size: 10pt;
    text-align: center;
    background: #FFD2D5;
-   border-radius: 10px;
+   border-radius: 5px;
    padding:20px;
    margin:0 auto;
    margin-bottom:10px;
    `;
 let InfoInput = styled.input`
-   font-size: 10pt;
-   border-radius: 5px;
-   padding: 3px;
-   margin:0 auto;
-   margin-bottom:10px;
+    background-color: #FFFFFF;
+	background-position:left top;
+	padding-top:5px;
+	font-family:tahoma;
+	font-size:16px;
+	color:#000000;
+    resize:none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    border-width: 0px;
+    width:225px;
+    height:30px;
    `;
 let ButtonBox = styled.div`
    position: relative;
@@ -48,22 +55,26 @@ let ImgBox = styled.div`
    `;
 const CList = ["chest", "back", "neck", "stomach", "triceps", "trapezius", "shoulder", "aerobic", "biceps", "lower_body", "waist", "etc"];
 const KorCList = ["가슴", "등", "목", "복부", "삼두", "승모근", "어깨", "유산소", "이두", "하체", "허리", "기타"];
+let textFlag = "none";
+let Ccategory = "";
 class DetailE extends React.Component {
     updateEquipment = function () {
         var fileInput = document.querySelector("#imageFileOpenInput");
         const formData = new FormData();
         let flag = -1;
-        let Ccategory = "";
+        textFlag = "none";
+        Ccategory = "";
         if (fileInput.files[0] == null) {
             console.log(fileInput.files[0]);
             console.log($("#Eimg").val());
-
         }
         if ($('input[name="EquiState"]:checked').val() === "on") {
             flag = 2;
+            textFlag = "on";
         }
         else if ($('input[name="EquiState"]:checked').val() === "off") {
             flag = 0;
+            textFlag = "off";
         }
         var chk_arr = [];
         $("input[name=equiPart]:checked").each(function () {
@@ -94,59 +105,89 @@ class DetailE extends React.Component {
             console.log(value);
 
         }*/
+        if (window.confirm("해당 운동기구 정보를 수정하시겠습니까?\nName: " + $("#Ename").val() +
+            "\nNth: " + $("#ENth").val() +
+            "\nAvailable: " + textFlag +
+            "\nCategory: " + Ccategory)) {
+            axios.post('http://localhost:8080/equipment/update', formData,
+                {
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                }
+            )
+                .then((response) => {
+                    console.log(response.data);
+                    if (response.data == 1) {
+                        alert("빈 값이 있습니다. 확인 후 다시 등록해 주세요.");
+                    }
+                    else if (response.data == 2) {
+                        alert("nth값이 중복됩니다. 다시 입력해 주세요.")
+                    }
+                    else if (response.data == 3) {
+                        alert("error! 운동기구 등록에 실패했습니다.")
+                    }
+                    else {
+                        alert("운동기구 정보가 수정되었습니다.");
+                        window.location.reload();
+                    }
 
-        axios.post('http://localhost:8080/equipment/update', formData,
-            {
-                headers: {
-                    'Content-type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            }
-        )
-            .then((response) => {
-                console.log(response.data);
-                if (response.data == 1) {
-                    alert("빈 값이 있습니다. 확인 후 다시 등록해 주세요.");
-                }
-                else if (response.data == 2) {
-                    alert("nth값이 중복됩니다. 다시 입력해 주세요.")
-                }
-                else if (response.data == 3) {
+                })
+                .catch((response) => {
+                    console.log('Error!');
                     alert("error! 운동기구 등록에 실패했습니다.")
-                }
-                else {
-                    alert("운동기구 정보가 수정되었습니다.");
-                    window.location.reload();
-                }
-
-            })
-            .catch((response) => {
-                console.log('Error!');
-                alert("error! 운동기구 등록에 실패했습니다.")
-            });
+                });
+        }
+        else {
+            alert("운동기구 수정요청을 취소하셨습니다.");
+        }
 
     }
     deleteEquipment = function () {
         console.log("delete" + $("#Eid").val());
-        axios.post('http://localhost:8080/equipment/delete',
-            {
-                equipmentID: $("#Eid").val()
-            },
-            {
-                headers: {
-                    'Content-type': 'application/json',
-                    'Accept': 'application/json'
-                }
+        Ccategory = "";
+        for (let i = 0; i < 12; i++) {
+            if ($("input:checkbox[name='equiPart']:checkbox[value=" + CList[i] + "]").is(":checked") == true) {
+                Ccategory = Ccategory + " " + KorCList[i];
+                console.log(Ccategory);
             }
-        )
-            .then((response) => {
-                console.log(response.data);
-                localStorage.setItem("detilID", "");
-                window.location.reload()
-            })
-            .catch((response) => {
-                console.log('Error!')
-            });
+        }
+        if ($('input[name="EquiState"]:checked').val() === "on") {
+            textFlag = "on";
+        }
+        else if ($('input[name="EquiState"]:checked').val() === "off") {
+            textFlag = "off";
+        }
+        if (window.confirm("해당 운동기구 정보를 삭제하시겠습니까?\nName: " + $("#Ename").val() +
+            "\nNth: " + $("#ENth").val() +
+            "\nAvailable: " + textFlag +
+            "\nCategory: " + Ccategory)) {
+            axios.post('http://localhost:8080/equipment/delete',
+                {
+                    equipmentID: $("#Eid").val()
+                },
+                {
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                }
+            )
+                .then((response) => {
+                    console.log(response.data);
+                    alert("운동기구 정보가 삭제되었습니다.");
+                    localStorage.setItem("detilID", "");
+                    window.location.reload()
+                })
+                .catch((response) => {
+                    console.log('Error!');
+                    alert("error! 운동기구 정보 삭제에 실패했습니다.");
+                });
+        }
+        else {
+            alert("운동기구 정보 삭제요청이 취소되었습니다.");
+        }
     }
     rePrintImage = function (e) {
         console.log("rePrint");

@@ -10,7 +10,7 @@ let InfoBox = styled.div`
   }
   left: -17%;
    position: relative;
-   width: 270px;
+   width: 260px;
    height: 40px;
 
    text-align: center;

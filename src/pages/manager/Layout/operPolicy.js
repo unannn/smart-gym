@@ -19,8 +19,7 @@ let GyminfoBox = styled.div`
    height: 270px;
    font-size: 9pt;
    text-align: center;
-   background: #F2F2F2;
-   border-radius: 10px;
+   border-radius: 5px;
    padding:20px;
    margin:0 auto;
    margin-bottom:10px;
@@ -29,9 +28,9 @@ let GymOperinfoBox = styled.div`
    position: relative;
    margin: 0.3px;
    left: -375px;
-   top: 20px;
+   top: 5px;
    width:450px;
-   height: 250px;
+   height: 260px;
    font-size: 10pt;
    text-align: center;
    background: #F2F2F2;

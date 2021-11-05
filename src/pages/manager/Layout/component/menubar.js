@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
+//background: #949494; #545454;
 let MenuBar = styled.li`
 &:hover {                
-    background: #545454;
+    background: lightGray;
   }  
    position: relative;
    top:0px;
@@ -15,7 +15,6 @@ let MenuBar = styled.li`
    line-height: 50px;
    text-align: center;
    list-style-type: none;
-   background: #949494;
    `;
 
 class ManagerBar extends React.Component {
@@ -23,10 +22,15 @@ class ManagerBar extends React.Component {
         return (
             <div>
                 <center>
-                    <div style={{ width: '1100px', }}>
+                    <br />
+                    <img src="./image/Logo.png" width="200px" height="50px" /><br />
+                    <div style={{ position: "relative", top: "0px" }}>
+                        <hr width="100%" />
+                    </div>
+                    <div style={{ width: '1100px', position: "relative", top: "-17px" }}>
                         <Link to="/manager" style={{ color: "black" }}>
                             <MenuBar>
-                                <img src="image/home_black.png" width="40%" height="100%" />
+                                <img src="icon/icon_home_simple.png" width="42%" height="150%" />
                             </MenuBar>
                         </Link>
                         <Link to="/userApproval" style={{ color: "black" }}>
@@ -71,7 +75,10 @@ class ManagerBar extends React.Component {
                             <MenuBar>
                                 ESL장치 관리
                             </MenuBar>
-                        </Link>
+                        </Link><br />
+                    </div>
+                    <div style={{ position: "relative", top: "-16.5px" }}>
+                        <hr width="100%" />
                     </div>
                 </center >
             </div >

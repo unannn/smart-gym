@@ -16,10 +16,8 @@ class UserListpage extends Component {
                         return (
                             <UserItem
                                 key={insertIndex}
-                                EquipmentId={itemdata.equipmentID}
-                                EquipmentName={itemdata.equipmentName}
-                                Category={itemdata.equipmentCategoryList}
-                                EnthNumber={itemdata.equipmentNameNth}
+                                UserId={itemdata.userID}
+                                UserName={itemdata.userName}
                             />
                         );
                     })}
