@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
+//background: #949494; #545454;
 let MenuBar = styled.li`
 &:hover {                
-    background: #545454;
+    background: lightGray;
   }  
    position: relative;
    top:0px;
@@ -15,7 +15,6 @@ let MenuBar = styled.li`
    line-height: 50px;
    text-align: center;
    list-style-type: none;
-   background: #949494;
    `;
 
 class ManagerBar extends React.Component {
@@ -23,39 +22,47 @@ class ManagerBar extends React.Component {
         return (
             <div>
                 <center>
-                    <div style={{ width: '1100px', }}>
-                        <Link to="/manager">
+                    <br />
+                    <Link to="/manager" style={{ color: "black" }}>
+                        <img src="./image/Logo.png" width="200px" height="50px" /><br />
+                    </Link>
+                    <div style={{ position: "relative", top: "0px" }}>
+                        <hr width="100%" />
+                    </div>
+                    <div style={{ width: '1100px', position: "relative", top: "-17px" }}>
+                        <Link to="/manager" style={{ color: "black" }}>
                             <MenuBar>
-                                Home
+                                <img src="icon/icon_home_simple.png" width="42%" height="150%" />
                             </MenuBar>
                         </Link>
-
-                        <MenuBar>
-                            가입승인
-                        </MenuBar>
-                        <Link to="/userManage">
+                        <Link to="/userApproval" style={{ color: "black" }}>
+                            <MenuBar>
+                                가입승인
+                            </MenuBar>
+                        </Link>
+                        <Link to="/userManage" style={{ color: "black" }}>
                             <MenuBar>
                                 회원관리
                             </MenuBar>
                         </Link>
-                        <Link to="/equipmentLayout">
+                        <Link to="/equipmentLayout" style={{ color: "black" }}>
                             <MenuBar>
                                 배치도 등록
                             </MenuBar>
                         </Link>
-                        <Link to='equipment'>
+                        <Link to='equipment' style={{ color: "black" }}>
                             <MenuBar>
                                 운동기구 관리
                             </MenuBar>
                         </Link>
 
-                        <Link to="cEquipment">
+                        <Link to="cEquipment" style={{ color: "black" }}>
                             <MenuBar>
                                 운동기구 등록
                             </MenuBar>
                         </Link>
 
-                        <Link to="operPolicy">
+                        <Link to="operPolicy" style={{ color: "black" }}>
                             <MenuBar>
                                 운영정책 관리
                             </MenuBar>
@@ -66,11 +73,14 @@ class ManagerBar extends React.Component {
                         <MenuBar>
                             통계 그래프
                         </MenuBar>
-                        <Link to="prac">
+                        <Link to="prac" style={{ color: "black" }}>
                             <MenuBar>
                                 ESL장치 관리
                             </MenuBar>
-                        </Link>
+                        </Link><br />
+                    </div>
+                    <div style={{ position: "relative", top: "-17px" }}>
+                        <hr width="100%" />
                     </div>
                 </center >
             </div >

@@ -6,12 +6,16 @@ import jquery from "jquery";
 import axios from "axios";
 let InfoBox = styled.div`
 &:hover {                
-    background: skyblue;
+    background: #FFD2D5;
   }
-  left: -6%;
+  left: -5%;
    position: relative;
-   width: 270px;
+   width: 610px;
    height: 40px;
+   border-radius: 5px;
+   padding:0px;
+   margin:0 auto;
+   margin-bottom:5px;
    `;
 const CList = ["chest", "back", "neck", "stomach", "triceps", "trapezius", "shoulder", "aerobic", "biceps", "lower_body", "waist", "etc"];
 const KorCList = ["가슴", "등", "목", "복부", "삼두", "승모근", "어깨", "유산소", "이두", "하체", "허리", "기타"];
@@ -50,7 +54,7 @@ const detailedRead = (EquipmentId, e) => {
             $("#Eid").val((response.data[0]).equipmentCategoryID.equipmentID);
             $("#Ename").val((response.data[0]).equipmentCategoryID.equipmentName);
             $("#ENth").val((response.data[0]).equipmentCategoryID.equipmentNameNth);
-            //$("#Eimg").val((response.data[0]).equipmentCategoryID.equipmentImage);
+            //$("#imageFileOpenInput").val((response.data[0]).equipmentCategoryID.equipmentImage);
             $("#ES3").val((response.data[0]).equipmentCategoryID.equipmentImage);
             $("#Eimg").attr("src", (response.data[0]).equipmentCategoryID.equipmentImage);
             if ((response.data[0]).equipmentCategoryID.equipmentAvailable === 1) {
@@ -63,19 +67,22 @@ const detailedRead = (EquipmentId, e) => {
             }
         })
         .catch((response) => {
-            console.log('Error!')
+            console.log('Error!');
+            alert("error! 해당 운동기구에 대한 조회를 할 수 없습니다.\n페이지를 새로고침합니다.");
+            window.location.reload();
         });
 }
-function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber }) {
+function EquipmentItem({ key, EquipmentId, EquipmentName, Category, EnthNumber }) {
     return (
         <div>
             <div onClick={(e) => { detailedRead(EquipmentId, e) }}>
                 <InfoBox className="component component--item_card" key={key}>
                     <input type="hidden" id="Eid" value={EquipmentId} />
-                    <label style={{ fontSize: '20px' }} id="nameE">{EquipmentName} {EnthNumber}</label>
+                    <label style={{ float: 'left', fontSize: '20px' }} id="nameE">{EquipmentName} {EnthNumber}</label>
+                    <label style={{ float: 'right', fontSize: '20px' }}>{Category}</label>
                 </ InfoBox >
             </div >
         </div>
     );
 }
-export default EquipmentItemL;
+export default EquipmentItem;

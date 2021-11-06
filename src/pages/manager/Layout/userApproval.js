@@ -9,9 +9,8 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 import ManagerBar from './component/menubar.js';
-import UserListpage from "./UserManage/ulp";
-import DetailU from "./UserManage/detailedUser";
-//background - color:#F2F2F2;
+import UserListpage from "./UserManage/uAlp";
+
 let SearchBox = styled.input`
  position: relative;
  background-color: gray;
@@ -27,14 +26,13 @@ let SearchBox = styled.input`
     width:400px;
     height:38px;
     top: -130px;
-    left: 18px;
+    left: 4px;
    `;
 
 let EquiList = styled.div`
-   position: relative;
-   left: -250px;
-   top: -139px;
-   width: 600px;
+ position: relative;
+top: -140px;
+   width: 700px;
    height: 440px;
    text-align: center;
    overflow:auto;
@@ -44,10 +42,9 @@ let EquiList = styled.div`
    margin-bottom:10px;
    `;
 let ListKey = styled.div`
-   position: relative;
-   top: -119px;
-   left: -250px;
-   width: 600px;
+ position: relative;
+top: -120px;
+   width: 710px;
    height: 50px;
    text-align: center;
    overflow:auto;
@@ -71,13 +68,13 @@ let FilterBox = styled.div`
    `;
 let RowLineBox = styled.div`
     position: absolute;
-    top: 45px;
-    left: 50px;
-    width: 600px;
+    top: 5px;
+    left: 8px;
+    width: 660px;
     height: 1.5px;
     background: black;
    `;
-class UserM extends React.Component {
+class UserA extends React.Component {
     constructor(props) {
         super(props);
         this.filterSearch = this.filterSearch.bind(this);
@@ -88,21 +85,24 @@ class UserM extends React.Component {
         };
     }
     loadItem = async () => {
-        axios.get('http://localhost:8080/allowedUser/readAll')
+        // Json Data 불러오기
+        axios.get('http://localhost:8080/unAllowedUser/readAll') // json을 가져온다음
             .then((data) => {
-                console.log(data.data.data)
+                // data라는 이름으로 json 파일에 있는 값에 state값을 바꿔준다.
+                console.log(data.data)
                 this.setState({
-                    loading: true,
-                    ItemList: data.data.data,
-                    flog: "전체"
+                    loading: true, // load되었으니 true,
+                    ItemList: data.data,
+                    flog: "전체" // 비어있던 Itemlist는 data에 Item객체를 찾아넣어준다. ( Item : json파일에 있는 항목)
                 });
             })
             .catch(e => {
-                console.error(e);
+                // json이 로드되지않은 시간엔
+                console.error(e); // 에러표시
                 this.setState({
-                    loading: false
+                    loading: false // 이때는 load 가 false 유지
                 });
-                alert("error! 사용자 목록 조회에 실패했습니다.");
+                alert("error! 가입대기자 목록 조회에 실패했습니다.");
             });
     };
     filterSearch = function () {
@@ -119,7 +119,7 @@ class UserM extends React.Component {
         else {
             if ($("#FilterID").val() == 1)//Id
             {
-                axios.post('http://localhost:8080/allowedUser/readByID',
+                axios.post('http://localhost:8080/unAllowedUser/readByID',
                     {
                         userID: $("#searchValue").val()
                     },
@@ -131,10 +131,10 @@ class UserM extends React.Component {
                     }
                 )
                     .then((response) => {
-                        console.log(response.data.data)
+                        console.log(response.data)
                         this.setState((prev) => ({
                             loading: true, // load되었으니 true,
-                            ItemList: response.data.data,
+                            ItemList: response.data,
                         }));
                     })
                     .catch((response) => {
@@ -144,7 +144,7 @@ class UserM extends React.Component {
                     });
             }
             else {
-                axios.post('http://localhost:8080/allowedUser/readByName',
+                axios.post('http://localhost:8080/unAllowedUser/readByName',
                     {
                         userName: $("#searchValue").val()
                     },
@@ -156,10 +156,10 @@ class UserM extends React.Component {
                     }
                 )
                     .then((response) => {
-                        console.log(response.data.data)
+                        console.log(response.data)
                         this.setState((prev) => ({
                             loading: true, // load되었으니 true,
-                            ItemList: response.data.data,
+                            ItemList: response.data,
                         }));
                     })
                     .catch((response) => {
@@ -203,21 +203,20 @@ class UserM extends React.Component {
                                     </FormControl>
                                 </Box>
                             </FilterBox>
-                            <SearchBox id="searchValue" name="searchValue" />&nbsp; &nbsp; &nbsp; &nbsp;
-                            <Button color="white" variant="" style={{ position: "relative", top: "-133px", left: "6px" }} onClick={this.filterSearch}><img src="./icon/icon_search.png" width="35px" /></Button>
+                            <SearchBox id="searchValue" name="searchValue" />
+                            <Button color="white" variant="" style={{ position: "relative", top: "-133px", left: "20px" }} onClick={this.filterSearch}><img src="./icon/icon_search.png" width="35px" /></Button>
                             <center>
                                 <ListKey>
                                     <div >
                                         <label style={{ float: "left", position: "relative", top: "-10px" }}>&nbsp; ID Name</label>
-                                        <label style={{ float: "right", position: "relative", top: "-10px" }}>Manage&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </label>
+                                        <label style={{ float: "right", position: "relative", top: "-10px" }}>Approval&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </label>
                                     </div>
                                 </ListKey>
                                 <EquiList>
                                     <UserListpage Itemcard={ItemList} />
+                                    <RowLineBox />
                                 </EquiList>
-                                <RowLineBox />
                             </center>
-                            <DetailU />
                         </div>
                     </BodyBox>
                 </center>
@@ -226,4 +225,4 @@ class UserM extends React.Component {
     }
 }
 
-export default UserM;
+export default UserA;

@@ -10,8 +10,9 @@ import MyPage from './pages/user/MyPage';
 import EquiptionSelection from './pages/user/Reservation/EquiptionSelection';
 import EquiptionGuide from './pages/user/EquiptionGuide';
 import UserM from './pages/manager/Layout/userManage';
+import UserA from './pages/manager/Layout/userApproval';
 import EquipmentM from './pages/manager/Layout/equipment';
-import CreateEqui from './pages/manager/Layout/cEquipment';
+import CreateEqui from './pages/manager/Layout/equipmentCreate';
 import OperPolicy from './pages/manager/Layout/operPolicy';
 import LayoutE from './pages/manager/Layout/equipmentLayout';
 import Prac from './pages/manager/Layout/prac';
@@ -74,7 +75,9 @@ function App() {
           <Route exact path='/prac'>
             <Prac></Prac>
           </Route>
-
+          <Route exact path='/userApproval'>
+            <UserA></UserA>
+          </Route>
         </Switch>
 
       </div>
