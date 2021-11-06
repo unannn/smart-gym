@@ -18,7 +18,8 @@ class DateSelection extends Component {
             isHoliday: false,
             isRezValidDay: true,
             rezValidDate: 0,
-            buttonText: ''
+            buttonText: '',
+            isRezValid: true
         }
     }
 
@@ -33,7 +34,8 @@ class DateSelection extends Component {
         this.setState({
             holidays: holidays,
             isHoliday: isHoliday,
-            buttonText: isHoliday ? '휴무일 입니다.' : this.state.year + ' ' + this.state.month + '/' + this.state.day + ' 예약하기'
+            buttonText: isHoliday ? '휴무일 입니다.' : this.state.year + ' ' + this.state.month + '/' + this.state.day + ' 예약하기',
+            isRezValid: !isHoliday
         })
     }
 
@@ -46,14 +48,14 @@ class DateSelection extends Component {
             isRezValidDay: data.isRezValidDay
         }, () => {
             if (!this.state.isRezValidDay) {
-                this.setState({ buttonText: '예약이 불가능한 날짜입니다.' });
+                this.setState({ buttonText: '예약이 불가능한 날짜입니다.', isRezValid: false });
                 return;
             }
             else if (this.state.isHoliday) {
-                this.setState({ buttonText: '휴무일 입니다.' })
+                this.setState({ buttonText: '휴무일 입니다.', isRezValid: false })
             }
             else {
-                this.setState({ buttonText: this.state.year + ' ' + this.state.month + '/' + this.state.day + ' 예약하기' })
+                this.setState({ buttonText: this.state.year + ' ' + this.state.month + '/' + this.state.day + ' 예약하기', isRezValid: true })
             }
         })
     }
@@ -103,7 +105,7 @@ class DateSelection extends Component {
                 <br />
                 <StyledLink to="/user/reservation/equip" onClick={this.onClickReservationButton.bind(this)}>
                     <StyledButtonArea>
-                        <StyledMenuText>
+                        <StyledMenuText isValid={this.state.isRezValid}>
                             {this.state.buttonText}
                         </StyledMenuText>
                     </StyledButtonArea>
@@ -119,6 +121,7 @@ var StyledMenuText = styled.div`
     padding-left : 10px;
     margin-bottom:15px;
     margin-top:15px;
+    color:${props => props.isValid ? 'white' : 'red'}
 `;
 
 
