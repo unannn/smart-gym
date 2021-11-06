@@ -22,52 +22,66 @@ let InfoBox = styled.div`
    margin-bottom:5px;
    `;
 
-const approvalUser = (UserApprovalId, e) => {
+const approvalUser = (UserApprovalId, UserApprovalName, e) => {
     console.log(UserApprovalId);
     console.log("approvalUser");
-
-    axios.post('http://localhost:8080/unAllowedUser/approve',
-        {
-            userID: UserApprovalId
-        },
-        {
-            headers: {
-                'Content-type': 'application/json',
-                'Accept': 'application/json'
+    if (window.confirm("ID: " + UserApprovalId +
+        "\nName: " + UserApprovalName + "\n해당 대기자의 가입을 승인하시겠습니까?")) {
+        axios.post('http://localhost:8080/unAllowedUser/approve',
+            {
+                userID: UserApprovalId
+            },
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
             }
-        }
-    )
-        .then((response) => {
-            console.log(response.data);
-
-        })
-        .catch((response) => {
-            console.log('Error!')
-        });
+        )
+            .then((response) => {
+                console.log(response.data);
+                alert("가입이 승인되었습니다.");
+                window.location.reload();
+            })
+            .catch((response) => {
+                console.log('Error!');
+                alert("error! 가입 승인에 실패하였습니다.");
+            });
+    }
+    else {
+        alert("가입승인 요청을 취소하였습니다.");
+    }
 }
 
-const notApprovalUser = (UserApprovalId, e) => {
+const notApprovalUser = (UserApprovalId, UserApprovalName, e) => {
     console.log(UserApprovalId);
     console.log("notApprovalUser");
-
-    axios.post('http://localhost:8080/unAllowedUser/unApprove',
-        {
-            userID: UserApprovalId
-        },
-        {
-            headers: {
-                'Content-type': 'application/json',
-                'Accept': 'application/json'
+    if (window.confirm("ID: " + UserApprovalId +
+        "\nName: " + UserApprovalName + "\n해당 대기자의 가입을 승인불가하시겠습니까?")) {
+        axios.post('http://localhost:8080/unAllowedUser/unApprove',
+            {
+                userID: UserApprovalId
+            },
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
             }
-        }
-    )
-        .then((response) => {
-            console.log(response.data);
-
-        })
-        .catch((response) => {
-            console.log('Error!')
-        });
+        )
+            .then((response) => {
+                console.log(response.data);
+                alert("가입승인이 불가되었습니다.");
+                window.location.reload();
+            })
+            .catch((response) => {
+                console.log('Error!');
+                alert("error! 가입승인 불가에 실패하였습니다.");
+            });
+    }
+    else {
+        alert("가입승인 불가 요청을 취소하였습니다.");
+    }
 }
 function UserApprovalItem({ key, UserApprovalId, UserApprovalName }) {
     return (
@@ -77,8 +91,8 @@ function UserApprovalItem({ key, UserApprovalId, UserApprovalName }) {
                     <input type="hidden" id="Eid" value={UserApprovalId} />
                     <label style={{ float: 'left', fontSize: '23px' }} id="nameE">{UserApprovalId}  {UserApprovalName}</label>
                     <div style={{ float: 'right' }}>
-                        <Button variant="btn btn-secondary" style={{ height: '40px' }} onClick={(e) => { approvalUser(UserApprovalId, e) }}>승인허가</Button>&nbsp;&nbsp;
-                        <Button variant="btn btn-secondary" style={{ height: '40px' }} onClick={(e) => { notApprovalUser(UserApprovalId, e) }}>승인불가</Button>
+                        <Button variant="btn btn-secondary" style={{ height: '40px' }} onClick={(e) => { approvalUser(UserApprovalId, UserApprovalName, e) }}>승인허가</Button>&nbsp;&nbsp;
+                        <Button variant="btn btn-secondary" style={{ height: '40px' }} onClick={(e) => { notApprovalUser(UserApprovalId, UserApprovalName, e) }}>승인불가</Button>
                     </div>
                 </ InfoBox >
             </div >

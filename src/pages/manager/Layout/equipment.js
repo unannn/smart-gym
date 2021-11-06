@@ -10,7 +10,7 @@ import DetailE from './Equipment/detailedEquipment';
 let EquiList = styled.div`
  position: absolute;
  left: 15px;
- top: 80px;
+ top: 0px;
    width: 670px;
    height: 470px;
    text-align: center;
@@ -23,7 +23,7 @@ let EquiList = styled.div`
 let ListKey = styled.div`
  position: absolute;
  left: 15px;
- top: 43px;
+ top: -40px;
    width: 670px;
    height: 100px;
    text-align: center;
@@ -46,7 +46,7 @@ let StyledBox = styled.div`
 let EquiCheck = styled.div`
    position: absolute;
    left: 0px;
-   top: 15px;
+   top: -70px;
    margin: 0.5px;
    width: 700px;
    height: 40px;
@@ -60,7 +60,7 @@ let BodyBox = styled.div`
    `;
 let RowLineBox = styled.div`
     position: absolute;
-    top: 5px;
+    top: 10px;
     left: 20px;
     width: 615px;
     height: 1.5px;

@@ -7,14 +7,14 @@ import styled from 'styled-components';
 import Listpage from "./Equipment/lpL";
 import ManagerBar from './component/menubar.js';
 let EquiList = styled.div`
- position: relative;
- left: -400px;
+ position: absolute;
+ left: 15px;
+ top: -50px;
    margin: 0.3px;
    width: 300px;
    height: 500px;
    font-size: 10pt;
    text-align: center;
-   background: #F2F2F2;
    overflow:auto;
    border-radius: 10px;
    padding:20px;
@@ -30,7 +30,7 @@ let LayoutBox = styled.div`
    position: absolute;
    width: 710px;
    height: 460px;
-   top: 50px;
+   top: -15px;
    left: 450px;
    background: gray;
    border-radius: 2px;
@@ -38,12 +38,32 @@ let LayoutBox = styled.div`
    margin:0 auto;
    margin-bottom:10px;
    `;
+let ListKey = styled.div`
+ position: relative;
+ left: -435px;
+ top: -85px;
+   width: 300px;
+   height: 30px;
+   text-align: center;
+   border-radius: 5px;
+   padding:20px;
+   margin:0 auto;
+   margin-bottom:10px;
+   `;
+let RowLineBox = styled.div`
+    position: absolute;
+    top: 0px;
+    left: 10px;
+    width: 280px;
+    height: 1.5px;
+    background: black;
+   `;
 let ButtonBox = styled.div`
    position: absolute;
    width: 300px;
    height: 50px;
-   top: 0px;
-   left: 650px;
+   top: -80px;
+   left: 455px;
    `;
 let InputButton = styled.input`
     background-color:#404040;
@@ -139,7 +159,7 @@ class LayoutE extends React.Component {
             alert("새로운 배치도가 선택되지 않았습니다.\n등록을 원할 경우 새로운 배치도를 선택해 주세요.");
         }
         else {
-            if (window.confirm("정말로 등록하시겠습니까?")) {
+            if (window.confirm("해당 파일로 배치로를 등록하시겠습니까?")) {
                 axios.post('http://localhost:8080/gymInfo/equipmentLayout/update', formData,
                     {
                         headers: {
@@ -196,11 +216,20 @@ class LayoutE extends React.Component {
                 <ManagerBar></ManagerBar><br />
                 <center>
                     <BodyBox>
+                        <ListKey>
+                            <div >
+                                <label style={{ position: "relative", top: "-10px" }}>Equipment Name</label>
+                            </div>
+                        </ListKey>
                         <div>
                             <EquiList>
                                 <Listpage Itemcard={ItemList} />
+                                <RowLineBox />
                             </EquiList>
                         </div>
+                        <LayoutBox>
+                            <img src="image/ImageNotFound_Layout.png" id="layoutImg" name="layoutImg" width="700px" height="450px" />
+                        </LayoutBox>
                         <ButtonBox>
                             <label className="btn btn-secondary" for="input-file">
                                 새 배치도 불러오기
@@ -209,9 +238,6 @@ class LayoutE extends React.Component {
                             <Button variant="btn btn-secondary" onClick={this.layoutUpload}>등록</Button>&nbsp;&nbsp;
                             <Button variant="btn btn-secondary" onClick={this.layoutCancel}>취소</Button>&nbsp;&nbsp;
                         </ButtonBox>
-                        <LayoutBox>
-                            <img src="image/ImageNotFound_Layout.png" id="layoutImg" name="layoutImg" width="700px" height="450px" />
-                        </LayoutBox>
                     </BodyBox>
                 </center>
             </div >

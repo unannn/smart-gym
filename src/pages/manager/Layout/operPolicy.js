@@ -14,7 +14,7 @@ let GyminfoBox = styled.div`
    position: relative;
    margin: 0.3px;
    left: -375px;
-   top: 0px;
+   top: -80px;
    width:450px;
    height: 270px;
    font-size: 9pt;
@@ -28,7 +28,7 @@ let GymOperinfoBox = styled.div`
    position: relative;
    margin: 0.3px;
    left: -375px;
-   top: 5px;
+   top: -70px;
    width:450px;
    height: 260px;
    font-size: 10pt;

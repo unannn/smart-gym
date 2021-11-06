@@ -23,7 +23,9 @@ class ManagerBar extends React.Component {
             <div>
                 <center>
                     <br />
-                    <img src="./image/Logo.png" width="200px" height="50px" /><br />
+                    <Link to="/manager" style={{ color: "black" }}>
+                        <img src="./image/Logo.png" width="200px" height="50px" /><br />
+                    </Link>
                     <div style={{ position: "relative", top: "0px" }}>
                         <hr width="100%" />
                     </div>
@@ -77,7 +79,7 @@ class ManagerBar extends React.Component {
                             </MenuBar>
                         </Link><br />
                     </div>
-                    <div style={{ position: "relative", top: "-16.5px" }}>
+                    <div style={{ position: "relative", top: "-17px" }}>
                         <hr width="100%" />
                     </div>
                 </center >

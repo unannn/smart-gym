@@ -26,7 +26,7 @@ let SearchBox = styled.input`
     width:400px;
     height:38px;
     top: -130px;
-    left: 30px;
+    left: 4px;
    `;
 
 let EquiList = styled.div`
@@ -64,7 +64,7 @@ let FilterBox = styled.div`
    width: 100px;
    height: 70px;
    top: -70px;
-   left: -300px;
+   left: -280px;
    `;
 let RowLineBox = styled.div`
     position: absolute;
@@ -204,7 +204,7 @@ class UserA extends React.Component {
                                 </Box>
                             </FilterBox>
                             <SearchBox id="searchValue" name="searchValue" />
-                            <Button variant="btn btn-secondary" style={{ position: "relative", top: "-132px", left: "70px" }} onClick={this.filterSearch}>대기자 검색</Button>
+                            <Button color="white" variant="" style={{ position: "relative", top: "-133px", left: "20px" }} onClick={this.filterSearch}><img src="./icon/icon_search.png" width="35px" /></Button>
                             <center>
                                 <ListKey>
                                     <div >
