@@ -4,23 +4,71 @@ import TopBar from '../../../components/user/TopBar';
 import styled from "styled-components";
 import Calendar from '../../../components/user/Calendar';
 import ReservationEquipList from '../../../components/user/ReservationEquipList';
+import moment from 'moment';
 
 class DateSelection extends Component {
+    constructor(props) {
+        super(props);
+        const currentDate = moment();
+        this.state = {
+            year: currentDate.format('YYYY'),
+            month: currentDate.format('MM'),
+            day: currentDate.format('DD'),
+            rezValidDate: 0
+        }
+    }
+
+    componentDidMount() {
+        //예약 가능 날짜 설정
+        // this.selectDate({
+        //     rezValidDate: 4
+        // })
+    }
+
+    selectDate = (data) => {
+        this.setState({
+            year: data.year,
+            month: data.month,
+            day: data.day
+        })
+    }
+
+
     render() {
+        const rezValidDate = 4;
+        let holidays = ["20211106", "20211113", "20211120"];
         return (
             <div>
                 <TopBar>기구 예약 - 날짜 선택</TopBar>
                 <br />
-                <StyledCalendarBoard>
-                    <Calendar></Calendar>
-                </StyledCalendarBoard>
+                {/* 
+                [예약가능 날짜 면수] 
+                rezValidDate 정수로 몇일인지 주면됨 ex) rezValidDate={4}
+                
+                [선택 날짜 가져오는 메소드]
+                onClickDate 아래와 같은메소드를 통해 사용, 현재 컴포넌트의 state에 선택한 날짜를 가져오기 위함
+                    selectDate = (data) => {
+                    this.setState({
+                        year: data.year,
+                        month: data.month,
+                        day: data.day
+                    })
+                }
+                [현재 선택 날짜]
+                onClickDate를 통해설정한 선택한 날짜를 보내줌 this.state 보내주면 됨
+
+                [휴무일로 선택하고자 하는 날짜 리스트]
+                holidays 에 배열로 설정후 넣어주기 ex)["20211106", "20211113", "20211120"]
+                */}
+                <Calendar onClickDate={this.selectDate} selectedDate={this.state}
+                    rezValidDate={rezValidDate} holidays={holidays}></Calendar>
                 <br />
                 <ReservationEquipList></ReservationEquipList>
                 <br />
                 <StyledLink to="/user/reservation/equip">
                     <StyledButtonArea>
                         <StyledMenuText>
-                            10/30 예약하기
+                            {this.state.year} {this.state.month}/{this.state.day} 예약하기
                         </StyledMenuText>
                     </StyledButtonArea>
                 </StyledLink>

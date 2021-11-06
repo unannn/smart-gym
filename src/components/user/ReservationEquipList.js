@@ -12,7 +12,7 @@ let StyledTitle = styled.div`
 function getEquipList() {
     let equips = ['벤치', '멀티렉', '인클라인', '없음'];
     // 나중에 아이디 적용할 것
-    const equipList = equips.map((equip) => <StyledEquipLI>
+    const equipList = equips.map((equip) => <StyledEquipLI key={equip}>
         <StyledEquipElement>
             {equip}
         </StyledEquipElement>
