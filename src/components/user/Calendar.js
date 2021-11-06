@@ -9,17 +9,19 @@ class Day extends Component {
             year: this.props.year,
             month: this.props.month,
             day: this.props.day,
+            isHoliday: this.props.isHoliday,
+            isRezValidDay: this.props.isRezDay
         }
     }
     render() {
         //const key = this.state.year + this.state.month + this.state.day;
-        console.log(this.state)
-
         return <TD onClick={(e) => {
             this.setState({
                 year: this.props.year,
                 month: this.props.month,
-                day: this.props.day
+                day: this.props.day,
+                isHoliday: this.props.isHoliday,
+                isRezValidDay: this.props.isRezDay
             }, () => {
                 return this.props.onClickDate(this.state)
             });
@@ -98,11 +100,8 @@ class Calendar extends Component {
         return false;
     }
     isHoliday(date) {
-        console.log(this.props.holidays)
 
-        console.log(date)
         if (this.props.holidays.includes(date)) {
-            console.log(date)
             return true;
         }
         return false;
@@ -125,7 +124,6 @@ class Calendar extends Component {
             const week = days.map((date, dayIndex) => {
 
                 const isSelected = Object.entries(selectedDate).toString() === Object.entries(date).toString();
-
 
                 return <Day key={weekIndex * 7 + dayIndex} onClickDate={this.props.onClickDate} year={date.year}
                     month={date.month} day={date.day} selectedMonth={this.state.month} isSelected={isSelected}

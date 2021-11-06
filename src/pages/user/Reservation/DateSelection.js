@@ -11,32 +11,68 @@ class DateSelection extends Component {
         super(props);
         const currentDate = moment();
         this.state = {
+            holidays: [],
             year: currentDate.format('YYYY'),
             month: currentDate.format('MM'),
             day: currentDate.format('DD'),
-            rezValidDate: 0
+            isHoliday: false,
+            isRezValidDay: true,
+            rezValidDate: 0,
+            buttonText: ''
         }
     }
 
     componentDidMount() {
-        //예약 가능 날짜 설정
-        // this.selectDate({
-        //     rezValidDate: 4
-        // })
+        //여기서 휴일 받아오기
+        const holidays = ["20211106", "20211113", "20211120", "20211107"];
+
+        const currentDate = moment();
+        const isHoliday = holidays.includes(currentDate.format("YYYYMMDD"));
+
+
+        this.setState({
+            holidays: holidays,
+            isHoliday: isHoliday,
+            buttonText: isHoliday ? '휴무일 입니다.' : this.state.year + ' ' + this.state.month + '/' + this.state.day + ' 예약하기'
+        })
     }
 
     selectDate = (data) => {
         this.setState({
             year: data.year,
             month: data.month,
-            day: data.day
+            day: data.day,
+            isHoliday: data.isHoliday,
+            isRezValidDay: data.isRezValidDay
+        }, () => {
+            if (!this.state.isRezValidDay) {
+                this.setState({ buttonText: '예약이 불가능한 날짜입니다.' });
+                return;
+            }
+            else if (this.state.isHoliday) {
+                this.setState({ buttonText: '휴무일 입니다.' })
+            }
+            else {
+                this.setState({ buttonText: this.state.year + ' ' + this.state.month + '/' + this.state.day + ' 예약하기' })
+            }
         })
     }
 
+    onClickReservationButton(e) {
+        if (!this.state.isRezValidDay) {
+            e.preventDefault();
+            this.setState({ buttonText: '예약이 불가능한 날짜입니다.' });
+            return;
+        }
+
+        if (this.state.isHoliday) {
+            e.preventDefault();
+            this.setState({ buttonText: '휴무일 입니다.' })
+        }
+    }
 
     render() {
         const rezValidDate = 4;
-        let holidays = ["20211106", "20211113", "20211120"];
         return (
             <div>
                 <TopBar>기구 예약 - 날짜 선택</TopBar>
@@ -61,14 +97,14 @@ class DateSelection extends Component {
                 holidays 에 배열로 설정후 넣어주기 ex)["20211106", "20211113", "20211120"]
                 */}
                 <Calendar onClickDate={this.selectDate} selectedDate={this.state}
-                    rezValidDate={rezValidDate} holidays={holidays}></Calendar>
+                    rezValidDate={rezValidDate} holidays={this.state.holidays}></Calendar>
                 <br />
                 <ReservationEquipList></ReservationEquipList>
                 <br />
-                <StyledLink to="/user/reservation/equip">
+                <StyledLink to="/user/reservation/equip" onClick={this.onClickReservationButton.bind(this)}>
                     <StyledButtonArea>
                         <StyledMenuText>
-                            {this.state.year} {this.state.month}/{this.state.day} 예약하기
+                            {this.state.buttonText}
                         </StyledMenuText>
                     </StyledButtonArea>
                 </StyledLink>
