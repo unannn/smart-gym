@@ -46,7 +46,7 @@ class DateSelection extends Component {
                 rezValidDate 정수로 몇일인지 주면됨 ex) rezValidDate={4}
                 
                 [선택 날짜 가져오는 메소드]
-                onClickDate 아래와 같은메소드를 통해 사용, setState 아래에 사용하고자 하는 코드 넣어주면 됨 
+                onClickDate 아래와 같은메소드를 통해 사용, 현재 컴포넌트의 state에 선택한 날짜를 가져오기 위함
                     selectDate = (data) => {
                     this.setState({
                         year: data.year,

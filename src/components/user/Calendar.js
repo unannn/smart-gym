@@ -13,6 +13,8 @@ class Day extends Component {
     }
     render() {
         //const key = this.state.year + this.state.month + this.state.day;
+        console.log(this.state)
+
         return <TD onClick={(e) => {
             this.setState({
                 year: this.props.year,
@@ -23,9 +25,12 @@ class Day extends Component {
             });
         }} isRezDay={this.props.isRezDay}>
             <ReservationDateStyle isRezDay={this.props.isRezDay}>
-                <DateTextStyle isSelected={this.props.isSelected} isHoliday={this.props.isHoliday}>
-                    {this.props.day}
-                </DateTextStyle>
+                <DateStyle isSelected={this.props.isSelected} >
+                    <DateTextStyle isHoliday={this.props.isHoliday} isCurrentMonth={this.props.month === this.props.selectedMonth}>
+                        {this.props.day}
+                    </DateTextStyle>
+                </DateStyle>
+
             </ReservationDateStyle>
         </TD>
     }
@@ -111,19 +116,19 @@ class Calendar extends Component {
         const selectedMonthDays = this.getCalendarDayList(this.state.year, this.state.month);
         const todayDate = moment().format("YYYYMMDD");
 
-
+        const selectedDate = {
+            year: this.props.selectedDate.year,
+            month: this.props.selectedDate.month,
+            day: this.props.selectedDate.day
+        }
         const selectedEquipList = selectedMonthDays.map((days, weekIndex) => {
             const week = days.map((date, dayIndex) => {
-                const selectedDate = {
-                    year: this.props.selectedDate.year,
-                    month: this.props.selectedDate.month,
-                    day: this.props.selectedDate.day
-                }
+
                 const isSelected = Object.entries(selectedDate).toString() === Object.entries(date).toString();
 
 
                 return <Day key={weekIndex * 7 + dayIndex} onClickDate={this.props.onClickDate} year={date.year}
-                    month={date.month} day={date.day} isSelected={isSelected}
+                    month={date.month} day={date.day} selectedMonth={this.state.month} isSelected={isSelected}
                     isRezDay={this.isRezValidDay(todayDate, date.year + date.month + date.day)} isHoliday={this.isHoliday(date.year + date.month + date.day)} ></Day>
             })
             return <tr>{week}</tr>
@@ -167,14 +172,24 @@ var TD = styled.td`
     border: ${props => props.isRezDay ? '2px tomato solid' : '1px #909090 solid'}
 `;
 
-var DateTextStyle = styled.div`
+var DateStyle = styled.div`
     background-color:${props => props.isSelected ? 'tomato' : 'white'};
-    color:${props => props.isHoliday ? 'red' : 'black'};
+    border-radius: 50%;
+    display: inline-block;
     width:22px;
     height:22px;
+`;
+
+var DateTextStyle = styled.div`
+    color:${props => props.isHoliday ? 'red' : 'black'};
+    
     display: inline-block;
     border-radius: 50%;
+    opacity:${props => props.isCurrentMonth ? 1 : 0.3};
+
 `;
+
+
 var ReservationDateStyle = styled.div`
     //background-color:${props => props.isRezDay ? 'yellow' : 'white'};
     //border:3px cadetblue solid;
