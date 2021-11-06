@@ -11,7 +11,7 @@ import NativeSelect from '@mui/material/NativeSelect';
 import ManagerBar from './component/menubar.js';
 import UserListpage from "./UserManage/ulp";
 import DetailU from "./UserManage/detailedUser";
-
+//background - color:#F2F2F2;
 let SearchBox = styled.input`
  position: relative;
  background-color: gray;
@@ -26,22 +26,36 @@ let SearchBox = styled.input`
     border-width: 0px;
     width:400px;
     height:38px;
-    top: -35px;
+    top: -130px;
+    left: 18px;
    `;
 
 let EquiList = styled.div`
- position: relative;
- left: -250px;
- top: -20px;
+   position: relative;
+   left: -250px;
+   top: -139px;
    width: 600px;
    height: 440px;
    text-align: center;
-   background-color:#F2F2F2;
    overflow:auto;
    border-radius: 10px;
    padding:20px;
    margin:0 auto;
    margin-bottom:10px;
+   `;
+let ListKey = styled.div`
+   position: relative;
+   top: -119px;
+   left: -250px;
+   width: 600px;
+   height: 50px;
+   text-align: center;
+   overflow:auto;
+   border-radius: 5px;
+   padding: 16px;
+   margin:0 auto;
+   margin-bottom:10px;
+   font-size: 20px;
    `;
 let BodyBox = styled.div`
    position: relative;
@@ -52,8 +66,16 @@ let FilterBox = styled.div`
    position: relative;
    width: 100px;
    height: 70px;
-   top: -25px;
-   left: -300px;
+   top: -70px;
+   left: -280px;
+   `;
+let RowLineBox = styled.div`
+    position: absolute;
+    top: 45px;
+    left: 50px;
+    width: 600px;
+    height: 1.5px;
+    background: black;
    `;
 class UserM extends React.Component {
     constructor(props) {
@@ -80,6 +102,7 @@ class UserM extends React.Component {
                 this.setState({
                     loading: false
                 });
+                alert("error! 사용자 목록 조회에 실패했습니다.");
             });
     };
     filterSearch = function () {
@@ -181,11 +204,18 @@ class UserM extends React.Component {
                                 </Box>
                             </FilterBox>
                             <SearchBox id="searchValue" name="searchValue" />&nbsp; &nbsp; &nbsp; &nbsp;
-                            <Button variant="btn btn-secondary" style={{ position: "relative", top: "-39px" }} onClick={this.filterSearch}>검색</Button>
+                            <Button color="white" variant="" style={{ position: "relative", top: "-133px", left: "6px" }} onClick={this.filterSearch}><img src="./icon/icon_search.png" width="35px" /></Button>
                             <center>
+                                <ListKey>
+                                    <div >
+                                        <label style={{ float: "left", position: "relative", top: "-10px" }}>&nbsp; ID Name</label>
+                                        <label style={{ float: "right", position: "relative", top: "-10px" }}>Manage&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </label>
+                                    </div>
+                                </ListKey>
                                 <EquiList>
                                     <UserListpage Itemcard={ItemList} />
                                 </EquiList>
+                                <RowLineBox />
                             </center>
                             <DetailU />
                         </div>

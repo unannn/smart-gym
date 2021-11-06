@@ -6,10 +6,10 @@ import jquery from "jquery";
 import axios from "axios";
 let EquiInfo = styled.div`
    position: absolute;
-   top: 100px;
-   left: 670px;
+   top: 0px;
+   left: 700px;
    width: 470px;
-   height: 440px;
+   height: 480px;
    font-size: 10pt;
    text-align: center;
    background: #B5D7FF;

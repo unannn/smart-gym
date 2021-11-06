@@ -18,6 +18,7 @@ class UserListpage extends Component {
                                 key={insertIndex}
                                 UserId={itemdata.userID}
                                 UserName={itemdata.userName}
+                                UserAuthority={itemdata.allowedUserReservationAuthority}
                             />
                         );
                     })}

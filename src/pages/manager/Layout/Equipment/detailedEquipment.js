@@ -6,20 +6,20 @@ import jquery from "jquery";
 import axios from "axios";
 let EquiInfo = styled.div`
    position: absolute;
-   top: 10px;
+   top: -70px;
    left: 750px;
    width: 450px;
    height: 540px;
    font-size: 10pt;
    text-align: center;
-   background: #FFD2D5;
-   border-radius: 5px;
+   border: 2.5px solid gray;
+   border-radius: 3px;
    padding:20px;
    margin:0 auto;
    margin-bottom:10px;
    `;
 let InfoInput = styled.input`
-    background-color: #FFFFFF;
+    background-color: #F2F2F2;
 	background-position:left top;
 	padding-top:5px;
 	font-family:tahoma;

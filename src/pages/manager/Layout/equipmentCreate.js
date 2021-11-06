@@ -5,11 +5,11 @@ import { Button } from 'react-bootstrap';
 import jquery from 'jquery';
 import styled from 'styled-components';
 import ManagerBar from './component/menubar.js';
-
+//background: #F2F2F2;
 let EquiInfo = styled.div`
    position: relative;
    margin: 0.5px;
-   top: 60px;
+   top: -20px;
    width: 800px;
    height: 500px;
    font-size: 10pt;
@@ -18,11 +18,10 @@ let EquiInfo = styled.div`
    padding:20px;
    margin:0 auto;
    margin-bottom:10px;
-   background: #F2F2F2;
    `;
 
 let InfoInput = styled.input`
-   background-color: #FFFFFF;
+    background-color: #F2F2F2;
 	background-position:left top;
 	padding-top:5px;
 	font-family:tahoma;
@@ -59,7 +58,7 @@ let InputInfoBox = styled.div`
 let RegisterBox = styled.div`
    position: relative;
    margin: 0.5px;
-   top: -155px;
+   top: -300px;
    left: 700px;
    width: 65px;
    height: 45px;
