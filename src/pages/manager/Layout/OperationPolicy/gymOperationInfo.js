@@ -18,7 +18,7 @@ const operationUpdate = (start, end, e) => {
             console.log(RHD);
         }
     }
-    if (window.confirm("해당 운동기구 정보를 등록하시겠습니까?\nOpen Time: " + start +
+    if (window.confirm("해당 헬스장 운영 정보를 등록하시겠습니까?\nOpen Time: " + start +
         "\nClose Time: " + end +
         "\nReservation Duration(day): " + $('input[name="Redu"]').val() +
         "\nRegularHoliday: " + RHD)) {
@@ -52,6 +52,7 @@ const operationUpdate = (start, end, e) => {
                 }
                 else {
                     alert("헬스장 운영정보가 정상적으로 등록되었습니다.");
+                    window.location.reload();
                 }
             })
             .catch((response) => {
