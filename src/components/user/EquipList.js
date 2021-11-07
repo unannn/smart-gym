@@ -89,7 +89,6 @@ var EquipmentUL = styled.ul`
 var EquipmentLI = styled.li`
     padding:20px 10px 20px 10px;
     position: relative;
-
     background-color:white;
 `;
 
@@ -118,6 +117,5 @@ var equipList = [
         category: '이두',
         equips: ['이두 운동 기구 1', '이두 운동 기구 2', '이두 운동 기구 3', '이두 운동 기구 4']
     }
-
 ]
 

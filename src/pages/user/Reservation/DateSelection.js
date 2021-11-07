@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import TopBar from '../../../components/user/TopBar';
 import styled from "styled-components";
 import Calendar from '../../../components/user/Calendar';
-import ReservationEquipList from '../../../components/user/ReservationEquipList';
+import ReservationEquipTray from '../../../components/user/ReservationEquipTray';
 import moment from 'moment';
 
 class DateSelection extends Component {
@@ -101,7 +101,7 @@ class DateSelection extends Component {
                 <Calendar onClickDate={this.selectDate} selectedDate={this.state}
                     rezValidDate={rezValidDate} holidays={this.state.holidays}></Calendar>
                 <br />
-                <ReservationEquipList></ReservationEquipList>
+                <ReservationEquipTray></ReservationEquipTray>
                 <br />
                 <StyledLink to="/user/reservation/equip" onClick={this.onClickReservationButton.bind(this)}>
                     <StyledButtonArea>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import TopBar from '../../../components/user/TopBar';
 import styled from "styled-components";
-import ReservationEquipList from '../../../components/user/ReservationEquipList';
+import ReservationEquipTray from '../../../components/user/ReservationEquipTray';
 import EquipList from '../../../components/user/EquipList';
 import TimeSelectionModal from './TimeSelection';
 
@@ -38,7 +38,7 @@ class DateSelection extends Component {
                     <EquipList openEquipRezModal={this.openEquipRezModal.bind(this)}></EquipList>
                 </StyledEquipBoard>
                 <br />
-                <ReservationEquipList></ReservationEquipList>
+                <ReservationEquipTray canDelete={true}></ReservationEquipTray>
                 <br />
                 <StyledLink to="/user">
                     <StyledButtonArea>

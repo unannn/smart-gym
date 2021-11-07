@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from "styled-components";
 import moment from 'moment';
+import { RestorePageSharp } from '@material-ui/icons';
 
 class Day extends Component {
     constructor(props) {
@@ -167,11 +168,15 @@ var TD = styled.td`
     vertical-align : top;
     text-align:left;
     /* border:1px #909090 solid; */
-    border: ${props => props.isRezDay ? '2px tomato solid' : '1px #909090 solid'}
-`;
+    border: ${props => props.isRezDay ? '2px tomato solid' : '1px #909090 solid'};
+    /* border-color : ${props => props.isRezDay ? 'tomato' : 'rgba(255,255,255,0.3)'}; */
+
+    /* border-right:${props => props.isRezDay && '1px #909090 solid'};
+    border-left:${props => props.isRezDay && '1px #909090 solid'}; */
+`
 
 var DateStyle = styled.div`
-    background-color:${props => props.isSelected ? 'tomato' : 'white'};
+    background-color:${props => props.isSelected ? 'tomato' : 'white'}; 
     border-radius: 50%;
     display: inline-block;
     width:22px;
