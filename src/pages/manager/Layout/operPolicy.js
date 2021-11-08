@@ -10,7 +10,7 @@ import GymInfo from './OperationPolicy/gymInformation';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Calendar from '../../../components/user/Calendar';
-import ReservationEquipList from '../../../components/user/ReservationEquipList';
+import ReservationEquipList from '../../../components/user/ReservationEquipTray';
 import moment from 'moment';
 import { ContactlessOutlined } from '@material-ui/icons';
 
