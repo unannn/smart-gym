@@ -2,7 +2,7 @@ import React from 'react';
 import styled from "styled-components";
 import TopBar from '../../components/user/TopBar';
 import { Link } from 'react-router-dom';
-import ReservationEquipList from '../../components/user/ReservationEquipList';
+import ReservationEquipTray from '../../components/user/ReservationEquipTray';
 class UserMain extends React.Component {
     render() {
         return (
@@ -15,7 +15,7 @@ class UserMain extends React.Component {
                         <StyledDate>2021년 10월 14일 현재</StyledDate>
                         사용중인 운동기구는
                         <StyledRecentUsing> 없습니다.</StyledRecentUsing>
-                        <ReservationEquipList></ReservationEquipList>
+                        <ReservationEquipTray></ReservationEquipTray>
                     </StyledTodayRezBoard>
                     <br />
                     <StyledMenuList>

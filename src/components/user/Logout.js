@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router';
 import styled from "styled-components";
 
 let StyledLogOut = styled.div`
@@ -8,7 +9,12 @@ let StyledLogOut = styled.div`
 `;
 
 function Logout(props) {
-    return <StyledLogOut>Log out</StyledLogOut>;
+
+
+    return <StyledLogOut onClick={(e) => {
+        sessionStorage.removeItem('id');
+        window.location.reload();
+    }}>Log out</StyledLogOut>;
 }
 
 export default Logout;
