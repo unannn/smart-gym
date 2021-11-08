@@ -1,13 +1,12 @@
-import { render } from '@testing-library/react';
 import React, { Component } from 'react';
 import { Children } from 'react';
 import styled from "styled-components";
 import $ from "jquery";
-
-
-
+import Modal from './Modal';
+import InputButton from './InputButton';
 
 class EquipmentItem extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -17,27 +16,27 @@ class EquipmentItem extends Component {
 
     render(children) {
         return (
-            <EquipmentItemStyle>
+            <EquipmentItemStyle canDelete={this.props.canDelete}>
                 <EquipNameStyle>{this.props.children.name}</EquipNameStyle>
                 <ReservationTimeStyle>{this.props.children.startTime}~{this.props.children.endTime}</ReservationTimeStyle>
-                {/* {this.props.canDelete ? <DeleteButtonStyle><img src="\image\x.png" alt="a" width="20px" /></DeleteButtonStyle> : ''} */}
+                {this.props.canDelete ? <DeleteButtonStyle onClick={(e) => this.props.onClickDelete(this.props)}><img src="\image\x.png" alt="" width="20px" /></DeleteButtonStyle> : ''}
             </EquipmentItemStyle>
         );
     }
 }
 var DeleteButtonStyle = styled.div`
-    position:relative;
-    left:53px;
+    position: relative;
+    left:30px;
     bottom:90px;
-    display: table-cell;
-    vertical-align: middle;
-    /* display:inline-block */
+    display: inline-block;
 `;
 
 var EquipmentItemStyle = styled.div`
     padding:11px;
+    padding-bottom:0px;
+    /* padding-bottom:${props => !props.canDelete ? '11px' : '0px'}; */
     height:100px;
-    display: table-cell;
+    display: inline-block;
     vertical-align: middle;
 `;
 
@@ -65,9 +64,26 @@ class ReservationEquipTray extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            modalOn: false,
+            modalEquipData: ''
         }
     }
+
+    componentDidMount() {
+        //scroll 끝에 갖다 놓기
+        $('.EquipScroll').scrollLeft(10000);
+    }
+
+
+    onClickDelete(equipData) {
+        this.setState({ modalOn: true });
+        this.setState({
+            modalEquipData: equipData.children
+        });
+
+    }
+
+
 
     render() {
         let equips = [{ id: 1, name: '벤치 1', startTime: '09:00', endTime: '09:20' }, { id: 2, name: '인클라인 벤치', startTime: '09:20', endTime: '09:40' },
@@ -75,11 +91,9 @@ class ReservationEquipTray extends Component {
         { id: 6, name: '랫풀 다운 머신', startTime: '10:30', endTime: '10:50' }, { id: 5, name: '케이블 머신', startTime: '10:50', endTime: '11:00' }];
         // 나중에 아이디 적용할 것
 
-        //scroll 끝에 갖다 놓기
-        $('.EquipScroll').scrollLeft(10000);
 
         const equipList = equips.map((equip) => <StyledEquipLI key={equip.id}>
-            <EquipmentItem canDelete={this.props.canDelete}>{equip}</EquipmentItem>
+            <EquipmentItem onClickDelete={this.onClickDelete.bind(this)} canDelete={this.props.canDelete} equipId={equip.id}>{equip}</EquipmentItem>
         </StyledEquipLI>)
 
         return (
@@ -89,6 +103,22 @@ class ReservationEquipTray extends Component {
                     {equipList}
                 </StyledEquipUL>
                 {/* <StyledRightButton>{'>'}</StyledRightButton> */}
+                {this.state.modalOn ? <Modal onClick={(e) => this.setState({ modalOn: false })}>
+                    <div>
+                        <div>
+                            <div>{this.state.modalEquipData.name}</div>
+
+                            {this.state.modalEquipData.startTime}~{this.state.modalEquipData.endTime}
+                        </div>
+                        <div>
+                            정말 예약을 취소하시겠습니까?
+                        </div>
+                        <br />
+                        <div>
+                            <InputButton type="button" value="확인"></InputButton>
+                        </div>
+                    </div>
+                </Modal> : ""}
             </StyledRezEquipList>
         );
     }

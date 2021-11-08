@@ -58,21 +58,23 @@ var EquipListDIV = styled.div`
 `;
 
 var CategoryUL = styled.ul`
+    padding-left:0px;
     margin-bottom:0px;
     list-style:none;
     overflow:scroll;
     white-space:nowrap;
-    background-color:turquoise;
+    color:white;
+    background-color:#404040;
     ::-webkit-scrollbar{
         display:none;
     }
 `;
 var CategoryLI = styled.li`
-
-    padding-right:40px;
+    text-align:center;
+    width:80px;
     border:1px;
     border-color:black;
-    display:inline;
+    display:inline-block;
 
 `;
 
@@ -87,6 +89,7 @@ var EquipmentUL = styled.ul`
 `;
 
 var EquipmentLI = styled.li`
+    font-size:14px;
     padding:20px 10px 20px 10px;
     position: relative;
     background-color:white;

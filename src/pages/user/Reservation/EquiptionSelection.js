@@ -29,6 +29,8 @@ class DateSelection extends Component {
         })
     }
 
+
+
     render() {
         return (
             <StyledDateSelection>
@@ -87,7 +89,6 @@ const StyledEquipBoard = styled.div`
     height:500px;
     max-height:900px;
     margin-top:20px;
-    margin-bottom:20px;
 
 `;
 
