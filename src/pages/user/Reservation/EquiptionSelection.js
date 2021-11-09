@@ -82,7 +82,7 @@ var StyledButtonArea = styled.div`
 
 const StyledEquipBoard = styled.div`
     position:relative;
-    background-color: grey;
+    background-color: #E0E0E0;
     margin: 0 auto;
     width:100%;
     max-width:800px;

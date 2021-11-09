@@ -134,9 +134,10 @@ var StyledEquipUL = styled.ul`
     margin-bottom:0px;
     padding-left:0;
     list-style:none;
-    overflow:scroll;
+    overflow-x:scroll;
+    overflow-y:hidden;
     white-space:nowrap;
-    background-color:rgba(250,250,250,0);
+    background-color:rgba(255,255,255,0);
     ::-webkit-scrollbar{
         display:none;
     }

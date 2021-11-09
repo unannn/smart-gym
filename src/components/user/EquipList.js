@@ -86,6 +86,11 @@ var EquipmentUL = styled.ul`
     position: relative;
     margin:0;
     padding:0;
+    white-space:nowrap;
+    background-color:rgba(255,255,255,0);
+    ::-webkit-scrollbar{
+        display:none;
+    }
 `;
 
 var EquipmentLI = styled.li`
