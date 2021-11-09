@@ -165,7 +165,7 @@ class CreateEqui extends React.Component {
                     });
             }
             else {
-                alert("운동기구 정보 등록이 취소되었습니다.");
+                //alert("운동기구 정보 등록이 취소되었습니다.");
             }
         }
     }
@@ -211,7 +211,7 @@ class CreateEqui extends React.Component {
                                 <label>복부 <input type="checkbox" name="equiPart" value="stomach" /></label>&nbsp;&nbsp;
                                 <label>삼두 <input type="checkbox" name="equiPart" value="triceps" /></label>&nbsp;&nbsp;
                                 <label>승모근 <input type="checkbox" name="equiPart" value="trapezius" /></label><br />
-                                <label>어께 <input type="checkbox" name="equiPart" value="shoulder" /></label>&nbsp;&nbsp;
+                                <label>어깨 <input type="checkbox" name="equiPart" value="shoulder" /></label>&nbsp;&nbsp;
                                 <label>유산소 <input type="checkbox" name="equiPart" value="aerobic" /></label>&nbsp;&nbsp;
                                 <label>이두 <input type="checkbox" name="equiPart" value="biceps" /></label>&nbsp;&nbsp;
                                 <label>하체 <input type="checkbox" name="equiPart" value="lower_body" /></label>&nbsp;&nbsp;

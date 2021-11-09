@@ -43,7 +43,7 @@ class ManagerLogin extends Component {
         )
             .then((response) => {
                 console.log(response.data);
-                alert("관리자 로그인 성공!\n 관리자 페이지로 이동합니다.");
+                alert("관리자 로그인 성공!\n관리자 페이지로 이동합니다.");
                 window.location.href = "/manager";
             })
             .catch((response) => {

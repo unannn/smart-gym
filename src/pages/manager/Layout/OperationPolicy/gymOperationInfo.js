@@ -60,7 +60,7 @@ const operationUpdate = (start, end, e) => {
             });
     }
     else {
-        alert("헬스장 운영정보 등록을 취소하셨습니다.");
+        //alert("헬스장 운영정보 등록을 취소하셨습니다.");
     }
 }
 function StaticTimePickerLandscape({ id, start, end, RholiyD, reserveD }) {
@@ -68,26 +68,34 @@ function StaticTimePickerLandscape({ id, start, end, RholiyD, reserveD }) {
     console.log(reserveD);
     return (
         <div>
-            < Stack component="form" noValidate spacing={3} style={{ display: "inline" }}>
-                <TextField color="secondary" variant="standard" id="OpenTime" label="Opne" type="time" key={start} defaultValue={start} InputLabelProps={{ shrink: true, }} inputProps={{ step: 300, /* 5 min*/ }} sx={{ width: 150 }} />
-            </Stack >
-            &nbsp;&nbsp;&nbsp;
-            < Stack component="form" noValidate spacing={3} style={{ display: "inline" }}>
-                <TextField color="secondary" variant="standard" id="CloseTime" label="Close" type="time" key={end} defaultValue={end} InputLabelProps={{ shrink: true, }} inputProps={{ step: 300, /* 5 min*/ }} sx={{ width: 150 }} />
-            </Stack ><br /><br />
-            <TextField required id="standard-required" label="Reservation Duration(day)" variant="standard" key={reserveD} defaultValue={reserveD} name="Redu" color="secondary" /><br /><br />
-            <div>
-                <label>[Regular Holiday]&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                <span style={{ lineHeight: "200%" }}><br /></span>
-                <label>월<input type="checkbox" name="ReHoliyDay" value="Mon" /></label>&nbsp;&nbsp;
-                <label>화<input type="checkbox" name="ReHoliyDay" value="Tue" /></label>&nbsp;&nbsp;
-                <label>수<input type="checkbox" name="ReHoliyDay" value="Wed" /></label>&nbsp;&nbsp;
-                <label>목<input type="checkbox" name="ReHoliyDay" value="Thu" /></label>&nbsp;&nbsp;
-                <label>금<input type="checkbox" name="ReHoliyDay" value="Fri" /></label>&nbsp;&nbsp;
-                <label>토<input type="checkbox" name="ReHoliyDay" value="Sat" /></label>&nbsp;&nbsp;
-                <label>일<input type="checkbox" name="ReHoliyDay" value="Sun" /></label>
+            <img src="./icon/icon_info.png" width="18px" style={{ position: "relative", top: "-12px", float: "left" }} />
+            <label style={{ position: "relative", top: "-16px", float: "left", fontSize: "18px" }}>&nbsp;헬스장 운영정보</label><br /><br />
+
+            <div style={{ position: "relative", top: "-10px", float: "left" }}>
+                < Stack component="form" noValidate spacing={3} style={{ display: "inline" }}>
+                    <TextField color="secondary" variant="standard" id="OpenTime" label="Opne" type="time" key={start} defaultValue={start} InputLabelProps={{ shrink: true, }} inputProps={{ step: 300, /* 5 min*/ }} sx={{ width: 150 }} />
+                </Stack >
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                < Stack component="form" noValidate spacing={3} style={{ display: "inline" }}>
+                    <TextField color="secondary" variant="standard" id="CloseTime" label="Close" type="time" key={end} defaultValue={end} InputLabelProps={{ shrink: true, }} inputProps={{ step: 300, /* 5 min*/ }} sx={{ width: 150 }} />
+                </Stack ><br /><br />
+
+                <TextField style={{ float: "left", width: "350px" }} required id="standard-required" label="Reservation Duration(day)" variant="standard" key={reserveD} defaultValue={reserveD} name="Redu" color="secondary" /><br /><br /><br />
+
+                <div>
+                    <label style={{ float: "left", fontSize: "12px", color: "#666666" }}>Regular Holiday&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    <span style={{ lineHeight: "200%" }}><br /></span>
+                    <label>월<input type="checkbox" name="ReHoliyDay" value="Mon" /></label>&nbsp;&nbsp;
+                    <label>화<input type="checkbox" name="ReHoliyDay" value="Tue" /></label>&nbsp;&nbsp;
+                    <label>수<input type="checkbox" name="ReHoliyDay" value="Wed" /></label>&nbsp;&nbsp;
+                    <label>목<input type="checkbox" name="ReHoliyDay" value="Thu" /></label>&nbsp;&nbsp;
+                    <label>금<input type="checkbox" name="ReHoliyDay" value="Fri" /></label>&nbsp;&nbsp;
+                    <label>토<input type="checkbox" name="ReHoliyDay" value="Sat" /></label>&nbsp;&nbsp;
+                    <label>일<input type="checkbox" name="ReHoliyDay" value="Sun" /></label>
+                </div>
+                <hr style={{ border: "0", height: "1.5px", color: "black" }} />
+                <Button variant="btn btn-secondary" style={{ position: "relative", top: "-4px", left: "170px" }} onClick={(e) => { operationUpdate($("#OpenTime").val(), $("#CloseTime").val(), e) }}>헬스장 운영정보 등록</Button>
             </div>
-            <Button variant="btn btn-secondary" style={{ position: "relative", top: "10px" }} onClick={(e) => { operationUpdate($("#OpenTime").val(), $("#CloseTime").val(), e) }}>수정</Button>
         </div>
     );
 }

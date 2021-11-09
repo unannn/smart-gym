@@ -11,7 +11,7 @@ let EquiList = styled.div`
  left: 15px;
  top: -50px;
    margin: 0.3px;
-   width: 300px;
+   width: 307px;
    height: 500px;
    font-size: 10pt;
    text-align: center;
@@ -52,7 +52,7 @@ let ListKey = styled.div`
    `;
 let RowLineBox = styled.div`
     position: absolute;
-    top: 0px;
+    top: -50px;
     left: 10px;
     width: 280px;
     height: 1.5px;
@@ -128,7 +128,7 @@ class LayoutE extends React.Component {
             .then((data) => {
                 console.log(data);
                 //서버 실행이 안되서 빈 값이 들어오는 경우 디폴트 이미지 띄우기
-                if (data.data == " " || data.data == null) {
+                if (data.data == " " || data.data == "" || data.data == null) {
                     $("#layoutImg").attr("src", "image/ImageNotFound_Layout.png");
                 }
                 else {
@@ -185,7 +185,7 @@ class LayoutE extends React.Component {
                     });
             }
             else {
-                alert("배치도 등록 요청이 취소되었습니다.");
+                //alert("배치도 등록 요청이 취소되었습니다.");
                 window.location.reload();
             }
         }
@@ -222,9 +222,9 @@ class LayoutE extends React.Component {
                             </div>
                         </ListKey>
                         <div>
+                            <RowLineBox />
                             <EquiList>
                                 <Listpage Itemcard={ItemList} />
-                                <RowLineBox />
                             </EquiList>
                         </div>
                         <LayoutBox>

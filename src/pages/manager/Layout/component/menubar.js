@@ -11,7 +11,7 @@ let MenuBar = styled.li`
    float: left;
    width: 10%;
    height: 100%;
-   font-size: 10pt;
+   font-size: 13pt;
    line-height: 50px;
    text-align: center;
    list-style-type: none;
@@ -29,10 +29,10 @@ class ManagerBar extends React.Component {
                     <div style={{ position: "relative", top: "0px" }}>
                         <hr width="100%" />
                     </div>
-                    <div style={{ width: '1100px', position: "relative", top: "-17px" }}>
+                    <div style={{ width: '1300px', position: "relative", top: "-17px" }}>
                         <Link to="/manager" style={{ color: "black" }}>
                             <MenuBar>
-                                <img src="icon/icon_home_simple.png" width="42%" height="150%" />
+                                <img src="icon/icon_home_simple.png" width="38%" height="150%" />
                             </MenuBar>
                         </Link>
                         <Link to="/userApproval" style={{ color: "black" }}>
@@ -70,16 +70,18 @@ class ManagerBar extends React.Component {
                         <MenuBar>
                             이력조회
                         </MenuBar>
-                        <MenuBar>
-                            통계 그래프
-                        </MenuBar>
+                        <Link to="/statistic" style={{ color: "black" }}>
+                            <MenuBar>
+                                통계 그래프
+                            </MenuBar>
+                        </Link>
                         <Link to="prac" style={{ color: "black" }}>
                             <MenuBar>
                                 ESL장치 관리
                             </MenuBar>
                         </Link><br />
                     </div>
-                    <div style={{ position: "relative", top: "-17px" }}>
+                    <div style={{ position: "relative", top: "-18px" }}>
                         <hr width="100%" />
                     </div>
                 </center >

@@ -6,12 +6,13 @@ import styled from 'styled-components';
 import Listpage from "./Equipment/lp";
 import ManagerBar from './component/menubar.js';
 import DetailE from './Equipment/detailedEquipment';
+//require("bootstrap/less/bootstrap.less");
 //background - color:"#F2F2F2";
 let EquiList = styled.div`
  position: absolute;
- left: 15px;
+ left: -15px;
  top: 0px;
-   width: 670px;
+   width: 730px;
    height: 470px;
    text-align: center;
    overflow:auto;
@@ -22,7 +23,7 @@ let EquiList = styled.div`
    `;
 let ListKey = styled.div`
  position: absolute;
- left: 15px;
+ left: -15px;
  top: -40px;
    width: 670px;
    height: 100px;
@@ -60,9 +61,9 @@ let BodyBox = styled.div`
    `;
 let RowLineBox = styled.div`
     position: absolute;
-    top: 10px;
-    left: 20px;
-    width: 615px;
+    top: 0px;
+    left: 0px;
+    width: 690px;
     height: 1.5px;
     background: black;
    `;
@@ -83,8 +84,10 @@ class EquipmentM extends React.Component {
             loading: false,
             ItemList: [],
             flog: "전체", // 스프린트에서는 fakedata값이 있어서 그내용을 넣어두었었다.
+            activePage: 15,
         };
     }
+
     /*state = {
         loading: false,
         ItemList: [], // 처음 Itemlist는 있는 상태로 기획 []
@@ -174,16 +177,18 @@ class EquipmentM extends React.Component {
                                 <ListKey>
                                     <div >
                                         <label style={{ float: "left", position: "relative", top: "-10px" }}>&nbsp; Name+Nth</label>
-                                        <label style={{ float: "right", position: "relative", top: "-10px" }}>Category&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </label>
+                                        <label style={{ float: "right", position: "relative", top: "-10px" }}>Category&nbsp; &nbsp; &nbsp;</label>
                                     </div>
 
                                 </ListKey>
+                                <RowLineBox />
                                 <EquiList>
                                     <Listpage Itemcard={ItemList} />
-                                    <RowLineBox />
                                 </EquiList>
                             </center>
                             <DetailE />
+                        </div>
+                        <div style={{ position: "absolute", top: "400px" }}>
                         </div>
                     </BodyBox>
                 </center>

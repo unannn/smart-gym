@@ -13,7 +13,7 @@ import Calendar from '../../../components/user/Calendar';
 import ReservationEquipList from '../../../components/user/ReservationEquipTray';
 import moment from 'moment';
 import { ContactlessOutlined } from '@material-ui/icons';
-
+/*   background: #F2F2F2;*/
 let GyminfoBox = styled.div`
    position: relative;
    margin: 0.3px;
@@ -37,7 +37,6 @@ let GymOperinfoBox = styled.div`
    height: 260px;
    font-size: 10pt;
    text-align: center;
-   background: #F2F2F2;
    border-radius: 10px;
    padding:20px;
    margin:0 auto;
@@ -47,13 +46,13 @@ let CalendarBox = styled.div`
    position: absolute;
    display: block;
    float: left;
-   left: 700px;
-   top: -50px;
+   left: 570px;
+   top: -35px;
    width: 630px;
-   height: 525px;
+   height: 523px;
    font-size: 10pt;
    text-align: center;
-   background: pink;
+   background: #F2F2F2;
    `;
 let BodyBox = styled.div`
    position: relative;
@@ -166,7 +165,7 @@ class OperPolicy extends React.Component {
                 });
         }
         else {
-            alert("휴무일로 변경 요청을 취소하였습니다.");
+            //alert("휴무일로 변경 요청을 취소하였습니다.");
         }
     }
 
@@ -199,7 +198,7 @@ class OperPolicy extends React.Component {
                 });
         }
         else {
-            alert("영업일로 변경 요청을 취소하였습니다.");
+            //alert("영업일로 변경 요청을 취소하였습니다.");
         }
     }
     loadItem = async () => {
@@ -326,6 +325,10 @@ class OperPolicy extends React.Component {
                                 reserveD={ItemList.gymOperationInfoReservationDuration}
                             />
                         </GymOperinfoBox>
+                        <div style={{ position: "absolute", left: "570px", top: "-67px" }}>
+                            <img src="./icon/icon_info.png" width="18px" style={{ position: "relative", top: "-12px", float: "left" }} />
+                            <label style={{ position: "relative", top: "-16px", float: "left", fontSize: "18px" }}>&nbsp;휴무일 관리</label><br /><br />
+                        </div>
                         <CalendarBox>
                             <Calendar onClickDate={this.selectDate} selectedDate={this.state}
                                 rezValidDate={rezValidDate} holidays={this.state.holidays}></Calendar>
