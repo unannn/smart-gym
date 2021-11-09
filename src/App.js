@@ -16,6 +16,7 @@ import CreateEqui from './pages/manager/Layout/equipmentCreate';
 import OperPolicy from './pages/manager/Layout/operPolicy';
 import LayoutE from './pages/manager/Layout/equipmentLayout';
 import Prac from './pages/manager/Layout/prac';
+import Statistic from './pages/manager/Layout/statistic';
 import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
 
@@ -78,10 +79,12 @@ function App() {
           <Route exact path='/userApproval'>
             <UserA></UserA>
           </Route>
+          <Route exact path='/statistic'>
+            <Statistic></Statistic>
+          </Route>
         </Switch>
-
       </div>
-    </BrowserRouter>
+    </BrowserRouter >
 
   );
 }

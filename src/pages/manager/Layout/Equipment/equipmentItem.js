@@ -10,7 +10,7 @@ let InfoBox = styled.div`
   }
   left: -5%;
    position: relative;
-   width: 610px;
+   width: 680px;
    height: 40px;
    border-radius: 5px;
    padding:0px;
@@ -42,6 +42,7 @@ const detailedRead = (EquipmentId, e) => {
             }*/
             let i = -1;
             for (var key in (response.data[0])) {
+                console.log(response.data[0][key]);
                 if ((response.data[0])[key] === 1) {
                     $("input:checkbox[name='equiPart']:checkbox[value=" + CList[i] + "]").prop('checked', true);
                 }
