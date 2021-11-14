@@ -57,8 +57,9 @@ class Calendar extends Component {
     getCalendarDayList(year, month) {
         const week = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         let selectedDate = year + month;
+        var monthStartDay = week.indexOf(moment(selectedDate).locale('en').format('ddd'));
+        console.log(moment(selectedDate).locale('en').format('ddd'))
 
-        var monthStartDay = week.indexOf(moment(selectedDate).format('ddd'));
         var calendarStart = -1 * monthStartDay;
         var days = new Array(6);
 

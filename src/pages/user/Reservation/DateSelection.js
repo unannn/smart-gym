@@ -40,6 +40,8 @@ class DateSelection extends Component {
     }
 
     selectDate = (data) => {
+
+        console.log(data);
         this.setState({
             year: data.year,
             month: data.month,

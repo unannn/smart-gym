@@ -28,14 +28,9 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Switch>
-          {/* <Route exact path='/root'>
-            <LoginDemo></LoginDemo>
-          </Route> */}
-          {logged ? <Redirect path="/root" to='/user' /> : <Redirect path="/root" to='/login' />}
-          {logged ? <Redirect path="/login" to='/user' /> : <Redirect path="/user" to='/login' />}
-          <Route exact path='/'>
-            <LoginDemo></LoginDemo>
-          </Route>
+          <Redirect exact from='/' to='/login' />
+          {logged ? <Redirect from="/login" to='/user' /> : <Redirect from="/user" to='/login' />}
+
           <Route exact path='/login'>
             <Login></Login>
           </Route>
@@ -90,6 +85,7 @@ function App() {
           <Route exact path='/esl'>
             <ESLManage />
           </Route>
+
         </Switch>
       </div>
     </BrowserRouter >
