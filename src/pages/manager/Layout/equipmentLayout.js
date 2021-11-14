@@ -4,7 +4,8 @@ import $ from "jquery";
 import jquery from "jquery";
 import { Button } from 'react-bootstrap';
 import styled from 'styled-components';
-import Listpage from "./Equipment/lpL";
+//import Listpage from "./Equipment/lpL";
+import EquipmentItemL from "./Equipment/equipmentItemL";
 import ManagerBar from './component/menubar.js';
 let EquiList = styled.div`
  position: absolute;
@@ -89,6 +90,17 @@ let FileButton = styled.input`
     margin-bottom: 10px;
     font-size:16px;
 `;
+let Cell = styled.li`
+   position: relative;
+   top:0px;
+   float: left;
+   width: 220px;
+   height: 100%;
+   font-size: 13pt;
+   line-height: 50px;
+   text-align: left;
+   list-style-type: none;
+   `;
 class LayoutE extends React.Component {
     // 제일 common한 state값 초기 셋팅
     constructor(props) {
@@ -216,28 +228,49 @@ class LayoutE extends React.Component {
                 <ManagerBar></ManagerBar><br />
                 <center>
                     <BodyBox>
-                        <ListKey>
-                            <div >
-                                <label style={{ position: "relative", top: "-10px" }}>Equipment Name</label>
-                            </div>
-                        </ListKey>
-                        <div>
-                            <RowLineBox />
-                            <EquiList>
-                                <Listpage Itemcard={ItemList} />
-                            </EquiList>
+                        <div style={{ position: "absolute", top: "-84px", float: "left", fontSize: "17px" }}>
+                            <img src="./icon/icon_info.png" width="18px" style={{ position: "relative", top: "-12px", float: "left" }} />
+                            <label style={{ position: "relative", top: "-16px", float: "left", fontSize: "17px" }}>&nbsp;헬스장 배치도</label><br /><br />
                         </div>
-                        <LayoutBox>
-                            <img src="image/ImageNotFound_Layout.png" id="layoutImg" name="layoutImg" width="700px" height="450px" />
-                        </LayoutBox>
-                        <ButtonBox>
-                            <label className="btn btn-secondary" for="input-file">
-                                새 배치도 불러오기
-                            </label>
-                            <input type="file" id="input-file" style={{ display: "none" }} onChange={(e) => { this.rePrintImage(e) }} />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <Button variant="btn btn-secondary" onClick={this.layoutUpload}>등록</Button>&nbsp;&nbsp;
-                            <Button variant="btn btn-secondary" onClick={this.layoutCancel}>취소</Button>&nbsp;&nbsp;
-                        </ButtonBox>
+                        <div style={{ position: "relative", top: "40px", left: "0px" }}>
+                            <ListKey>
+                                <div >
+                                    <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "200px" }}>Equipment</Cell>
+                                    <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "50px" }}>Nth</Cell>
+                                </div>
+                            </ListKey>
+                            <div>
+                                <RowLineBox />
+                                <EquiList>
+                                    <ul className="list__itemview">
+                                        {ItemList &&
+                                            ItemList.map((itemdata, insertIndex) => {
+                                                return (
+                                                    <EquipmentItemL
+                                                        key={insertIndex}
+                                                        EquipmentId={itemdata.equipmentID}
+                                                        EquipmentName={itemdata.equipmentName}
+                                                        Category={itemdata.equipmentCategoryList}
+                                                        EnthNumber={itemdata.equipmentNameNth}
+                                                        apiNumber={0}
+                                                    />
+                                                );
+                                            })}
+                                    </ul>
+                                </EquiList>
+                            </div>
+                            <LayoutBox>
+                                <img src="image/ImageNotFound_Layout.png" id="layoutImg" name="layoutImg" width="700px" height="450px" />
+                            </LayoutBox>
+                            <ButtonBox>
+                                <label className="btn btn-secondary" for="input-file">
+                                    새 배치도 불러오기
+                                </label>
+                                <input type="file" id="input-file" style={{ display: "none" }} onChange={(e) => { this.rePrintImage(e) }} />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <Button variant="btn btn-secondary" onClick={this.layoutUpload}>등록</Button>&nbsp;&nbsp;
+                                <Button variant="btn btn-secondary" onClick={this.layoutCancel}>취소</Button>&nbsp;&nbsp;
+                            </ButtonBox>
+                        </div>
                     </BodyBox>
                 </center>
             </div >

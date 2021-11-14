@@ -3,28 +3,33 @@ import axios from "axios";
 import $ from "jquery";
 import jquery from "jquery";
 import styled from 'styled-components';
-import Listpage from "./Equipment/lp";
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import NativeSelect from '@mui/material/NativeSelect';
+//import Listpage from "./Equipment/lp";
+import EquipmentItem from "./Equipment/equipmentItem";
 import ManagerBar from './component/menubar.js';
 import DetailE from './Equipment/detailedEquipment';
 //require("bootstrap/less/bootstrap.less");
 //background - color:"#F2F2F2";
 let EquiList = styled.div`
  position: absolute;
- left: -15px;
- top: 0px;
+ left: -px;
+ top: -0px;
    width: 730px;
-   height: 470px;
+   height: 510px;
    text-align: center;
    overflow:auto;
    border-radius: 10px;
-   padding:20px;
+   padding:5px;
    margin:0 auto;
    margin-bottom:10px;
    `;
 let ListKey = styled.div`
  position: absolute;
- left: -15px;
- top: -40px;
+ left: -10px;
+ top: -55px;
    width: 670px;
    height: 100px;
    text-align: center;
@@ -46,10 +51,10 @@ let StyledBox = styled.div`
 `;
 let EquiCheck = styled.div`
    position: absolute;
-   left: 0px;
-   top: -70px;
+   left: 640px;
+   top: -80px;
    margin: 0.5px;
-   width: 700px;
+   width: 100px;
    height: 40px;
    font-size: 12pt;
    text-align: center;
@@ -61,9 +66,9 @@ let BodyBox = styled.div`
    `;
 let RowLineBox = styled.div`
     position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 690px;
+    top: -3px;
+    left: -0px;
+    width: 710px;
     height: 1.5px;
     background: black;
    `;
@@ -75,6 +80,16 @@ let ColLineBox = styled.div`
     height: 495px;
     background: black;
    `;
+let Cell = styled.li`
+   position: relative;
+   top:0px;
+   float: left;
+   height: 100%;
+   font-size: 13pt;
+   line-height: 50px;
+   list-style-type: none;
+   `;
+const KorCList = ["전체", "가슴", "등", "목", "복부", "삼두", "승모근", "어깨", "유산소", "이두", "하체", "허리", "기타"];
 class EquipmentM extends React.Component {
     // 제일 common한 state값 초기 셋팅
     constructor(props) {
@@ -84,7 +99,6 @@ class EquipmentM extends React.Component {
             loading: false,
             ItemList: [],
             flog: "전체", // 스프린트에서는 fakedata값이 있어서 그내용을 넣어두었었다.
-            activePage: 15,
         };
     }
 
@@ -115,35 +129,40 @@ class EquipmentM extends React.Component {
     };
     categoryRead = function () {
         console.log("categoryRead");
-        const CR = $('input[name="equiPartR"]:checked').val();
-        console.log(CR);
-        axios.post('http://localhost:8080/equipment/readByCategory',
-            {
-                equipmentCategorySelect: $('input[name="equiPartR"]:checked').val()
-            },
-            {
-                headers: {
-                    'Content-type': 'application/json',
-                    'Accept': 'application/json'
+        let data = $("#CateroryID").val();
+        console.log(data);
+        if (data == "전체") {
+            this.loadItem();
+        }
+        else {
+            axios.post('http://localhost:8080/equipment/readByCategory',
+                {
+                    equipmentCategorySelect: data
+                },
+                {
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Accept': 'application/json'
+                    }
                 }
-            }
-        )
-            .then((response) => {
-                console.log(response.data)
-                this.setState((prev) => ({
-                    ItemList: response.data,
-                    flog: CR
-                }));
-                console.log(CR + " done")
-            })
-            .catch((response) => {
-                this.setState({
-                    flog: CR
+            )
+                .then((response) => {
+                    console.log(response.data)
+                    this.setState((prev) => ({
+                        ItemList: response.data,
+                        flog: data
+                    }));
+                    console.log(data + " done")
+                })
+                .catch((response) => {
+                    this.setState({
+                        flog: data
+                    });
+                    console.log('Error!');
+                    console.log(response);
+                    alert("error! 해당 카테고리 조회에 실패했습니다.");
                 });
-                console.log('Error!');
-                console.log(response);
-                alert("error! 해당 카테고리 조회에 실패했습니다.");
-            });
+        }
     }
 
     componentDidMount() {
@@ -157,38 +176,66 @@ class EquipmentM extends React.Component {
                 <ManagerBar></ManagerBar>
                 <center>
                     <BodyBox>
-                        <EquiCheck>
-                            <label>전체<input type="radio" name="equiPartR" value="전체" checked={(this.state).flog === "전체" ? true : false} onClick={this.loadItem} /></label>&nbsp; &nbsp;
-                            <label>가슴<input type="radio" name="equiPartR" value="가슴" checked={(this.state).flog === "가슴" ? true : false} onClick={this.categoryRead} /></label>&nbsp; &nbsp;
-                            <label>등<input type="radio" name="equiPartR" value="등" checked={(this.state).flog === "등" ? true : false} onClick={this.categoryRead} /></label>&nbsp; &nbsp; &nbsp;
-                            <label>목<input type="radio" name="equiPartR" value="목" checked={(this.state).flog === "목" ? true : false} onClick={this.categoryRead} /></label>&nbsp; &nbsp;
-                            <label>복부<input type="radio" name="equiPartR" value="복부" checked={(this.state).flog === "복부" ? true : false} onClick={this.categoryRead} /></label>&nbsp; &nbsp;
-                            <label>삼두<input type="radio" name="equiPartR" value="삼두" checked={(this.state).flog === "삼두" ? true : false} onClick={this.categoryRead} /></label>&nbsp; &nbsp;
-                            <label>승모근<input type="radio" name="equiPartR" value="승모근" checked={(this.state).flog === "승모근" ? true : false} onClick={this.categoryRead} /></label>&nbsp; &nbsp;
-                            <label>어깨<input type="radio" name="equiPartR" value="어깨" checked={(this.state).flog === "어깨" ? true : false} onClick={this.categoryRead} /></label>&nbsp; &nbsp;
-                            <label>유산소<input type="radio" name="equiPartR" value="유산소" checked={(this.state).flog === "유산소" ? true : false} onClick={this.categoryRead} /></label>&nbsp; &nbsp;
-                            <label>이두<input type="radio" name="equiPartR" value="이두" checked={(this.state).flog === "이두" ? true : false} onClick={this.categoryRead} /></label>&nbsp; &nbsp;
-                            <label>하체<input type="radio" name="equiPartR" value="하체" checked={(this.state).flog === "하체" ? true : false} onClick={this.categoryRead} /></label>&nbsp; &nbsp;
-                            <label>허리<input type="radio" name="equiPartR" value="허리" checked={(this.state).flog === "허리" ? true : false} onClick={this.categoryRead} /></label>&nbsp; &nbsp;
-                            <label>기타<input type="radio" name="equiPartR" value="기타" checked={(this.state).flog === "기타" ? true : false} onClick={this.categoryRead} /></label>&nbsp; &nbsp;
-                        </EquiCheck>
-                        <div>
-                            <center>
-                                <ListKey>
-                                    <div >
-                                        <label style={{ float: "left", position: "relative", top: "-10px" }}>&nbsp; Name+Nth</label>
-                                        <label style={{ float: "right", position: "relative", top: "-10px" }}>Category&nbsp; &nbsp; &nbsp;</label>
-                                    </div>
-
-                                </ListKey>
-                                <RowLineBox />
-                                <EquiList>
-                                    <Listpage Itemcard={ItemList} />
-                                </EquiList>
-                            </center>
-                            <DetailE />
+                        <div style={{ position: "absolute", top: "-60px", float: "left", fontSize: "17px" }}>
+                            <img src="./icon/icon_info.png" width="18px" style={{ position: "relative", top: "-12px", float: "left" }} />
+                            <label style={{ position: "relative", top: "-16px", float: "left", fontSize: "17px" }}>&nbsp;헬스장 운동기구 관리</label><br /><br />
                         </div>
-                        <div style={{ position: "absolute", top: "400px" }}>
+                        <div style={{ position: "relative", top: "40px", left: "0px" }}>
+                            <EquiCheck>
+                                <Box sx={{ minWidth: 10 }}>
+                                    <FormControl style={{ width: "80px" }}>
+                                        <InputLabel variant="standard" htmlFor="uncontrolled-native" color="secondary">
+                                            Caterory
+                                        </InputLabel>
+                                        <NativeSelect
+                                            defaultValue={0}
+                                            inputProps={{
+                                                name: 'CateroryID',
+                                                id: 'CateroryID',
+                                            }}
+                                            color="secondary"
+                                            onChange={this.categoryRead}
+                                        >
+                                            {KorCList.map((ckl, index) => (
+                                                <option key={index} value={ckl}>
+                                                    {ckl}
+                                                </option>
+                                            ))}
+                                        </NativeSelect>
+                                    </FormControl>
+                                </Box></EquiCheck>
+                            <div>
+                                <center>
+                                    <ListKey>
+                                        <div >
+                                            <Cell style={{ textAlign: "left", position: "relative", top: "-10px", width: "190px" }}>Name</Cell>
+                                            <Cell style={{ textAlign: "left", position: "relative", top: "-10px", width: "50px" }}>Nth</Cell>
+                                            <Cell style={{ textAlign: "left", position: "relative", top: "-10px", width: "320px" }}>Category</Cell>
+                                        </div>
+
+                                    </ListKey>
+                                    <RowLineBox />
+                                    <EquiList>
+                                        <ul className="list__itemview">
+                                            {ItemList &&
+                                                ItemList.map((itemdata, insertIndex) => {
+                                                    return (
+                                                        <EquipmentItem
+                                                            key={insertIndex}
+                                                            EquipmentId={itemdata.equipmentID}
+                                                            EquipmentName={itemdata.equipmentName}
+                                                            Category={itemdata.equipmentCategoryList}
+                                                            EnthNumber={itemdata.equipmentNameNth}
+                                                        />
+                                                    );
+                                                })}
+                                        </ul>
+                                    </EquiList>
+                                </center>
+                                <DetailE />
+                            </div>
+                            <div style={{ position: "absolute", top: "400px" }}>
+                            </div>
                         </div>
                     </BodyBox>
                 </center>
@@ -196,4 +243,5 @@ class EquipmentM extends React.Component {
         )
     }
 }
+//<Listpage Itemcard={ItemList} />
 export default EquipmentM;

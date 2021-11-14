@@ -11,8 +11,8 @@ let InfoBox = styled.div`
    position: relative;
    display: block;
    float: left;
-   left: -5%;
-   width: 650px;
+   left: 0%;
+   width: 700px;
    height: 40px;
    font-size: 10pt;
    text-align: center;
@@ -21,7 +21,30 @@ let InfoBox = styled.div`
    margin:0 auto;
    margin-bottom:5px;
    `;
-
+let Cell = styled.li`
+   position: relative;
+   top:0px;
+   float: left;
+   height: 100%;
+   font-size: 13pt;
+   line-height: 50px;
+   text-align: left;
+   list-style-type: none;
+   `;
+let ButtonCus = styled.button`
+&:hover {
+    background: #406CA5;
+  }
+  background: #4D7EBF;
+   border-radius: 5px;
+   padding:5px;
+   border: 0px;
+   margin:0 auto;
+   color: white;
+   margin-bottom:10px;
+   font-size: 16px;
+   width: 85px;
+   `;
 const approvalUser = (UserApprovalId, UserApprovalName, e) => {
     console.log(UserApprovalId);
     console.log("approvalUser");
@@ -89,9 +112,10 @@ function UserApprovalItem({ key, UserApprovalId, UserApprovalName }) {
             <div>
                 <InfoBox className="component component--item_card" key={key}>
                     <input type="hidden" id="Eid" value={UserApprovalId} />
-                    <label style={{ float: 'left', fontSize: '23px' }} id="nameE">{UserApprovalId}  {UserApprovalName}</label>
-                    <div style={{ float: 'right' }}>
-                        <Button variant="btn btn-secondary" style={{ height: '40px' }} onClick={(e) => { approvalUser(UserApprovalId, UserApprovalName, e) }}>승인허가</Button>&nbsp;&nbsp;
+                    <Cell style={{ float: 'left', fontSize: '17px', width: '300px' }} id="nameE">{UserApprovalId}</Cell>
+                    <Cell style={{ float: 'left', fontSize: '17px', width: '220px' }} id="nameE">{UserApprovalName}</Cell>
+                    <div style={{ float: 'left' }}>
+                        <ButtonCus variant="btn btn-primary" style={{ height: '40px' }} onClick={(e) => { approvalUser(UserApprovalId, UserApprovalName, e) }}>승인허가</ButtonCus>&nbsp;&nbsp;
                         <Button variant="btn btn-secondary" style={{ height: '40px' }} onClick={(e) => { notApprovalUser(UserApprovalId, UserApprovalName, e) }}>승인불가</Button>
                     </div>
                 </ InfoBox >

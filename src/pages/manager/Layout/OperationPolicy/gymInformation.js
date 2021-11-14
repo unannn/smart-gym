@@ -51,7 +51,7 @@ function GymInfo({ id, name, add, phone }) {
     return (
         <div>
             <img src="./icon/icon_info.png" width="18px" style={{ position: "relative", top: "-12px", float: "left" }} />
-            <label style={{ position: "relative", top: "-16px", float: "left", fontSize: "18px" }}>&nbsp;헬스장 정보</label>
+            <label style={{ position: "relative", top: "-16px", float: "left", fontSize: "17px" }}>&nbsp;헬스장 정보</label>
             <div style={{ position: "relative", float: "left", top: "-10px" }}>
                 <TextField color="secondary" required id="standard-required" label="Gym Name" defaultValue=" " variant="standard" name="GName" size="small" style={{ width: "350px" }} /><br /><br />
                 <TextField color="secondary" required id="standard-required" label="Gym Phone Number" defaultValue=" " variant="standard" name="GPhone" size="small" style={{ width: "350px" }} /><br /><br />
