@@ -85,7 +85,7 @@ const StyledEquipBoard = styled.div`
     background-color: #E0E0E0;
     margin: 0 auto;
     width:100%;
-    max-width:800px;
+    max-width:600px;
     height:500px;
     max-height:900px;
     margin-top:20px;

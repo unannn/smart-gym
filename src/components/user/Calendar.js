@@ -110,7 +110,7 @@ class Calendar extends Component {
 
     render() {
         //요일 이름
-        const week = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const week = ['일', '월', '화', '수', '목', '금', '토'];
         const tableHead = week.map(day => <TH>{day}</TH>);
         //날짜 출력
         const selectedMonthDays = this.getCalendarDayList(this.state.year, this.state.month);
@@ -154,11 +154,14 @@ class Calendar extends Component {
 
 
 var TH = styled.th`
+    padding-bottom:3px;
+    padding-top:3px;
     width:90px;
     background-color:#404040;
     color:white;
-    border:1px #909090 solid;
-
+    
+    font-size:16px;
+    font-weight:590;
 `;
 
 

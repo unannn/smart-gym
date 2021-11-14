@@ -129,6 +129,7 @@ var StyledEquipLI = styled.li`
     border:1px;
     border-color:black;
     display:inline;
+    /* font-weight:550; */
 `;
 var StyledEquipUL = styled.ul`
     margin-bottom:0px;
