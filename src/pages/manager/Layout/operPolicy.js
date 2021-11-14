@@ -327,7 +327,7 @@ class OperPolicy extends React.Component {
                         </GymOperinfoBox>
                         <div style={{ position: "absolute", left: "570px", top: "-67px" }}>
                             <img src="./icon/icon_info.png" width="18px" style={{ position: "relative", top: "-12px", float: "left" }} />
-                            <label style={{ position: "relative", top: "-16px", float: "left", fontSize: "18px" }}>&nbsp;휴무일 관리</label><br /><br />
+                            <label style={{ position: "relative", top: "-16px", float: "left", fontSize: "17px" }}>&nbsp;휴무일 관리</label><br /><br />
                         </div>
                         <CalendarBox>
                             <Calendar onClickDate={this.selectDate} selectedDate={this.state}

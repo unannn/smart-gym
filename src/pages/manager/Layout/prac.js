@@ -1,19 +1,42 @@
 import React from 'react';
 import axios from "axios";
-import { DataGrid } from '@material-ui/data-grid';
 import $ from "jquery";
 import jquery from "jquery";
 import styled from 'styled-components';
-import Listpage from "./Equipment/lp";
+import { Button } from 'react-bootstrap';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import NativeSelect from '@mui/material/NativeSelect';
 import ManagerBar from './component/menubar.js';
-import DetailE from './Equipment/detailedEquipment';
-import CenteredTabs from './component/menubar_cus'
+import UserListpage from "./UserManage/ulp";
+import DetailU from "./UserManage/detailedUser";
+import { DataGrid } from '@material-ui/data-grid';
+//background - color:#F2F2F2;
+let SearchBox = styled.input`
+ position: relative;
+ background-color: gray;
+	background-position:left top;
+	padding-top:5px;
+	font-family:tahoma;
+	font-size:16px;
+	color:#FFFFFF;
+    resize:none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    border-width: 0px;
+    width:400px;
+    height:38px;
+    top: -130px;
+    left: 18px;
+   `;
+
 let EquiList = styled.div`
- position: absolute;
- left: -30px;
- top: -50px;
-   width: 770px;
-   height: 540px;
+   position: relative;
+   left: -250px;
+   top: -139px;
+   width: 700px;
+   height: 440px;
    text-align: center;
    overflow:auto;
    border-radius: 10px;
@@ -22,105 +45,187 @@ let EquiList = styled.div`
    margin-bottom:10px;
    `;
 let ListKey = styled.div`
- position: absolute;
- left: 15px;
- top: -40px;
-   width: 670px;
-   height: 100px;
+   position: relative;
+   top: -119px;
+   left: -250px;
+   width: 600px;
+   height: 50px;
    text-align: center;
+   overflow:auto;
    border-radius: 5px;
-   padding:20px;
+   padding: 16px;
    margin:0 auto;
    margin-bottom:10px;
-   `;
-let StyledBox = styled.div`
-    background-color:#F2F2F2;
-    border-radius: 10px;
-    padding:20px;
-    margin:0 auto;
-    margin-bottom:10px;
-    min-width:350px;
-    max-width: 500px;
-    width:98%;
-    text-align:center; 
-`;
-let EquiCheck = styled.div`
-   position: absolute;
-   left: 0px;
-   top: -70px;
-   margin: 0.5px;
-   width: 700px;
-   height: 40px;
-   font-size: 12pt;
-   text-align: center;
+   font-size: 20px;
    `;
 let BodyBox = styled.div`
    position: relative;
    width: 1200px;
    top: 60px;
    `;
+let FilterBox = styled.div`
+   position: relative;
+   width: 100px;
+   height: 70px;
+   top: -70px;
+   left: -280px;
+   `;
 let RowLineBox = styled.div`
     position: absolute;
-    top: 10px;
-    left: 20px;
-    width: 615px;
+    top: 45px;
+    left: 50px;
+    width: 600px;
     height: 1.5px;
     background: black;
    `;
-let ColLineBox = styled.div`
-    position: absolute;
-    top: 55px;
-    left: 680px;
-    width: 1.5px;
-    height: 495px;
-    background: black;
-   `;
-let Num = 0;
-const CList = ["chest", "back", "neck", "stomach", "triceps", "trapezius", "shoulder", "aerobic", "biceps", "lower_body", "waist", "etc"];
-const KorCList = ["가슴", "등", "목", "복부", "삼두", "승모근", "어깨", "유산소", "이두", "하체", "허리", "기타"];
-let aaa = "equipmentCategoryAerobic";
+let aut = "";
+let autText = "";
 class DataTable extends React.Component {
     constructor(props) {
         super(props);
-        this.categoryRead = this.categoryRead.bind(this);
+        this.filterSearch = this.filterSearch.bind(this);
         this.state = {
             loading: false,
             ItemList: [],
             flog: "전체", // 스프린트에서는 fakedata값이 있어서 그내용을 넣어두었었다.
-            activePage: 15,
         };
     }
     loadItem = async () => {
-        // Json Data 불러오기
-        axios.get('http://localhost:8080/equipment/readAll') // json을 가져온다음
+        axios.get('http://localhost:8080/allowedUser/readAll')
             .then((data) => {
-                // data라는 이름으로 json 파일에 있는 값에 state값을 바꿔준다.
-                console.log(data.data)
+                console.log(data.data.data)
                 this.setState({
-                    loading: true, // load되었으니 true,
-                    ItemList: data.data,
-                    flog: "전체" // 비어있던 Itemlist는 data에 Item객체를 찾아넣어준다. ( Item : json파일에 있는 항목)
+                    loading: true,
+                    ItemList: data.data.data,
+                    flog: "전체"
                 });
-
-                for (let i = 0; i < data.data.length; i++) {
-                    (data.data[i]).id = i;
+                for (let i = 0; i < data.data.data.length; i++) {
+                    (data.data.data[i]).id = i;
                 }
             })
             .catch(e => {
-                // json이 로드되지않은 시간엔
-                console.error(e); // 에러표시
+                console.error(e);
                 this.setState({
-                    loading: false // 이때는 load 가 false 유지
+                    loading: false
                 });
-                alert("error! 운동기구 목록 조회에 실패했습니다.");
+                alert("error! 사용자 목록 조회에 실패했습니다.");
             });
     };
-    detailedRead = function (EquipmentId, e) {
-        console.log(e.row.equipmentID);
-        console.log("detailed Read");
+    filterSearch = function () {
+        console.log("rePrint");
+        console.log($("#FilterID").val());
+        console.log($("#searchValue").val());
+        if ($("#FilterID").val() == 0)//All
+        {
+            this.loadItem();
+        }
+        else if ($("#searchValue").val() == "") {
+            alert("검색어가 비어져 있습니다. \n검색어를 입력해주세요.");
+        }
+        else {
+            if ($("#FilterID").val() == 1)//Id
+            {
+                axios.post('http://localhost:8080/allowedUser/readByID',
+                    {
+                        userID: $("#searchValue").val()
+                    },
+                    {
+                        headers: {
+                            'Content-type': 'application/json',
+                            'Accept': 'application/json'
+                        }
+                    }
+                )
+                    .then((response) => {
+                        console.log(response.data.data)
+                        this.setState((prev) => ({
+                            loading: true, // load되었으니 true,
+                            ItemList: response.data.data,
+                        }));
+                    })
+                    .catch((response) => {
+                        console.log('Error!');
+                        console.log(response);
+                        alert("error! 해당 ID에 대해 검색에 실패했습니다.");
+                    });
+            }
+            else {
+                axios.post('http://localhost:8080/allowedUser/readByName',
+                    {
+                        userName: $("#searchValue").val()
+                    },
+                    {
+                        headers: {
+                            'Content-type': 'application/json',
+                            'Accept': 'application/json'
+                        }
+                    }
+                )
+                    .then((response) => {
+                        console.log(response.data.data)
+                        this.setState((prev) => ({
+                            loading: true, // load되었으니 true,
+                            ItemList: response.data.data,
+                        }));
+                    })
+                    .catch((response) => {
+                        console.log('Error!');
+                        console.log(response);
+
+                        alert("error! 해당 이름에 대해 검색에 실패했습니다.");
+                    });
+            }
+        }
+    }
+    approvalAuthority = function (e) {
+        aut = "";
+        autText = "";
+        console.log(e);
+        //console.log("approvalAuthority");
+        if (e.target.id === "O") {
+            aut = "X";
+            autText = "예약불가";
+        }
+        else {
+            aut = "O";
+            autText = "예약가능";
+        }
+        /*if (window.confirm("ID: " + e.row.userID +
+            "\nName: " + e.row.userName + "\n해당 사용자의 예약 권한을 " + autText + " 상태로 변경하시겠습니까?")) {
+            axios.post('http://localhost:8080/allowedUser/reservationAuthorityUpdate',
+                {
+                    userID: e.row.userID,
+                    allowedUserReservationAuthority: aut
+                },
+                {
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                }
+            )
+                .then((response) => {
+                    console.log(response.data);
+                    alert("예약 권한이 변경되었습니다.");
+                    window.location.reload();
+                })
+                .catch((response) => {
+                    console.log('Error!');
+                    alert("error! 예약 권한을 변경할 수 없습니다.");
+                });
+        }
+        else {
+            alert("예약 권한 변경이 취소되었습니다.");
+        }*/
+    }
+
+    deleteUser = function (e) {
+        console.log(e.row.userID);
+        console.log("deleteUser");
+        /*
         axios.post('http://localhost:8080/equipment/detailedRead',
             {
-                equipmentID: e.row.equipmentID
+                equipmentID: EquipmentId
             },
             {
                 headers: {
@@ -131,76 +236,11 @@ class DataTable extends React.Component {
         )
             .then((response) => {
                 console.log(response.data);
-                /*for (var key in (response.data[0])) {
-                    console.log(key);//이름
-                    console.log((response.data[0])[key]);//값
-                }*/
-                let i = -1;
-                for (var key in (response.data[0])) {
-                    if ((response.data[0])[key] === 1) {
-                        $("input:checkbox[name='equiPart']:checkbox[value=" + CList[i] + "]").prop('checked', true);
-                    }
-                    else {
-                        $("input:checkbox[name='equiPart']:checkbox[value=" + CList[i] + "]").prop('checked', false);
-                    }
-                    i = i + 1;
-                }
-                localStorage.setItem("detilID", (response.data[0]).equipmentCategoryID.equipmentID);
-                $("#Eid").val((response.data[0]).equipmentCategoryID.equipmentID);
-                $("#Ename").val((response.data[0]).equipmentCategoryID.equipmentName);
-                $("#ENth").val((response.data[0]).equipmentCategoryID.equipmentNameNth);
-                //$("#imageFileOpenInput").val((response.data[0]).equipmentCategoryID.equipmentImage);
-                $("#ES3").val((response.data[0]).equipmentCategoryID.equipmentImage);
-                $("#Eimg").attr("src", (response.data[0]).equipmentCategoryID.equipmentImage);
-                if ((response.data[0]).equipmentCategoryID.equipmentAvailable === 1) {
-                    $("input:radio[name='EquiState']:radio[value='on']").prop('checked', true);
-                    $("input:radio[name='EquiState']:radio[value='off']").prop('checked', false);
-                }
-                else {
-                    $("input:radio[name='EquiState']:radio[value='on']").prop('checked', false);
-                    $("input:radio[name='EquiState']:radio[value='off']").prop('checked', true);
-                }
+     
             })
             .catch((response) => {
-                console.log('Error!');
-                alert("error! 해당 운동기구에 대한 조회를 할 수 없습니다.\n페이지를 새로고침합니다.");
-                //window.location.reload();
-            });
-    }
-    categoryRead = function () {
-        console.log("categoryRead");
-        const CR = $('input[name="equiPartR"]:checked').val();
-        console.log(CR);
-        axios.post('http://localhost:8080/equipment/readByCategory',
-            {
-                equipmentCategorySelect: $('input[name="equiPartR"]:checked').val()
-            },
-            {
-                headers: {
-                    'Content-type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            }
-        )
-            .then((response) => {
-                console.log(response.data)
-                this.setState((prev) => ({
-                    ItemList: response.data,
-                    flog: CR
-                }));
-                for (let i = 0; i < response.data.length; i++) {
-                    (response.data[i]).id = i;
-                }
-                console.log(CR + " done")
-            })
-            .catch((response) => {
-                this.setState({
-                    flog: CR
-                });
-                console.log('Error!');
-                console.log(response);
-                alert("error! 해당 카테고리 조회에 실패했습니다.");
-            });
+                console.log('Error!')
+            });*/
     }
     componentDidMount() {
         this.loadItem();
@@ -208,53 +248,75 @@ class DataTable extends React.Component {
     render() {
         const { ItemList } = this.state;
         const columns = [
-            { field: 'equipmentName', headerName: 'equipmentName', width: 200 },
-            { field: 'equipmentNameNth', headerName: 'Nth', width: 120, },
+            { field: 'userID', headerName: 'userID', width: 240 },
+            { field: 'userName', headerName: 'userName', width: 240, },
             {
-                field: 'equipmentCategoryList', headerName: 'Category', width: 400
+                field: 'allowedUserReservationAuthority', headerName: 'Authority', width: 150,
             },
         ];
-
+        aut = "";
+        //console.log(ItemList.row.UserAuthority);
+        /* if (ItemList.row.UserAuthority === "O") {
+             aut = "가능";
+         }
+         else {
+             aut = "불가";
+         }*/
         return (
             <div>
                 <ManagerBar></ManagerBar>
                 <center>
                     <BodyBox>
-                        <EquiCheck>
-                            <label>전체<input type="radio" name="equiPartR" value="전체" checked={(this.state).flog === "전체" ? true : false} onClick={this.loadItem} /></label>&nbsp; &nbsp;
-                            <label>가슴<input type="radio" name="equiPartR" value="가슴" checked={(this.state).flog === "가슴" ? true : false} onClick={this.categoryRead} /></label>&nbsp; &nbsp;
-                            <label>등<input type="radio" name="equiPartR" value="등" checked={(this.state).flog === "등" ? true : false} onClick={this.categoryRead} /></label>&nbsp; &nbsp; &nbsp;
-                            <label>목<input type="radio" name="equiPartR" value="목" checked={(this.state).flog === "목" ? true : false} onClick={this.categoryRead} /></label>&nbsp; &nbsp;
-                            <label>복부<input type="radio" name="equiPartR" value="복부" checked={(this.state).flog === "복부" ? true : false} onClick={this.categoryRead} /></label>&nbsp; &nbsp;
-                            <label>삼두<input type="radio" name="equiPartR" value="삼두" checked={(this.state).flog === "삼두" ? true : false} onClick={this.categoryRead} /></label>&nbsp; &nbsp;
-                            <label>승모근<input type="radio" name="equiPartR" value="승모근" checked={(this.state).flog === "승모근" ? true : false} onClick={this.categoryRead} /></label>&nbsp; &nbsp;
-                            <label>어깨<input type="radio" name="equiPartR" value="어깨" checked={(this.state).flog === "어깨" ? true : false} onClick={this.categoryRead} /></label>&nbsp; &nbsp;
-                            <label>유산소<input type="radio" name="equiPartR" value="유산소" checked={(this.state).flog === "유산소" ? true : false} onClick={this.categoryRead} /></label>&nbsp; &nbsp;
-                            <label>이두<input type="radio" name="equiPartR" value="이두" checked={(this.state).flog === "이두" ? true : false} onClick={this.categoryRead} /></label>&nbsp; &nbsp;
-                            <label>하체<input type="radio" name="equiPartR" value="하체" checked={(this.state).flog === "하체" ? true : false} onClick={this.categoryRead} /></label>&nbsp; &nbsp;
-                            <label>허리<input type="radio" name="equiPartR" value="허리" checked={(this.state).flog === "허리" ? true : false} onClick={this.categoryRead} /></label>&nbsp; &nbsp;
-                            <label>기타<input type="radio" name="equiPartR" value="기타" checked={(this.state).flog === "기타" ? true : false} onClick={this.categoryRead} /></label>&nbsp; &nbsp;
-                        </EquiCheck>
                         <div>
+                            <FilterBox>
+                                <Box sx={{ minWidth: 10 }}>
+                                    <FormControl style={{ width: "80px" }}>
+                                        <InputLabel variant="standard" htmlFor="uncontrolled-native" color="secondary">
+                                            Filter
+                                        </InputLabel>
+                                        <NativeSelect
+                                            defaultValue={0}
+                                            inputProps={{
+                                                name: 'FilterID',
+                                                id: 'FilterID',
+                                            }}
+                                            color="secondary"
+                                        >
+                                            <option value={0}>ALL</option>
+                                            <option value={1}>ID</option>
+                                            <option value={2}>Name</option>
+                                        </NativeSelect>
+                                    </FormControl>
+                                </Box>
+                            </FilterBox>
+                            <SearchBox id="searchValue" name="searchValue" />&nbsp; &nbsp; &nbsp; &nbsp;
+                            <Button color="white" variant="" style={{ position: "relative", top: "-133px", left: "6px" }} onClick={this.filterSearch}><img src="./icon/icon_search.png" width="35px" /></Button>
                             <center>
+                                <ListKey>
+                                    <div >
+                                        <label style={{ float: "left", position: "relative", top: "-10px" }}>&nbsp; ID Name</label>
+                                        <label style={{ float: "right", position: "relative", top: "-10px" }}>Manage&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </label>
+                                    </div>
+                                </ListKey>
                                 <EquiList>
                                     <DataGrid
                                         rows={ItemList}
                                         columns={columns}
                                         pageSize={7}
                                         rowsPerPageOptions={[5]}
-                                        onCellClick={(e) => { this.detailedRead(ItemList[Num].equipmentID, e) }}
+                                        HideFooterSelectedRowCount={true}
+                                        font="30px"
                                     />
                                 </EquiList>
+                                <RowLineBox />
                             </center>
-                            <DetailE />
-                        </div>
-                        <div style={{ position: "absolute", top: "400px" }}>
+                            <DetailU />
                         </div>
                     </BodyBox>
                 </center>
-            </div>
+            </div >
         )
     }
 }
+
 export default DataTable;

@@ -26,8 +26,8 @@ class ManagerBar extends React.Component {
                     <Link to="/manager" style={{ color: "black" }}>
                         <img src="./image/Logo.png" width="200px" height="50px" /><br />
                     </Link>
-                    <div style={{ position: "relative", top: "0px" }}>
-                        <hr width="100%" />
+                    <div style={{ position: "relative", top: "0px", overflow: 'visible' }}>
+                        <hr width="100*vw" />
                     </div>
                     <div style={{ width: '1300px', position: "relative", top: "-17px" }}>
                         <Link to="/manager" style={{ color: "black" }}>
@@ -67,15 +67,17 @@ class ManagerBar extends React.Component {
                                 운영정책 관리
                             </MenuBar>
                         </Link>
-                        <MenuBar>
-                            이력조회
-                        </MenuBar>
-                        <Link to="/statistic" style={{ color: "black" }}>
+                        <Link to="reservationLog" style={{ color: "black" }}>
                             <MenuBar>
-                                통계 그래프
+                                이력조회
                             </MenuBar>
                         </Link>
-                        <Link to="prac" style={{ color: "black" }}>
+                        <Link to="/statistic" style={{ color: "black" }}>
+                            <MenuBar>
+                                통계
+                            </MenuBar>
+                        </Link>
+                        <Link to="esl" style={{ color: "black" }}>
                             <MenuBar>
                                 ESL장치 관리
                             </MenuBar>

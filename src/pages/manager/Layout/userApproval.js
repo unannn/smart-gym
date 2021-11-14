@@ -32,22 +32,23 @@ let SearchBox = styled.input`
 let EquiList = styled.div`
  position: relative;
 top: -140px;
-   width: 700px;
+left: 10px;
+   width: 900px;
    height: 440px;
    text-align: center;
    overflow:auto;
    border-radius: 10px;
-   padding:20px;
+   padding:5px;
    margin:0 auto;
    margin-bottom:10px;
    `;
 let ListKey = styled.div`
  position: relative;
-top: -120px;
-   width: 710px;
+top: -125px;
+left: 28px;
+   width: 900px;
    height: 50px;
    text-align: center;
-   overflow:auto;
    border-radius: 5px;
    padding: 16px;
    margin:0 auto;
@@ -68,11 +69,21 @@ let FilterBox = styled.div`
    `;
 let RowLineBox = styled.div`
     position: absolute;
-    top: 5px;
-    left: 8px;
-    width: 660px;
+    top: 45px;
+    left: 170px;
+    width: 740px;
     height: 1.5px;
     background: black;
+   `;
+let Cell = styled.li`
+   position: relative;
+   top:0px;
+   float: left;
+   height: 100%;
+   font-size: 13pt;
+   line-height: 50px;
+   text-align: left;
+   list-style-type: none;
    `;
 class UserA extends React.Component {
     constructor(props) {
@@ -181,7 +192,11 @@ class UserA extends React.Component {
                 <ManagerBar></ManagerBar>
                 <center>
                     <BodyBox>
-                        <div>
+                        <div style={{ position: "absolute", top: "-60px", float: "left", fontSize: "17px" }}>
+                            <img src="./icon/icon_info.png" width="18px" style={{ position: "relative", top: "-12px", float: "left" }} />
+                            <label style={{ position: "relative", top: "-16px", float: "left", fontSize: "17px" }}>&nbsp;헬스장 회원가입 승인</label><br /><br />
+                        </div>
+                        <div style={{ position: "relative", top: "40px", left: "30px" }}>
                             <FilterBox>
                                 <Box sx={{ minWidth: 10 }}>
                                     <FormControl style={{ width: "80px" }}>
@@ -208,14 +223,15 @@ class UserA extends React.Component {
                             <center>
                                 <ListKey>
                                     <div >
-                                        <label style={{ float: "left", position: "relative", top: "-10px" }}>&nbsp; ID Name</label>
-                                        <label style={{ float: "right", position: "relative", top: "-10px" }}>Approval&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </label>
+                                        <Cell style={{ float: "left", position: "relative", top: "-10px", width: '300px' }}>ID</Cell>
+                                        <Cell style={{ float: "left", position: "relative", top: "-10px", width: '280px' }}>Name</Cell>
+                                        <Cell style={{ position: "relative", top: "-10px" }}>Approval</Cell>
                                     </div>
                                 </ListKey>
                                 <EquiList>
                                     <UserListpage Itemcard={ItemList} />
-                                    <RowLineBox />
                                 </EquiList>
+                                <RowLineBox />
                             </center>
                         </div>
                     </BodyBox>

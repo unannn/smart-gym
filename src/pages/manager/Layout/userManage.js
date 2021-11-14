@@ -11,6 +11,7 @@ import NativeSelect from '@mui/material/NativeSelect';
 import ManagerBar from './component/menubar.js';
 import UserListpage from "./UserManage/ulp";
 import DetailU from "./UserManage/detailedUser";
+
 //background - color:#F2F2F2;
 let SearchBox = styled.input`
  position: relative;
@@ -32,25 +33,24 @@ let SearchBox = styled.input`
 
 let EquiList = styled.div`
    position: relative;
-   left: -250px;
+   left: -275px;
    top: -139px;
-   width: 600px;
+   width: 700px;
    height: 440px;
    text-align: center;
    overflow:auto;
    border-radius: 10px;
-   padding:20px;
+   padding:5px;
    margin:0 auto;
    margin-bottom:10px;
    `;
 let ListKey = styled.div`
    position: relative;
-   top: -119px;
-   left: -250px;
-   width: 600px;
+   top: -125px;
+   left: -290px;
+   width: 700px;
    height: 50px;
    text-align: center;
-   overflow:auto;
    border-radius: 5px;
    padding: 16px;
    margin:0 auto;
@@ -72,10 +72,20 @@ let FilterBox = styled.div`
 let RowLineBox = styled.div`
     position: absolute;
     top: 45px;
-    left: 50px;
-    width: 600px;
+    left: -40px;
+    width: 710px;
     height: 1.5px;
     background: black;
+   `;
+let Cell = styled.li`
+   position: relative;
+   top:0px;
+   float: left;
+   height: 100%;
+   font-size: 13pt;
+   line-height: 50px;
+   text-align: left;
+   list-style-type: none;
    `;
 class UserM extends React.Component {
     constructor(props) {
@@ -181,7 +191,11 @@ class UserM extends React.Component {
                 <ManagerBar></ManagerBar>
                 <center>
                     <BodyBox>
-                        <div>
+                        <div style={{ position: "absolute", top: "-60px", float: "left", fontSize: "17px" }}>
+                            <img src="./icon/icon_info.png" width="18px" style={{ position: "relative", top: "-12px", float: "left" }} />
+                            <label style={{ position: "relative", top: "-16px", float: "left", fontSize: "17px" }}>&nbsp;헬스장 회원 관리</label><br /><br />
+                        </div>
+                        <div style={{ position: "relative", top: "40px", left: "30px" }}>
                             <FilterBox>
                                 <Box sx={{ minWidth: 10 }}>
                                     <FormControl style={{ width: "80px" }}>
@@ -208,8 +222,9 @@ class UserM extends React.Component {
                             <center>
                                 <ListKey>
                                     <div >
-                                        <label style={{ float: "left", position: "relative", top: "-10px" }}>&nbsp; ID Name</label>
-                                        <label style={{ float: "right", position: "relative", top: "-10px" }}>Manage&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </label>
+                                        <Cell style={{ float: "left", position: "relative", top: "-10px", width: '300px' }}>&nbsp;ID</Cell>
+                                        <Cell style={{ float: "left", position: "relative", top: "-10px", width: '180px' }}>Name</Cell>
+                                        <Cell style={{ float: "left", position: "relative", left: '80px', top: "-10px" }}>Manage</Cell>
                                     </div>
                                 </ListKey>
                                 <EquiList>

@@ -1,27 +1,27 @@
 import React, { Component } from "react";
-import EquipmentItemL from "./equipmentItemL";
+import ReservationItem from "./reservationItem";
 import axios from "axios";
 import $ from "jquery";
 import jquery from 'jquery';
-class Listpage extends Component {
+class RListpage extends Component {
     id = 1;
     state = {};
     render() {
         const { Itemcard } = this.props;
-        const api = this.props.apiNumber;
-        console.log(api);
+        console.log(Itemcard);
         return (
             <ul className="list__itemview">
                 {Itemcard &&
                     Itemcard.map((itemdata, insertIndex) => {
                         return (
-                            <EquipmentItemL
+                            <ReservationItem
                                 key={insertIndex}
-                                EquipmentId={itemdata.equipmentID}
+                                ReservatopmId={itemdata.reservationID}
                                 EquipmentName={itemdata.equipmentName}
-                                Category={itemdata.equipmentCategoryList}
-                                EnthNumber={itemdata.equipmentNameNth}
-                                apiNumber={api}
+                                EquipmentNameNth={itemdata.equipmentNameNth}
+                                UserID={itemdata.userID}
+                                StartTime={itemdata.startTime}
+                                EndTime={itemdata.endTime}
                             />
                         );
                     })}
@@ -29,4 +29,4 @@ class Listpage extends Component {
         );
     }
 }
-export default Listpage;
+export default RListpage;

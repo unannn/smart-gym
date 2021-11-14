@@ -4,12 +4,13 @@ import styled from 'styled-components';
 import $ from "jquery";
 import jquery from "jquery";
 import axios from "axios";
+import FindAccountModal from '../../../../components/user/Modal';
 let EquiInfo = styled.div`
    position: absolute;
-   top: -70px;
-   left: 750px;
+   top: -50px;
+   left: 800px;
    width: 450px;
-   height: 540px;
+   height: 560px;
    font-size: 10pt;
    text-align: center;
    border: 2.5px solid gray;
@@ -35,9 +36,9 @@ let InfoInput = styled.input`
 let ButtonBox = styled.div`
    position: relative;
    margin: 0.5px;
-   top: -5px;
-   left: -10px;
-   width: 430px;
+   top: -590px;
+   left: 295px;
+   width: 150px;
    height: 45px;
    font-size: 10pt;
    text-align: center;
@@ -86,6 +87,7 @@ class DetailE extends React.Component {
         formData.append('equipmentInfoUpdateDTO.equipmentNameNth', $("#ENth").val());
         formData.append('equipmentImage', fileInput.files[0]);
         formData.append('equipmentInfoUpdateDTO.equipmentAvailable', flag);
+        formData.append('equipmentInfoUpdateDTO.equipmentQRCode', $('#Eurl').val());
         console.log("update");//axios
         for (let i = 0; i < 12; i++) {
             if ($("input:checkbox[name='equiPart']:checkbox[value=" + CList[i] + "]").is(":checked") == true) {
@@ -94,7 +96,7 @@ class DetailE extends React.Component {
             }
         }
         formData.append('equipmentInfoUpdateDTO.equipmentCategoryList', Ccategory);
-        /*for (var key of formData.keys()) {
+        for (var key of formData.keys()) {
 
             console.log(key);
 
@@ -104,11 +106,12 @@ class DetailE extends React.Component {
 
             console.log(value);
 
-        }*/
+        }
         if (window.confirm("해당 운동기구 정보를 수정하시겠습니까?\nName: " + $("#Ename").val() +
             "\nNth: " + $("#ENth").val() +
             "\nAvailable: " + textFlag +
-            "\nCategory: " + Ccategory)) {
+            "\nCategory: " + Ccategory +
+            "\nurl: " + $("#Eurl").val())) {
             axios.post('http://localhost:8080/equipment/update', formData,
                 {
                     headers: {
@@ -212,6 +215,8 @@ class DetailE extends React.Component {
                     <InfoInput type="text" name="Ename" id="Ename" />&nbsp;&nbsp;&nbsp;
                     <label>nth: </label>
                     <InfoInput type="text" name="ENth" id="ENth" style={{ width: "40px" }} /><br />
+                    <label>url: </label>
+                    <InfoInput type="text" name="Eurl" id="Eurl" style={{ width: "320px" }} /><br />
                     <label>State:
                         <label>On
                             <input type="radio" name="EquiState" value="on" />
@@ -237,8 +242,8 @@ class DetailE extends React.Component {
                     <input type="hidden" id="Eid" name="Eid" />
                     <input type="hidden" id="Ecategory" name="Ecategory" />
                     <ButtonBox>
-                        <Button variant="btn btn-secondary" onClick={this.updateEquipment} style={{ float: 'right' }}>수정</Button>
-                        <Button variant="btn btn-secondary" onClick={this.deleteEquipment} style={{ float: 'left' }}>삭제</Button>
+                        <Button variant="btn btn-secondary" onClick={this.updateEquipment}>수정</Button>&nbsp;
+                        <Button variant="btn btn-secondary" onClick={this.deleteEquipment}>삭제</Button>
                     </ButtonBox>
                 </EquiInfo>
             </div>

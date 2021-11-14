@@ -12,7 +12,7 @@ let InfoBox = styled.div`
    display: block;
    float: left;
    left: -5%;
-   width: 550px;
+   width: 680px;
    height: 40px;
    font-size: 10pt;
    text-align: center;
@@ -21,7 +21,44 @@ let InfoBox = styled.div`
    margin:0 auto;
    margin-bottom:5px;
    `;
-
+let Cell = styled.li`
+   position: relative;
+   top:0px;
+   float: left;
+   height: 100%;
+   font-size: 13pt;
+   line-height: 50px;
+   text-align: left;
+   list-style-type: none;
+   `;
+let AButtonCus = styled.button`
+&:hover {
+    background: #4B7552;
+  }
+  background: #4EA45C;
+   border-radius: 5px;
+   padding:5px;
+   border: 0px;
+   margin:0 auto;
+   color: white;
+   margin-bottom:10px;
+   font-size: 16px;
+   width: 85px;
+   `;
+let BButtonCus = styled.button`
+&:hover {
+    background: #A54048;
+  }
+  background: #BD4751;
+   border-radius: 5px;
+   padding:5px;
+   border: 0px;
+   margin:0 auto;
+   color: white;
+   margin-bottom:10px;
+   font-size: 16px;
+   width: 85px;
+   `;
 const approvalAuthority = (UserId, UserName, UserAuthority, e) => {
     let aut = "";
     let autText = "";
@@ -89,21 +126,28 @@ const deleteUser = (UserId, e) => {
 }
 function UserItem({ key, UserId, UserName, UserAuthority }) {
     let aut = "";
+    let buttonText = "";
     console.log(UserAuthority);
+    let approvalButton = null;
     if (UserAuthority === "O") {
         aut = "가능";
+        buttonText = 'btn btn-success';
+        approvalButton = <AButtonCus variant={buttonText} style={{ height: '40px' }} onClick={(e) => { approvalAuthority(UserId, UserName, UserAuthority, e) }}>예약{aut}</AButtonCus>;
     }
     else {
         aut = "불가";
+        buttonText = 'btn btn-danger';
+        approvalButton = <BButtonCus variant={buttonText} style={{ height: '40px' }} onClick={(e) => { approvalAuthority(UserId, UserName, UserAuthority, e) }}>예약{aut}</BButtonCus>;
     }
     return (
         <div>
             <div>
                 <InfoBox className="component component--item_card" key={key}>
                     <input type="hidden" id="Eid" value={UserId} />
-                    <label style={{ float: 'left', fontSize: '23px' }} id="nameE">{UserId} {UserName}</label>
-                    <div style={{ float: 'right' }}>
-                        <Button variant="btn btn-secondary" style={{ height: '40px' }} onClick={(e) => { approvalAuthority(UserId, UserName, UserAuthority, e) }}>예약{aut}</Button>&nbsp;&nbsp;
+                    <Cell style={{ fontSize: '17px', width: '300px' }} id="userid">{UserId}</Cell>
+                    <Cell style={{ fontSize: '17px', width: '200px' }} id="username">{UserName}</Cell>
+                    <div style={{ float: 'left' }}>
+                        {approvalButton}&nbsp;&nbsp;
                         <Button variant="btn btn-secondary" style={{ height: '40px' }} onClick={(e) => { deleteUser(UserId, e) }}>회원탈퇴</Button>
                     </div>
                 </ InfoBox >

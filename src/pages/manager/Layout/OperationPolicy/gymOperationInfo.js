@@ -69,7 +69,7 @@ function StaticTimePickerLandscape({ id, start, end, RholiyD, reserveD }) {
     return (
         <div>
             <img src="./icon/icon_info.png" width="18px" style={{ position: "relative", top: "-12px", float: "left" }} />
-            <label style={{ position: "relative", top: "-16px", float: "left", fontSize: "18px" }}>&nbsp;헬스장 운영정보</label><br /><br />
+            <label style={{ position: "relative", top: "-16px", float: "left", fontSize: "17px" }}>&nbsp;헬스장 운영정보</label><br /><br />
 
             <div style={{ position: "relative", top: "-10px", float: "left" }}>
                 < Stack component="form" noValidate spacing={3} style={{ display: "inline" }}>
