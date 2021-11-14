@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from "styled-components";
 
 class EquipList extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -11,14 +12,14 @@ class EquipList extends Component {
     }
     getEquipList() {
         // 나중에 아이디 적용할 것
-        const selectedEquipList = this.state.equipmentList.map((equip) => <EquipmentLI onClick={this.props.openEquipRezModal}>{equip}</EquipmentLI>);
+        const selectedEquipList = this.state.equipmentList.map((equip) => <EquipmentLI key={this.state.selectedCategory + "-" + equip} onClick={this.props.openEquipRezModal}>{equip}</EquipmentLI>);
 
         return selectedEquipList;
     }
 
     getCategoryList() {
         // 나중에 아이디 적용할 것
-        const selectedEquipList = equipList.map((equip) => <CategoryLI id={equip.category} onClick={this.clickCategory}>{equip.category}</CategoryLI>);
+        const selectedEquipList = equipList.map((equip) => <CategoryLI key={equip.category} onClick={this.clickCategory}>{equip.category}</CategoryLI>);
 
         return selectedEquipList;
     }
@@ -36,6 +37,7 @@ class EquipList extends Component {
             equipmentList: equipList[i].equips
         })
     }
+
     render() {
         return (
             <EquipListDIV>
