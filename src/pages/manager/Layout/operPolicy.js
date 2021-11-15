@@ -138,7 +138,21 @@ class OperPolicy extends React.Component {
 
     holiyCreate = function () {
         console.log("holiyCreate");
-        if (window.confirm("Selected Date: " + selectedDay +
+        let year = "";
+        let month = "";
+        let day = "";
+        for (let i = 0; i < selectedDay.length; i++) {
+            if (i < 4) {
+                year = year + selectedDay[i];
+            }
+            else if (i < 6) {
+                month = month + selectedDay[i];
+            }
+            else {
+                day = day + selectedDay[i];
+            }
+        }
+        if (window.confirm("Selected Date: " + year + "/" + month + "/" + day +
             "\n해당 날짜의 영업일을 휴무일로 바꾸시겠습니까?")) {
             axios.post('http://localhost:8080/gymOperationInfo/holiday/create',
                 {
@@ -171,7 +185,21 @@ class OperPolicy extends React.Component {
 
     holiyDelete = function () {
         console.log("holiyDelete");
-        if (window.confirm("Selected Date: " + selectedDay +
+        let year = "";
+        let month = "";
+        let day = "";
+        for (let i = 0; i < selectedDay.length; i++) {
+            if (i < 4) {
+                year = year + selectedDay[i];
+            }
+            else if (i < 6) {
+                month = month + selectedDay[i];
+            }
+            else {
+                day = day + selectedDay[i];
+            }
+        }
+        if (window.confirm("Selected Date: " + year + "/" + month + "/" + day +
             "\n해당 날짜의 휴무일을 다시 영업일로 바꾸시겠습니까?")) {
             axios.post('http://localhost:8080/gymOperationInfo/holiday/delete',
                 {
@@ -267,13 +295,13 @@ class OperPolicy extends React.Component {
         }, () => {
             if (this.state.isHoliday) {
                 console.log("휴무일");
-                this.setState({ buttonText: '휴무일 입니다.', isRezValid: false });
+                this.setState({ isRezValid: false });
                 this.setState({ flag: true });
                 this.holiyDelete();
             }
             else {
                 console.log("영업일");
-                this.setState({ buttonText: this.state.year + ' ' + this.state.month + '/' + this.state.day + ' 예약하기', isRezValid: true })
+                this.setState({ isRezValid: true })
                 this.setState({ flag: false });
                 this.holiyCreate();
             }
@@ -290,7 +318,7 @@ class OperPolicy extends React.Component {
         this.setState({
             holidays: holidays,
             isHoliday: isHoliday,
-            buttonText: isHoliday ? '휴무일 입니다.' : this.state.year + ' ' + this.state.month + '/' + this.state.day + ' 예약하기',
+            buttonText: '',
             isRezValid: !isHoliday
         })
     }

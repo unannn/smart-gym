@@ -7,6 +7,8 @@ import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
+import { display } from '@mui/system';
+import { Label } from '@material-ui/icons';
 
 let ESLOutBox = styled.div`
    position: absolute;
@@ -62,6 +64,24 @@ let ESLInnerBox = styled.div`
    margin-bottom:10px;
    background: white;
 `;
+let VideoBox = styled.div`
+   position: absolute;
+   top:0px;
+   top: 55px;
+   left: 475px;
+   float: left;
+   width: 750px;
+   height: 350px;
+   line-height: 50px;
+   text-align: left;
+   list-style-type: none;
+   border: 3px solid black;
+   border-radius: 10px;
+   padding: 16px;
+   margin:0 auto;
+   margin-bottom:10px;
+   background: white;
+`;
 let Cell = styled.li`
    position: relative;
    top:0px;
@@ -70,6 +90,7 @@ let Cell = styled.li`
    line-height: 50px;
    text-align: center;
    list-style-type: none;
+   background: pink;
    `;
 //background: 'pink',
 let RowLineBox = styled.div`
@@ -86,9 +107,18 @@ let QRdiv = styled.div`
   transition: transform 1s;
   filter: brightness(93%);
   }
+   position: absolute;
+   top: 215px;
    width: 170px;
-  height: 170px;
+   height: 170px;
    overflow: hidden;
+   `;
+let UnderBox = styled.div`
+   position: absolute;
+   top: 300px;
+   left: 160px;
+   width: 600px;
+   height: 170px;
    `;
 class ESLInfo extends React.Component {
     // 제일 common한 state값 초기 셋팅
@@ -161,13 +191,12 @@ class ESLInfo extends React.Component {
                         </div>
                         <div>
                             <QRdiv>
-                                <img src="./icon/icon_qr.png" style={{
-                                    position: 'relative', fontSize: '16px', top: '50px',
-                                    left: '0px', width: '120px', height: '120px'
-                                }} onClick={this.qrCheck} />
+                                <img src="./icon/icon_qr.png" style={{ width: '120px', height: '120px' }} onClick={this.qrCheck} />
                             </QRdiv>
-                            <Cell style={{ position: 'relative', fontSize: '16px', top: '-30px', left: '150px', width: '200px' }}>운동기구 사용법 확인하기</Cell>
-                            <Cell style={{ position: 'relative', fontSize: '30px', top: '-85px', left: '420px', width: '300px' }}>{ } 긴 텍스트 확인용 기구</Cell>
+                            <UnderBox>
+                                <label style={{ float: 'left', fontSize: '20px', width: '250px' }}>운동기구 사용법 확인하기</label>
+                                <label style={{ float: 'right', fontSize: '30px', width: '300px' }}>{ } 긴 텍스트 확인용 기구</label>
+                            </UnderBox>
                         </div>
                     </ESLInnerBox>
                     <RowLineBox />
