@@ -1,20 +1,28 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import TopBar from '../../../components/user/TopBar';
 import styled from "styled-components";
 import ReservationEquipTray from '../../../components/user/ReservationEquipTray';
 import EquipList from '../../../components/user/EquipList';
 import TimeSelectionModal from './TimeSelection';
+import { CollectionsOutlined } from '@material-ui/icons';
 
 class DateSelection extends Component {
 
     constructor(props) {
         super(props);
+        console.log(this.props.location.state)
+
         this.state = {
             modal: false,
+            data: this.props.location.state,
             selectedEquip: ''
         }
     }
+
+    componentDidMount() {
+    }
+
     openEquipRezModal(e) {
         console.log(e.target.innerText)
         this.setState({
@@ -40,7 +48,7 @@ class DateSelection extends Component {
                     <EquipList openEquipRezModal={this.openEquipRezModal.bind(this)}></EquipList>
                 </StyledEquipBoard>
                 <br />
-                <ReservationEquipTray canDelete={true}></ReservationEquipTray>
+                <ReservationEquipTray canDelete={true} equipList={this.state.data.equipList}></ReservationEquipTray>
                 <br />
                 <StyledLink to="/user">
                     <StyledButtonArea>
@@ -97,9 +105,6 @@ const StyledLink = styled(Link)`
     color:black;
 `;
 
-const StyledReservationButton = styled.button`
-
-`;
 
 
-export default DateSelection;
+export default withRouter(DateSelection);

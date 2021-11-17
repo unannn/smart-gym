@@ -5,10 +5,12 @@ import styled from "styled-components";
 import Calendar from '../../../components/user/Calendar';
 import ReservationEquipTray from '../../../components/user/ReservationEquipTray';
 import moment from 'moment';
+import axios from "axios";
 
 class DateSelection extends Component {
     constructor(props) {
         super(props);
+
         const currentDate = moment();
         this.state = {
             holidays: [],
@@ -19,24 +21,98 @@ class DateSelection extends Component {
             isRezValidDay: true,
             rezValidDate: 0,
             buttonText: '',
-            isRezValid: true
+            isRezValid: true,
+            equipList: []
         }
     }
 
     componentDidMount() {
         //여기서 휴일 받아오기
-        const holidays = ["20211106", "20211113", "20211120", "20211107"];
+        const holidays = this.getHolidays('http://localhost:8080/reservation/calRegularHolidayDate', this.state.year, this.state.month);
+        holidays.concat(this.getHolidays('http://localhost:8080/reservation/calHolidayDate', this.state.year, this.state.month));
 
         const currentDate = moment();
         const isHoliday = holidays.includes(currentDate.format("YYYYMMDD"));
 
+        this.getSelectDateEquipList(this.state.year, this.state.month, this.state.day);
+
+        this.getRezValidDate();
+
+        this.getHolidays(this.state.year, this.state.month);
 
         this.setState({
-            holidays: holidays,
             isHoliday: isHoliday,
             buttonText: isHoliday ? '휴무일 입니다.' : this.state.year + ' ' + this.state.month + '/' + this.state.day + ' 예약하기',
             isRezValid: !isHoliday
         })
+    }
+
+    getHolidays(uri, year, month) {
+
+        let holidays = [];
+        axios.get(uri,
+            {
+                year: year,
+                month: month
+            },
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then((response) => {
+                holidays = response.data.data;
+                console.log(response.data.data)
+            })
+            .catch((response) => {
+                console.log('Error');
+                console.log(response);
+            });
+
+        return holidays;
+    }
+
+    getRezValidDate() {
+        axios.get('http://localhost:8080/reservation/calAvailableDate',
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then((response) => {
+                const rezValidDate = response.data.data.length;
+                this.setState({ rezValidDate: rezValidDate })
+            })
+            .catch((response) => {
+                console.log('Error');
+                console.log(response);
+            });
+    }
+
+    getSelectDateEquipList(year, month, day) {
+        axios.post('http://localhost:8080/reservation/readMyReservationOfSelectedDay',
+            {
+                year: year,
+                month: month,
+                day: day,
+                userID: window.sessionStorage.getItem('id')
+            },
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then((response) => {
+                const equipList = response.data.data;
+                this.setState({ equipList: equipList === null ? [] : equipList });
+            })
+            .catch((response) => {
+                console.log('Error');
+                console.log(response);
+            });
     }
 
     selectDate = (data) => {
@@ -60,6 +136,9 @@ class DateSelection extends Component {
                 this.setState({ buttonText: this.state.year + ' ' + this.state.month + '/' + this.state.day + ' 예약하기', isRezValid: true })
             }
         })
+        //기구리스트 가져오기
+        this.getSelectDateEquipList(data.year, data.month, data.day);
+
     }
 
     onClickReservationButton(e) {
@@ -101,11 +180,19 @@ class DateSelection extends Component {
                 holidays 에 배열로 설정후 넣어주기 ex)["20211106", "20211113", "20211120"]
                 */}
                 <Calendar onClickDate={this.selectDate} selectedDate={this.state}
-                    rezValidDate={rezValidDate} holidays={this.state.holidays}></Calendar>
+                    rezValidDate={this.state.rezValidDate} holidays={this.state.holidays}></Calendar>
                 <br />
-                <ReservationEquipTray></ReservationEquipTray>
+                <ReservationEquipTray equipList={this.state.equipList}></ReservationEquipTray>
                 <br />
-                <StyledLink to="/user/reservation/equip" onClick={this.onClickReservationButton.bind(this)}>
+                <StyledLink to={{
+                    pathname: "/user/reservation/equip",
+                    state: {
+                        year: this.state.year,
+                        month: this.state.month,
+                        day: this.state.day,
+                        equipList: this.state.equipList
+                    }
+                }} onClick={this.onClickReservationButton.bind(this)}>
                     <StyledButtonArea>
                         <StyledMenuText isValid={this.state.isRezValid}>
                             {this.state.buttonText}

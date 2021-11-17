@@ -1,15 +1,43 @@
 import React, { Component } from 'react';
 import styled from "styled-components";
+import axios from "axios";
 
 class EquipList extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            equips: null,
             selectedCategory: equipList[0].category,
             equipmentList: equipList[0].equips
         }
     }
+
+    componentDidMount() {
+        this.getEquips();
+    }
+
+    getEquips() {
+        let equips;
+        axios.get('http://localhost:8080/reservation/searchEquipmentByCategory',
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then((response) => {
+                equips = response.data.data;
+                this.setState({ equips: equips })
+            })
+            .catch((response) => {
+                console.log('Error');
+                console.log(response);
+            });
+
+        return equips;
+    }
+
     getEquipList() {
         // 나중에 아이디 적용할 것
         const selectedEquipList = this.state.equipmentList.map((equip) => <EquipmentLI key={this.state.selectedCategory + "-" + equip} onClick={this.props.openEquipRezModal}>{equip}</EquipmentLI>);
