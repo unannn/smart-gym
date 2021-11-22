@@ -9,6 +9,7 @@ import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 import styled from 'styled-components';
 import ManagerBar from './component/menubar.js';
+import Footer from './component/footer';
 import GraphInfo from './Statistic/graph';
 //background - color:#F2F2F2;
 let BodyBox = styled.div`
@@ -363,6 +364,9 @@ class Statistic extends React.Component {
                             </GraphBox>
                         </div>
                     </BodyBox>
+                    <div style={{ position: 'relative', bottom: '-500px' }}>
+                        <Footer />
+                    </div>
                 </center>
             </div >
         )

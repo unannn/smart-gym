@@ -9,6 +9,7 @@ import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 import { display } from '@mui/system';
 import { Label } from '@material-ui/icons';
+import ReactPlayer from 'react-player';
 
 let ESLOutBox = styled.div`
    position: absolute;
@@ -64,24 +65,7 @@ let ESLInnerBox = styled.div`
    margin-bottom:10px;
    background: white;
 `;
-let VideoBox = styled.div`
-   position: absolute;
-   top:0px;
-   top: 55px;
-   left: 475px;
-   float: left;
-   width: 750px;
-   height: 350px;
-   line-height: 50px;
-   text-align: left;
-   list-style-type: none;
-   border: 3px solid black;
-   border-radius: 10px;
-   padding: 16px;
-   margin:0 auto;
-   margin-bottom:10px;
-   background: white;
-`;
+
 let Cell = styled.li`
    position: relative;
    top:0px;
@@ -90,7 +74,6 @@ let Cell = styled.li`
    line-height: 50px;
    text-align: center;
    list-style-type: none;
-   background: pink;
    `;
 //background: 'pink',
 let RowLineBox = styled.div`
@@ -124,11 +107,14 @@ class ESLInfo extends React.Component {
     // 제일 common한 state값 초기 셋팅
     constructor(props) {
         super(props);
+        this.qrCheck = this.qrCheck.bind(this);
         this.state = {
             loading: false,
             ItemList: [],
             flog: "", // 스프린트에서는 fakedata값이 있어서 그내용을 넣어두었었다.
-            gymName: ""
+            gymName: "",
+            urlLink: "",
+            Hvalue: "90px"
         };
     }
 
@@ -168,17 +154,23 @@ class ESLInfo extends React.Component {
 
     qrCheck = function (e) {
         console.log("qrCheck");
-
+        this.props.parentFunction("https://www.youtube.com/watch?v=KOW1pGlXNdk");
+        this.setState({
+            urlLink: "https://www.youtube.com/watch?v=KOW1pGlXNdk",
+            Hvalue: "400px"
+        });
     }
     componentDidMount() {
         this.loadItem();
     }
     render() {
-        const { ItemList } = this.state;
+        const { urlLink } = this.state;
+        const { Hvalue } = this.state;
         //console.log(ItemList);
         return (
             <div>
                 <center>
+                    <label style={{ position: "relative", left: "-510px" }}>ESL No. 12</label>
                     <ESLOutBox />
                     <BInnerBox>
                         <img src="./image/barcode.png" width="40px" height="250px" style={{ position: 'relative', top: "5px", left: '-10px' }} />
@@ -191,7 +183,7 @@ class ESLInfo extends React.Component {
                         </div>
                         <div>
                             <QRdiv>
-                                <img src="./icon/icon_qr.png" style={{ width: '120px', height: '120px' }} onClick={this.qrCheck} />
+                                <img src="./icon/icon_qr.png" style={{ width: '120px', height: '120px', cursor: "pointer" }} onClick={this.qrCheck} />
                             </QRdiv>
                             <UnderBox>
                                 <label style={{ float: 'left', fontSize: '20px', width: '250px' }}>운동기구 사용법 확인하기</label>

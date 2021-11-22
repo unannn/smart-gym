@@ -10,6 +10,7 @@ import NativeSelect from '@mui/material/NativeSelect';
 //import Listpage from "./Equipment/lp";
 import EquipmentItem from "./Equipment/equipmentItem";
 import ManagerBar from './component/menubar.js';
+import Footer from './component/footer';
 import DetailE from './Equipment/detailedEquipment';
 //require("bootstrap/less/bootstrap.less");
 //background - color:"#F2F2F2";
@@ -73,12 +74,10 @@ let RowLineBox = styled.div`
     background: black;
    `;
 let ColLineBox = styled.div`
-    position: absolute;
-    top: 55px;
-    left: 680px;
-    width: 1.5px;
-    height: 495px;
-    background: black;
+    position: relative;
+    width: 1200px;
+    height: 40px;
+    top: 570px;
    `;
 let Cell = styled.li`
    position: relative;
@@ -234,10 +233,12 @@ class EquipmentM extends React.Component {
                                 </center>
                                 <DetailE />
                             </div>
-                            <div style={{ position: "absolute", top: "400px" }}>
-                            </div>
                         </div>
+                        <ColLineBox />
                     </BodyBox>
+                    <div style={{ position: 'relative', bottom: '-600px' }}>
+                        <Footer />
+                    </div>
                 </center>
             </div >
         )

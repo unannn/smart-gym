@@ -9,6 +9,7 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 import ManagerBar from './component/menubar.js';
+import Footer from './component/footer';
 import UserListpage from "./UserManage/uAlp";
 
 let SearchBox = styled.input`
@@ -235,6 +236,9 @@ class UserA extends React.Component {
                             </center>
                         </div>
                     </BodyBox>
+                    <div>
+                        <Footer />
+                    </div>
                 </center>
             </div >
         )

@@ -67,7 +67,45 @@ function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber,
                 });
         }
         else if (apiNumber == 2) {
+            let ESLState = -1;
             //ESL
+            /*
+            axios.post('http://localhost:8080/equipment/detailedRead',
+                {
+                    equipmentID: EquipmentId
+                },
+                {
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                }
+            )
+                .then((response) => {
+                    console.log(response.data);
+                    ESLState=response.data;
+                })
+                .catch((response) => {
+                    console.log('Error!');
+                    alert("error! ESL정보를 조회할 수 없습니다.");
+                });*/
+            //els state
+            //사용불가
+            if (ESLState == 0) {
+
+            }
+            //예약 중
+            else if (ESLState == 1) {
+
+            }
+            //누구나 사용가능
+            else if (ESLState == 2) {
+
+            }
+            //error code -1
+            else {
+                alert("error! ESL정보를 조회할 수 없습니다.");
+            }
         }
         else {
             console.log("detailed Read");
@@ -122,7 +160,7 @@ function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber,
     }
     return (
         <div>
-            <div onClick={(e) => { apiKind(EquipmentId, apiNumber, e) }}>
+            <div style={{ cursor: 'pointer' }} onClick={(e) => { apiKind(EquipmentId, apiNumber, e) }}>
                 <InfoBox className="component component--item_card" key={key}>
                     <input type="hidden" id="Eid" value={EquipmentId} />
                     <Cell style={{ float: 'left', fontSize: '17px', width: "200px" }} id="nameE" >&nbsp;{EquipmentName}</Cell>

@@ -13,7 +13,7 @@ let InfoBox = styled.div`
   }
   left: -0.5%;
    position: relative;
-   width: 1005px;
+   width: 1080px;
    height: 40px;
 
    text-align: center;
@@ -38,51 +38,55 @@ const KorCList = ["가슴", "등", "목", "복부", "삼두", "승모근", "어�
 const nowTime = moment().format('YYYY-MM-DD HH:mm:ss');
 console.log(nowTime);
 let cancelButton = "";
-const detailedRead = (EquipmentId, e) => {
-    console.log(EquipmentId)
+
+const deleteReservation = (ReservatopmId, UserID, e) => {
+    console.log(ReservatopmId)
     console.log("detailed Read");
-    axios.post('http://localhost:8080/equipment/detailedRead',
-        {
-            equipmentID: EquipmentId
-        },
-        {
-            headers: {
-                'Content-type': 'application/json',
-                'Accept': 'application/json'
+    if (window.confirm("해당 예약을 취소하시겠습니까?\n" +
+        "예약 번호: " + ReservatopmId +
+        "\n예약자: " + UserID)) {
+        axios.post('http://localhost:8080/reservation/cancleReservation',
+            {
+                reservationID: ReservatopmId
+            },
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
             }
-        }
-    )
-        .then((response) => {
-            console.log(response.data);
-        })
-        .catch((response) => {
-            console.log('Error!');
-            alert("error! 해당 운동기구에 대한 조회를 할 수 없습니다.\n페이지를 새로고침합니다.");
-            window.location.reload();
-        });
+        )
+            .then((response) => {
+                console.log(response.data);
+                alert("예약이 취소되었습니다.");
+                window.location.reload();
+            })
+            .catch((response) => {
+                console.log('Error!');
+                alert("error! 해당 예약을 취소할 수 없습니다.\n페이지를 새로고침합니다.");
+                window.location.reload();
+            });
+    }
 }
 function ReservationItem({ key, ReservatopmId, EquipmentName, EquipmentNameNth, UserID, StartTime, EndTime }) {
-    console.log(nowTime + " " + EndTime);
     if (nowTime > EndTime) {
         cancelButton = false;
     }
     else {
         cancelButton = true;
     }
-
-    console.log(cancelButton);
     return (
         <div>
             <div>
                 <InfoBox className="component component--item_card" key={key}>
                     <input type="hidden" id="Eid" value={ReservatopmId} />
-                    <Cell style={{ float: 'left', fontSize: '17px', width: "150px" }} id="RID" >&nbsp;{ReservatopmId}</Cell>
-                    <Cell style={{ float: 'left', fontSize: '17px', width: "150px" }} id="UID">{UserID}</Cell>
-                    <Cell style={{ float: 'left', fontSize: '17px', width: "250px" }} id="EID" >{EquipmentName}/{EquipmentNameNth}</Cell>
+                    <Cell style={{ float: 'left', fontSize: '17px', width: "150px" }} id="RID" >&nbsp;&nbsp;{ReservatopmId}</Cell>
+                    <Cell style={{ float: 'left', fontSize: '17px', width: "270px" }} id="UID">{UserID}</Cell>
+                    <Cell style={{ float: 'left', fontSize: '17px', width: "200px" }} id="EID" >{EquipmentName}/{EquipmentNameNth}</Cell>
                     <Cell style={{ float: 'left', fontSize: '17px', width: "190px" }} id="StatT" >{StartTime}</Cell>
                     <Cell style={{ float: 'left', fontSize: '17px', width: "185px" }} id="EndT">{EndTime}</Cell>
-                    {cancelButton ? <Button variant="btn btn-secondary" style={{ float: 'left', fontSize: '17px', width: "80px" }} id="Cancel">Cancel</Button>
-                        : <Button variant="btn btn-secondary" disabled style={{ float: 'left', fontSize: '17px', width: "80px" }} id="Cancel">Cancel</Button>}
+                    {cancelButton ? <Button variant="btn btn-secondary" style={{ float: 'left', fontSize: '17px', width: "80px" }} id="Cancel" onClick={(e) => { deleteReservation(ReservatopmId, UserID, e) }}>Cancel</Button>
+                        : <Button variant="btn btn-secondary" disabled style={{ float: 'left', fontSize: '17px', width: "80px" }} id="Cancel" onClick={(e) => { deleteReservation(ReservatopmId, UserID, e) }}>Cancel</Button>}
                 </ InfoBox >
             </div >
         </div>

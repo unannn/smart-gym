@@ -32,6 +32,7 @@ let CloseButton = styled.div`
     position:fixed;
     left:95%;
     top:0%;
+    cursor: pointer;
 `
 
 

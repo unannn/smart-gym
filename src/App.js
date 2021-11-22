@@ -19,6 +19,7 @@ import Prac from './pages/manager/Layout/prac';
 import Statistic from './pages/manager/Layout/statistic';
 import ReservationLog from './pages/manager/Layout/reservationLog';
 import ESLManage from './pages/manager/Layout/esl';
+import ESLCreate from './pages/manager/Layout/eslCreate';
 import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
 
@@ -85,7 +86,9 @@ function App() {
           <Route exact path='/esl'>
             <ESLManage />
           </Route>
-
+          <Route exact path='/eslCreate'>
+            <ESLCreate />
+          </Route>
         </Switch>
       </div>
     </BrowserRouter >

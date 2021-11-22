@@ -233,6 +233,7 @@ let MangerLoginDiv = styled.div`
    text-align:left;
    margin-top:10px;
    font-size:14px;
+   cursor: pointer;
 `
 let StyledSpan = styled.span`
     display: inline-block;

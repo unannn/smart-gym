@@ -13,8 +13,8 @@ let EquiInfo = styled.div`
    height: 560px;
    font-size: 10pt;
    text-align: center;
-   border: 2.5px solid gray;
-   border-radius: 3px;
+   border: 5px solid gray;
+   border-radius: 10px;
    padding:20px;
    margin:0 auto;
    margin-bottom:10px;

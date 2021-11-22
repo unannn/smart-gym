@@ -5,6 +5,7 @@ import jquery from "jquery";
 import axios from "axios";
 import { Button } from 'react-bootstrap';
 import ManagerBar from './component/menubar.js';
+import Footer from './component/footer';
 import StaticTimePickerLandscape from './OperationPolicy/gymOperationInfo';
 import GymInfo from './OperationPolicy/gymInformation';
 import Box from '@mui/material/Box';
@@ -366,6 +367,11 @@ class OperPolicy extends React.Component {
                             </StyledMenuText>
                         </CalendarBox>
                     </BodyBox>
+                    <div>
+                        <br />
+                        <br />
+                        <Footer />
+                    </div>
                 </center>
             </div >
         )

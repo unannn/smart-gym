@@ -108,7 +108,7 @@ const notApprovalUser = (UserApprovalId, UserApprovalName, e) => {
 }
 function UserApprovalItem({ key, UserApprovalId, UserApprovalName }) {
     return (
-        <div>
+        <div style={{ cursor: 'pointer' }}>
             <div>
                 <InfoBox className="component component--item_card" key={key}>
                     <input type="hidden" id="Eid" value={UserApprovalId} />

@@ -59,6 +59,46 @@ let BButtonCus = styled.button`
    font-size: 16px;
    width: 85px;
    `;
+const detailedRead = (UserId, e) => {
+    console.log(UserId)
+    console.log("detailed Read");
+    axios.post('http://localhost:8080/allowedUser/readUserInfo',
+        {
+            userID: UserId
+        },
+        {
+            headers: {
+                'Content-type': 'application/json',
+                'Accept': 'application/json'
+            }
+        }
+    )
+        .then((response) => {
+            let tmp = "";
+            if ((response.data.data).allowedUserReservationAuthority == "O") {
+                tmp = "가능";
+            }
+            else {
+                tmp = "불가능";
+            }
+            console.log(response.data.data);
+            console.log((response.data.data).userName);
+            $("#userNameV").val(" " + (response.data.data).userName);
+            $("#userSexV").val(" " + (response.data.data).userSex);
+            $("#userIdV").val(" " + (response.data.data).userID);
+            $("#userPWV").val(" " + (response.data.data).userPW);
+            $("#userStateV").val(" " + tmp);
+            $("#userPhoneV").val(" " + (response.data.data).userPhone);
+            $("#userEMailV").val(" " + (response.data.data).userEmail);
+            $("#userSignUpV").val(" " + (response.data.data).userRegisterDate);
+            $("#userApprovalV").val(" " + (response.data.data).allowedUserApprovalDate);
+        })
+        .catch((response) => {
+            console.log('Error!');
+            alert("error! 해당 운동기구에 대한 조회를 할 수 없습니다.\n페이지를 새로고침합니다.");
+            window.location.reload();
+        });
+}
 const approvalAuthority = (UserId, UserName, UserAuthority, e) => {
     let aut = "";
     let autText = "";
@@ -101,28 +141,32 @@ const approvalAuthority = (UserId, UserName, UserAuthority, e) => {
     }
 }
 
-const deleteUser = (UserId, e) => {
+const deleteUser = (UserId, UserName, e) => {
     console.log(UserId);
     console.log("deleteUser");
-    /*
-    axios.post('http://localhost:8080/equipment/detailedRead',
-        {
-            equipmentID: EquipmentId
-        },
-        {
-            headers: {
-                'Content-type': 'application/json',
-                'Accept': 'application/json'
+    if (window.confirm("해당 유저를 탈퇴시겠습니까?\nID: " + UserId +
+        "\nName: " + UserName)) {
+        axios.post('http://localhost:8080/allowedUser/deleteUser',
+            {
+                userID: UserId
+            },
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
             }
-        }
-    )
-        .then((response) => {
-            console.log(response.data);
-
-        })
-        .catch((response) => {
-            console.log('Error!')
-        });*/
+        )
+            .then((response) => {
+                console.log(response.data);
+                alert("탈퇴 되었습니다.");
+            })
+            .catch((response) => {
+                console.log('Error!')
+            });
+    }
+    else {
+    }
 }
 function UserItem({ key, UserId, UserName, UserAuthority }) {
     let aut = "";
@@ -141,14 +185,14 @@ function UserItem({ key, UserId, UserName, UserAuthority }) {
     }
     return (
         <div>
-            <div>
+            <div style={{ cursor: 'pointer' }} onClick={(e) => { detailedRead(UserId, e) }}>
                 <InfoBox className="component component--item_card" key={key}>
                     <input type="hidden" id="Eid" value={UserId} />
-                    <Cell style={{ fontSize: '17px', width: '300px' }} id="userid">{UserId}</Cell>
+                    <Cell style={{ fontSize: '17px', width: '300px' }} id="userid">&nbsp;{UserId}</Cell>
                     <Cell style={{ fontSize: '17px', width: '200px' }} id="username">{UserName}</Cell>
                     <div style={{ float: 'left' }}>
                         {approvalButton}&nbsp;&nbsp;
-                        <Button variant="btn btn-secondary" style={{ height: '40px' }} onClick={(e) => { deleteUser(UserId, e) }}>회원탈퇴</Button>
+                        <Button variant="btn btn-secondary" style={{ height: '40px' }} onClick={(e) => { deleteUser(UserId, UserName, e) }}>회원탈퇴</Button>
                     </div>
                 </ InfoBox >
             </div >

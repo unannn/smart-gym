@@ -88,7 +88,7 @@ const detailedRead = (EquipmentId, e) => {
 function EquipmentItem({ key, EquipmentId, EquipmentName, Category, EnthNumber }) {
     return (
         <div>
-            <div onClick={(e) => { detailedRead(EquipmentId, e) }}>
+            <div style={{ cursor: 'pointer' }} onClick={(e) => { detailedRead(EquipmentId, e) }}>
                 <InfoBox className="component component--item_card" key={key}>
                     <input type="hidden" id="Eid" value={EquipmentId} />
                     <Cell style={{ float: 'left', fontSize: '17px', width: "200px" }} id="nameE">&nbsp;{EquipmentName}</Cell>
