@@ -7,6 +7,7 @@ import styled from 'styled-components';
 //import Listpage from "./Equipment/lpL";
 import EquipmentItemL from "./Equipment/equipmentItemL";
 import ManagerBar from './component/menubar.js';
+import Footer from './component/footer';
 let EquiList = styled.div`
  position: absolute;
  left: 15px;
@@ -53,7 +54,7 @@ let ListKey = styled.div`
    `;
 let RowLineBox = styled.div`
     position: absolute;
-    top: -50px;
+    top: -52px;
     left: 10px;
     width: 280px;
     height: 1.5px;
@@ -66,30 +67,6 @@ let ButtonBox = styled.div`
    top: -80px;
    left: 455px;
    `;
-let InputButton = styled.input`
-    background-color:#404040;
-	padding-top:5px;
-	font-family:tahoma;
-	font-size:18px;
-	color:white;
-    resize:none;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    width:80px;
-    height:30px;
-    font-size:16px;
-`;
-let FileButton = styled.input`
-    background-color:#404040;
-	padding-top:5px;
-	font-family:tahoma;
-	font-size:18px;
-	color:white;
-    resize:none;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    font-size:16px;
-`;
 let Cell = styled.li`
    position: relative;
    top:0px;
@@ -272,6 +249,10 @@ class LayoutE extends React.Component {
                             </ButtonBox>
                         </div>
                     </BodyBox>
+                    <div style={{ position: 'relative', bottom: '-600px' }}>
+                        <br />
+                        <Footer />
+                    </div>
                 </center>
             </div >
         )

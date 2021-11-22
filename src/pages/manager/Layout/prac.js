@@ -11,6 +11,8 @@ import NativeSelect from '@mui/material/NativeSelect';
 import ManagerBar from './component/menubar.js';
 import UserListpage from "./UserManage/ulp";
 import DetailU from "./UserManage/detailedUser";
+
+import ReactPlayer from 'react-player';
 import { DataGrid } from '@material-ui/data-grid';
 //background - color:#F2F2F2;
 let SearchBox = styled.input`
@@ -267,51 +269,7 @@ class DataTable extends React.Component {
                 <ManagerBar></ManagerBar>
                 <center>
                     <BodyBox>
-                        <div>
-                            <FilterBox>
-                                <Box sx={{ minWidth: 10 }}>
-                                    <FormControl style={{ width: "80px" }}>
-                                        <InputLabel variant="standard" htmlFor="uncontrolled-native" color="secondary">
-                                            Filter
-                                        </InputLabel>
-                                        <NativeSelect
-                                            defaultValue={0}
-                                            inputProps={{
-                                                name: 'FilterID',
-                                                id: 'FilterID',
-                                            }}
-                                            color="secondary"
-                                        >
-                                            <option value={0}>ALL</option>
-                                            <option value={1}>ID</option>
-                                            <option value={2}>Name</option>
-                                        </NativeSelect>
-                                    </FormControl>
-                                </Box>
-                            </FilterBox>
-                            <SearchBox id="searchValue" name="searchValue" />&nbsp; &nbsp; &nbsp; &nbsp;
-                            <Button color="white" variant="" style={{ position: "relative", top: "-133px", left: "6px" }} onClick={this.filterSearch}><img src="./icon/icon_search.png" width="35px" /></Button>
-                            <center>
-                                <ListKey>
-                                    <div >
-                                        <label style={{ float: "left", position: "relative", top: "-10px" }}>&nbsp; ID Name</label>
-                                        <label style={{ float: "right", position: "relative", top: "-10px" }}>Manage&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </label>
-                                    </div>
-                                </ListKey>
-                                <EquiList>
-                                    <DataGrid
-                                        rows={ItemList}
-                                        columns={columns}
-                                        pageSize={7}
-                                        rowsPerPageOptions={[5]}
-                                        HideFooterSelectedRowCount={true}
-                                        font="30px"
-                                    />
-                                </EquiList>
-                                <RowLineBox />
-                            </center>
-                            <DetailU />
-                        </div>
+                        <ReactPlayer style={{ background: "black" }} id="urlLink" url="https://www.youtube.com/watch?v=2R5NJHJrjKU" playing controls />
                     </BodyBox>
                 </center>
             </div >

@@ -5,11 +5,14 @@ import { Button } from 'react-bootstrap';
 import jquery from 'jquery';
 import styled from 'styled-components';
 import ManagerBar from './component/menubar.js';
+import Footer from './component/footer';
+import ReactPlayer from 'react-player';
 //background: #F2F2F2;
 let EquiInfo = styled.div`
    position: relative;
    margin: 0.5px;
    top: -20px;
+   left: -300px;
    width: 800px;
    height: 500px;
    font-size: 10pt;
@@ -80,12 +83,31 @@ let LayoutBox = styled.div`
 let BodyBox = styled.div`
    position: relative;
    width: 1200px;
-   top: 60px;
+   top: 20px;
    `;
+
+let VideoBox = styled.div`
+   position: absolute;
+   height: 380px;
+   width: 660px;
+   border: 10px solid gray;
+   top:0px;
+   left: 110%;
+   border-radius: 10px;
+   margin:0 auto;
+   margin-bottom:5px;
+   background: #0D0D0D;
+`;
 const CList = ["chest", "back", "neck", "stomach", "triceps", "trapezius", "shoulder", "aerobic", "biceps", "lower_body", "waist", "etc"];
 const KorCList = ["가슴", "등", "목", "복부", "삼두", "승모근", "어깨", "유산소", "이두", "하체", "허리", "기타"];
 class CreateEqui extends React.Component {
-
+    constructor(props) {
+        super(props);
+        this.urlView = this.urlView.bind(this);
+        this.state = {
+            urlLink: "",
+        };
+    }
     createEquipment = function () {
         let flag = -1;
         let textFlag = "none";
@@ -175,6 +197,17 @@ class CreateEqui extends React.Component {
             }
         }
     }
+    urlView = function (e) {
+        console.log("url");
+        if ($("#Eurl").val() == "" || $("#Eurl").val() == null || $("#Eurl").val() == " ") {
+            alert("url값이 없습니다. url을 먼저 입력해주세요.");
+        }
+        else {
+            this.setState({
+                urlLink: $("#Eurl").val(),
+            });
+        }
+    }
     rePrintImage = function (e) {
         console.log("rePrint");
         const imageFile = e.target.files[0];
@@ -188,9 +221,9 @@ class CreateEqui extends React.Component {
                 <center>
                     <BodyBox>
                         <EquiInfo>
-                            <div style={{ position: "relative", top: "-85px", left: "-220px", float: "left", fontSize: "17px" }}>
+                            <div style={{ position: "relative", top: "-45px", left: "80px", float: "left", fontSize: "17px" }}>
                                 <img src="./icon/icon_info.png" width="17.5px" style={{ position: "relative", top: "-11px", float: "left" }} />
-                                <label style={{ position: "relative", top: "-16px", float: "left", fontSize: "17px" }}>&nbsp;헬스장 운동기구 등록</label><br /><br />
+                                <label style={{ position: "relative", top: "-14px", float: "left", fontSize: "17px" }}>&nbsp;헬스장 운동기구 등록</label><br /><br />
                             </div>
                             <div style={{ position: "relative", top: "0px", left: "0px" }}>
                                 <LayoutBox>
@@ -236,9 +269,23 @@ class CreateEqui extends React.Component {
                                 <RegisterBox>
                                     <Button variant="btn btn-secondary" onClick={this.createEquipment}>등록</Button>
                                 </RegisterBox>
+                                <VideoBox>
+                                    <center>
+                                        <ReactPlayer id="urlLink" style={{ position: 'relative', top: '0px' }}
+                                            url={this.state.urlLink} playing controls />
+                                        <br />
+                                        <br />
+                                        <Button variant="btn btn-secondary" onClick={this.urlView}><img src='./icon/icon_power.png' width="10%" /></Button>
+                                    </center>
+                                </VideoBox>
                             </div>
                         </EquiInfo>
                     </BodyBox>
+                    <div >
+                        <br />
+                        <br />
+                        <Footer />
+                    </div>
                 </center>
             </div >
         )

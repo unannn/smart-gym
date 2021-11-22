@@ -11,11 +11,12 @@ import NativeSelect from '@mui/material/NativeSelect';
 import EquipmentItemL from '../Layout/Equipment/equipmentItemL';
 import RListpage from "./Reservation/reservationlp";
 import ManagerBar from './component/menubar.js';
+import Footer from './component/footer';
 //require("bootstrap/less/bootstrap.less");
 //background - color:"#F2F2F2";
 let EquiList = styled.div`
  position: absolute;
- left: -60px;
+ left: -120px;
  top: -50px;
    margin: 0.3px;
    width: 307px;
@@ -30,7 +31,7 @@ let EquiList = styled.div`
    `;
 let ReservationList = styled.div`
     position: absolute;
-    left: 235px;
+    left: 175px;
     top: -53px;
    margin: 0.3px;
    width: 1100 px;
@@ -54,7 +55,7 @@ let ListKey = styled.div`
 let BodyBox = styled.div`
    position: relative;
    width: 1200px;
-   top: 60px;
+   top: 100px;
    `;
 let RowLineBox = styled.div`
     position: absolute;
@@ -107,7 +108,7 @@ class ReservationLog extends React.Component {
     };
     parentFunction = (data) => {
         console.log(data);
-        console.log("check!");
+
         this.setState({
             RItemList: data // 이때는 load 가 false 유지
         });
@@ -125,18 +126,18 @@ class ReservationLog extends React.Component {
                 <center>
                     <BodyBox>
                         <div style={{ position: "absolute", top: "-84px", float: "left", fontSize: "17px" }}>
-                            <img src="./icon/icon_info.png" width="18px" style={{ position: "relative", top: "-12px", float: "left" }} />
-                            <label style={{ position: "relative", top: "-16px", float: "left", fontSize: "17px" }}>&nbsp;헬스장 배치도</label><br /><br />
+                            <img src="./icon/icon_info.png" width="18px" style={{ position: "relative", top: "-28px", float: "left" }} />
+                            <label style={{ position: "relative", top: "-30px", float: "left", fontSize: "17px" }}>&nbsp;운동기구 이력 조회</label><br /><br />
                         </div>
                         <div style={{ position: "relative", top: "40px", left: "0px" }}>
-                            <ListKey style={{ left: '-515px', top: '-85px', width: '300px', height: '30px' }}>
+                            <ListKey style={{ left: '-575px', top: '-85px', width: '300px', height: '30px' }}>
                                 <div >
                                     <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "200px" }}>Equipment</Cell>
                                     <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "50px" }}>Nth</Cell>
                                 </div>
                             </ListKey>
                             <div>
-                                <RowLineBox style={{ top: '-50px', left: '-55px', width: '280px' }} />
+                                <RowLineBox style={{ top: '-50px', left: '-105px', width: '280px' }} />
                                 <EquiList>
                                     <ul className="list__itemview">
                                         {ItemList &&
@@ -157,18 +158,16 @@ class ReservationLog extends React.Component {
                                 </EquiList>
                             </div>
                             <div>
-                                <ListKey style={{ left: '200px', top: '-135px', width: '1080px', height: '20px' }}>
-                                    <div >
-                                        <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "150px" }}>ReservationID</Cell>
-                                        <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "150px" }}>UserID</Cell>
-                                        <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "250px" }}>Equipment/Nth</Cell>
-                                        <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "190px" }}>StartTime</Cell>
-                                        <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "200px" }}>EndTime</Cell>
-                                        <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "80px" }}> Cancel</Cell>
-                                    </div>
+                                <ListKey style={{ float: "left", left: '205px', top: '-184px', width: '1200px', height: "80px" }}>
+                                    <Cell style={{ fontSize: '17px', width: "150px" }}>ReservationID</Cell>
+                                    <Cell style={{ fontSize: '17px', width: "270px" }}>UserID</Cell>
+                                    <Cell style={{ fontSize: '17px', width: "200px" }}>Equipment/Nth</Cell>
+                                    <Cell style={{ fontSize: '17px', width: "190px" }}>StartTime</Cell>
+                                    <Cell style={{ fontSize: '17px', width: "195px" }}>EndTime</Cell>
+                                    <Cell style={{ fontSize: '17px', width: "80px" }}> Cancel</Cell>
                                 </ListKey>
                                 <div>
-                                    <RowLineBox style={{ top: '-50px', left: '270px', width: '1030px' }} />
+                                    <RowLineBox style={{ top: '-50px', left: '210px', width: '1105px' }} />
                                     <ReservationList>
                                         <RListpage Itemcard={this.state.RItemList} />
                                     </ReservationList>
@@ -176,6 +175,13 @@ class ReservationLog extends React.Component {
                             </div>
                         </div>
                     </BodyBox>
+                    <div style={{ position: 'relative', bottom: '-600px' }}>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <Footer />
+                    </div>
                 </center>
             </div >
         )

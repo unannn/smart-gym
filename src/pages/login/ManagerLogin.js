@@ -43,8 +43,17 @@ class ManagerLogin extends Component {
         )
             .then((response) => {
                 console.log(response.data);
-                alert("관리자 로그인 성공!\n관리자 페이지로 이동합니다.");
-                window.location.href = "/manager";
+                if (response.data == 0) {
+                    alert("관리자 로그인 성공!\n관리자 페이지로 이동합니다.");
+                    window.sessionStorage.setItem('AdminId', true);
+                    window.location.href = "/manager";
+                }
+                else if (response.data == 1) {
+                    alert("패스워드를 입력해주세요.");
+                }
+                else {
+                    alert("로그인에 실패하였습니다.");
+                }
             })
             .catch((response) => {
                 console.log('Error!');

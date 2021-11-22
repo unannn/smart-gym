@@ -9,7 +9,9 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 import ManagerBar from './component/menubar.js';
+import Footer from './component/footer';
 import UserListpage from "./UserManage/ulp";
+import UserItem from "./UserManage/userItem";
 import DetailU from "./UserManage/detailedUser";
 
 //background - color:#F2F2F2;
@@ -72,8 +74,8 @@ let FilterBox = styled.div`
 let RowLineBox = styled.div`
     position: absolute;
     top: 45px;
-    left: -40px;
-    width: 710px;
+    left: -30px;
+    width: 700px;
     height: 1.5px;
     background: black;
    `;
@@ -222,7 +224,7 @@ class UserM extends React.Component {
                             <center>
                                 <ListKey>
                                     <div >
-                                        <Cell style={{ float: "left", position: "relative", top: "-10px", width: '300px' }}>&nbsp;ID</Cell>
+                                        <Cell style={{ float: "left", position: "relative", top: "-10px", width: '300px' }}>&nbsp;&nbsp;ID</Cell>
                                         <Cell style={{ float: "left", position: "relative", top: "-10px", width: '180px' }}>Name</Cell>
                                         <Cell style={{ float: "left", position: "relative", left: '80px', top: "-10px" }}>Manage</Cell>
                                     </div>
@@ -235,6 +237,9 @@ class UserM extends React.Component {
                             <DetailU />
                         </div>
                     </BodyBox>
+                    <div>
+                        <Footer />
+                    </div>
                 </center>
             </div >
         )

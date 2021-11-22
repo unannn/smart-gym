@@ -13,7 +13,6 @@ import ManagerBar from './component/menubar.js';
 import Footer from './component/footer';
 import ESLInfo from './ESL/eslInformation';
 import { Link } from 'react-router-dom';
-import ReactPlayer from 'react-player';
 //background - color:"#F2F2F2";
 let EquiList = styled.div`
  position: absolute;
@@ -47,17 +46,6 @@ let BodyBox = styled.div`
    width: 1200px;
    top: 60px;
    `;
-let VideoBox = styled.div`
-   position: absolute;
-   top: 100px;
-   left: 300px;
-   height: 380px;
-   width: 660px;
-   border: 10px solid gray;
-   background: black;
-   box-shadow : rgba(0,0,0,0.5) 0 0 0 9999px, rgba(0,0,0,0.5) 2px 2px 3px 3px;
-   z-index : 100;
-   `;
 let RowLineBox = styled.div`
     position: absolute;
     top: -52px;
@@ -77,17 +65,15 @@ let Cell = styled.li`
    text-align: left;
    list-style-type: none;
    `;
-class ESLManage extends React.Component {
+class ESLCreate extends React.Component {
     // 제일 common한 state값 초기 셋팅
     constructor(props) {
         super(props);
-        this.modalClose = this.modalClose.bind(this);
         this.state = {
             loading: false,
             ItemList: [],
-            flag: false,
-            urlLink: "",
-            Hvalue: "90px",
+            flog: "전체", // 스프린트에서는 fakedata값이 있어서 그내용을 넣어두었었다.
+            activePage: 15,
         };
     }
 
@@ -113,19 +99,7 @@ class ESLManage extends React.Component {
             });
     };
 
-    parentFunction = (data) => {
-        console.log(data);
-        this.setState({
-            urlLink: data,
-            Hvalue: "400px",
-            flag: true
-        });
-    }
-    modalClose = function () {
-        this.setState({
-            flag: false
-        });
-    }
+
     componentDidMount() {
         this.loadItem();
     }
@@ -139,10 +113,10 @@ class ESLManage extends React.Component {
                     <BodyBox>
                         <div style={{ position: "absolute", top: "-80px", float: "left", fontSize: "17px" }}>
                             <img src="./icon/icon_info.png" width="18px" style={{ position: "relative", top: "7px", float: "left" }} />
-                            <label style={{ position: "relative", top: "5px", float: "left", fontSize: "17px" }}>&nbsp;ESL 장치관리</label><br /><br />
+                            <label style={{ position: "relative", top: "5px", float: "left", fontSize: "17px" }}>&nbsp;{"ESL 장치관리 > ESL 등록"}</label><br /><br />
                         </div>
-                        <Link to='eslCreate' style={{ color: "black" }}>
-                            <Button variant="btn btn-secondary" style={{ position: "relative", top: "-50px", left: "570px" }}>ESL 등록하러 가기</Button>
+                        <Link to='esl' style={{ color: "black" }}>
+                            <Button variant="btn btn-secondary" style={{ position: "relative", top: "-50px", left: "570px" }}>ESL 조회하러 가기</Button>
                         </Link>
                         <div style={{ position: "relative", top: "64px", left: "0px" }}>
                             <ListKey>
@@ -172,18 +146,10 @@ class ESLManage extends React.Component {
                                 </EquiList>
                             </div>
                         </div>
-                        <div style={{ position: "relative", top: '-20px' }}>
-                            <ESLInfo parentFunction={this.parentFunction} />
-                        </div>
-                        {this.state.flag ?
-                            <div>
-                                <VideoBox>
-                                    <img src="./icon/icon_power_white.png" width="18px" style={{ position: "relative", top: "-40px", left: '325px', cursor: "pointer" }} onClick={this.modalClose} />
-                                    <ReactPlayer style={{ position: "relative", top: "-25px", left: '0px' }} id="urlLink" url={this.state.urlLink} playing controls />
-                                </VideoBox>
-                            </div> : <div />}
+
                     </BodyBox>
                     <div style={{ position: 'relative', bottom: '-650px' }}>
+                        <br />
                         <Footer />
                     </div>
                 </center>
@@ -191,4 +157,4 @@ class ESLManage extends React.Component {
         )
     }
 }
-export default ESLManage;
+export default ESLCreate;

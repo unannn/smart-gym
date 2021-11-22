@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 //background: #949494; #545454;
 let MenuBar = styled.li`
 &:hover {                
@@ -18,6 +19,24 @@ let MenuBar = styled.li`
    `;
 
 class ManagerBar extends React.Component {
+    loadItem = async () => {
+        console.log(window.sessionStorage.getItem('AdminId'));
+        if (window.sessionStorage.getItem('AdminId') == "false") {
+            alert("권한이 없습니다.\n로그인을 먼저해주세요.");
+            window.location.href = "/";
+        }
+    };
+    logOut = function () {
+        console.log("logOUt");
+        if (window.confirm("로그아웃하면 다시 돌아올 수 없습니다.\n로그아웃 하시겠습니까?")) {
+            window.sessionStorage.setItem('AdminId', false);
+            alert("로그아웃 되었습니다.\n다시 관리자 화면으로 돌아오시려면 재로그인 해주세요.");
+            window.location.href = "/";
+        }
+    }
+    componentDidMount() {
+        this.loadItem();
+    }
     render() {
         return (
             <div>
@@ -26,6 +45,12 @@ class ManagerBar extends React.Component {
                     <Link to="/manager" style={{ color: "black" }}>
                         <img src="./image/Logo.png" width="200px" height="50px" /><br />
                     </Link>
+                    <div style={{ position: 'relative', width: '100px', left: "-940px", top: "-70px", background: 'pink' }}>
+                        <div style={{ position: 'absolute', width: '200px', left: "1450px", top: "5px" }}>
+                            <label style={{ display: "inline", listStyleYype: "none" }}>관리자 님 &nbsp;</label>
+                            <Button variant="btn btn-secondary" onClick={this.logOut}>Logout</Button>
+                        </div>
+                    </div>
                     <div style={{ position: "relative", top: "0px", overflow: 'visible' }}>
                         <hr width="100*vw" />
                     </div>
@@ -79,7 +104,7 @@ class ManagerBar extends React.Component {
                         </Link>
                         <Link to="esl" style={{ color: "black" }}>
                             <MenuBar>
-                                ESL장치 관리
+                                ESL 장치관리
                             </MenuBar>
                         </Link><br />
                     </div>
