@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 let BodyBox = styled.div`
    position: relative;
    width: 1200px;
-   height: 700px;
+   height: 750px;
    top: -25px;
    margin: 0.5px;
    `;
