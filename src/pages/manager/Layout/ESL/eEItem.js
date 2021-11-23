@@ -9,9 +9,9 @@ let InfoBox = styled.div`
 &:hover {                
     background: #FFD2D5;
   }
-  left: -17%;
+  left: -0%;
    position: relative;
-   width: 260px;
+   width: 430px;
    height: 40px;
 
    text-align: center;
@@ -35,24 +35,26 @@ const CList = ["chest", "back", "neck", "stomach", "triceps", "trapezius", "shou
 const KorCList = ["가슴", "등", "목", "복부", "삼두", "승모근", "어깨", "유산소", "이두", "하체", "허리", "기타"];
 //useState({ endTime: "", equipmentName: "", equipmentNameNth: "", reservationID: 0, startTime: "", userID: "" });
 
-function EEItem({ key, EquipmentId, EquipmentName, EquipmentNth, ESLMatch }) {
-    //apiNumber 0: Layout/1:Reservation/2:ESL
-    const apiKind = (EquipmentId, e) => {
 
-    }
+const selectedEquipment = (EquipmentId, e) => {
+    $("#EquipmentMatchID").val(EquipmentId);
 }
-return (
-    <div>
-        <div onClick={(e) => { apiKind(EquipmentId, apiNumber, e) }}>
-            <InfoBox className="component component--item_card" key={key}>
-                <input type="hidden" id="Eid" value={EquipmentId} />
-                <Cell style={{ float: 'left', fontSize: '17px', width: "50px" }} id="numE">{EquipmentId}</Cell>
-                <Cell style={{ float: 'left', fontSize: '17px', width: "200px" }} id="nameE" >&nbsp;{EquipmentName}/{EquipmentNth}</Cell>
-                <Cell style={{ float: 'left', fontSize: '17px', width: "50px" }} id="numE">{ESLMatch}</Cell>
-            </ InfoBox >
-            <input type='hidden' id="Hob" />
-        </div >
-    </div>
-);
+function EEItem({ key, ESLId, EquipmentId, EquipmentName, EquipmentNth }) {
+    let eslIDinfo = ESLId;
+    if (ESLId == "" || ESLId == " " || ESLId == null) {
+        eslIDinfo = "None";
+    }
+    return (
+        <div style={{ cursor: 'pointer' }} onClick={(e) => { selectedEquipment(EquipmentId, e) }}>
+            <div>
+                <InfoBox className="component component--item_card" key={key}>
+                    <input type="hidden" id="Eid" value={ESLId} />
+                    <Cell style={{ float: 'left', fontSize: '17px', width: '100px' }} id="EslID">&nbsp;{eslIDinfo}</Cell>
+                    <Cell style={{ float: 'left', fontSize: '17px', width: '120px' }} id="equiID">{EquipmentId}</Cell>
+                    <Cell style={{ float: 'left', fontSize: '17px', width: '200px' }} id="equipmentInfo">{EquipmentName}/{EquipmentNth}</Cell>
+                </ InfoBox >
+            </div >
+        </div>
+    );
 }
 export default EEItem;
