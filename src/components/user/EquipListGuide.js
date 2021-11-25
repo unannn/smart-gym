@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from "styled-components";
 import axios from "axios";
+import EquipDetail from './EquipDetail';
 
 class EquipList extends Component {
 
@@ -14,12 +15,15 @@ class EquipList extends Component {
         this.state = {
             equips: null,
             selectedCategory: null,
-            equipmentList: []
+            equipmentList: [],
+            SelectedEquipment: []
+            // iSeletedEquipment: Array.from({ length: equipList[0].equips.length }, () => false)
         }
     }
 
     componentDidMount() {
         this.getEquips();
+
     }
 
     getEquips() {
@@ -37,8 +41,9 @@ class EquipList extends Component {
                 this.setState({
                     equips: equips,
                     selectedCategory: this.category[initIndex].name,
-                    equipmentList: equips[this.category[initIndex].id]
-                }, () => console.log(this.state.equips['chest']))
+                    equipmentList: equips[this.category[initIndex].id],
+                    SelectedEquipment: Array.from({ length: equips[this.category[initIndex].id].length }, () => false)
+                })
             })
             .catch((response) => {
                 console.log('Error');
@@ -50,30 +55,46 @@ class EquipList extends Component {
 
     getEquipList() {
         // 나중에 아이디 적용할 것
-        const selectedEquipList = this.state.equipmentList.map((equip) =>
-            <EquipmentLI id={equip.equipmentID} key={equip.equipmentID + equip.equipmentNameNth} onClick={this.props.openEquipRezModal}>
-                {equip.equipmentName + ' ' + equip.equipmentNameNth}
-            </EquipmentLI>);
+        const selectedEquipList = this.state.equipmentList.map((equip, index) =>
+            <div>
+                <EquipmentLI id={equip.equipmentID} key={equip.equipmentID + equip.equipmentNameNth} onClick={() => {
+                    let SelectedEquipment = this.state.SelectedEquipment;
+                    SelectedEquipment[index] = !SelectedEquipment[index]
+                    this.setState({ SelectedEquipment: SelectedEquipment })
+                }}>
+                    {equip.equipmentName + ' ' + equip.equipmentNameNth}
+                </EquipmentLI>
+                {this.state.SelectedEquipment[index] ? <EquipDetail imageWidth={'100%'}
+                    imageURL={equip.equipmentImage} equipmentVideoLink={equip.equipmentQRCode}>
+
+                </EquipDetail> : ''}
+            </div>)
+
 
         return selectedEquipList;
     }
 
     getCategoryList() {
         // 나중에 아이디 적용할 것
-        const selectedEquipList = this.category.map((equip) => <CategoryLI id={equip.id} key={equip.id} onClick={this.clickCategory}>{equip.name}</CategoryLI>);
+        const selectedEquipList = this.category.map((equip, index) => <CategoryLI id={equip.id} key={equip.id} onClick={this.clickCategory}>
+            {equip.name}
+        </CategoryLI>);
 
         return selectedEquipList;
     }
 
     clickCategory = (e) => {
+
         var i;
         for (i in this.category) {
             if (this.category[i].id === e.target.id) break;
         }
+        console.log(this.state.equips)
 
         this.setState({
             selectedCategory: this.category[i].name,
-            equipmentList: this.state.equips[this.category[i].id]
+            equipmentList: this.state.equips[this.category[i].id],
+            SelectedEquipment: Array.from({ length: this.state.equips[this.category[i].id].length }, () => false)
         })
     }
 
@@ -94,6 +115,7 @@ class EquipList extends Component {
 export default EquipList;
 
 var EquipListDIV = styled.div`
+    position: flex;
 
 `;
 
@@ -119,11 +141,13 @@ var CategoryLI = styled.li`
 `;
 
 var EquipmentUL = styled.ul`
-    height : 500px;
+    position: relative;
+
     list-style:none;
-    overflow:auto;
+    overflow:scroll;
     padding-left:0px;
     text-align:left;
+    position: relative;
     margin:0;
     padding:0;
     white-space:nowrap;
@@ -134,8 +158,9 @@ var EquipmentUL = styled.ul`
 `;
 
 var EquipmentLI = styled.li`
-    font-size:14px;
-    padding:23px 10px;
     position: relative;
+    font-size:14px;
+    padding:20px 10px 20px 10px;
     background-color:white;
 `;
+

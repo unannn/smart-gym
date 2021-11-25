@@ -1,6 +1,5 @@
 import './App.css';
-import LoginDemo from './pages/login/LoginDemo';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect, Link } from 'react-router-dom';
 import UserMain from './pages/user/UserMain';
 import ManagerMain from './pages/manager/MangerMain';
 import Login from './pages/login/Login';
@@ -20,41 +19,48 @@ import Statistic from './pages/manager/Layout/statistic';
 import ReservationLog from './pages/manager/Layout/reservationLog';
 import ESLManage from './pages/manager/Layout/esl';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import UserNavBar from './components/user/UserNavBar';
+import styled from "styled-components";
+
 function App() {
 
   let logged = window.sessionStorage.getItem('id');
-  console.log(logged);
+
   return (
     <BrowserRouter>
       <div className="App">
+        {logged && <UserNavBar></UserNavBar>}
         <Switch>
           <Redirect exact from='/' to='/login' />
           {logged ? <Redirect from="/login" to='/user' /> : <Redirect from="/user" to='/login' />}
-
           <Route exact path='/login'>
             <Login></Login>
           </Route>
-          <Route exact path='/user'>
-            <UserMain></UserMain>
-          </Route>
-          <Route exact path='/manager'>
-            <ManagerMain></ManagerMain>
-          </Route>
-          <Route exact path='/user/reservation/date'>
-            <DateSelection></DateSelection>
-          </Route>
-          <Route exact path='/user/reservation/equip'>
-            <EquiptionSelection></EquiptionSelection>
-          </Route>
-          <Route exact path='/user/equipguide'>
-            <EquiptionGuide></EquiptionGuide>
-          </Route>
-          <Route exact path='/user/mypage'>
-            <MyPage></MyPage>
-          </Route>
-          <Route exact path='/user/centerinfo'>
-            <CenterInfo></CenterInfo>
-          </Route>
+          <ContentStyle>
+            <Route exact path='/user'>
+              <UserMain></UserMain>
+            </Route>
+            <Route exact path='/manager'>
+              <ManagerMain></ManagerMain>
+            </Route>
+            <Route exact path='/user/reservation/date'>
+              <DateSelection></DateSelection>
+            </Route>
+            <Route exact path='/user/reservation/equip'>
+              <EquiptionSelection></EquiptionSelection>
+            </Route>
+            <Route exact path='/user/equipguide'>
+              <EquiptionGuide></EquiptionGuide>
+            </Route>
+            <Route exact path='/user/mypage'>
+              <MyPage></MyPage>
+            </Route>
+            <Route exact path='/user/centerinfo'>
+              <CenterInfo></CenterInfo>
+            </Route>
+          </ContentStyle>
+
+
           <Route exact path='/userManage'>
             <UserM></UserM>
           </Route>
@@ -88,9 +94,16 @@ function App() {
 
         </Switch>
       </div>
+
     </BrowserRouter >
 
   );
 }
+
+const ContentStyle = styled.div`
+  position: relative;
+    max-width: 1130px;
+    margin: 0 auto;
+`;
 
 export default App;

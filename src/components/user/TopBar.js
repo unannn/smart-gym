@@ -9,10 +9,10 @@ let StyledTopBar = styled.div`
 `;
 
 function TopBar(props) {
-    return (<StyledTopBar>
-        <PageTitle>{props.children}</PageTitle>
-        <Logout>Log out</Logout>
-    </StyledTopBar>);
+  return (<StyledTopBar>
+    <PageTitle>{props.children}</PageTitle>
+    {/* <Logout>Log out</Logout> */}
+  </StyledTopBar>);
 }
 
 export default TopBar;

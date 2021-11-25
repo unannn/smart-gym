@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import TopBar from '../../../components/user/TopBar';
 import Modal from '../../../components/user/Modal';
 import styled from 'styled-components';
 import TimeTable from '../../../components/user/TimeTable';
 import InputButton from '../../../components/user/InputButton';
+import axios from "axios";
+
+
 class TimeSelectionModal extends Component {
 
     constructor(props) {
@@ -28,14 +30,15 @@ class TimeSelectionModal extends Component {
             isValid: false,
             guideMessage: ' ',
 
-            reservationTimeList: [
-                { startTime: '10:00', endTime: '10:30' }, { startTime: '11:00', endTime: '11:20' },
-                { startTime: '11:20', endTime: '11:40' }, { startTime: '12:00', endTime: '12:20' },
-                { startTime: '14:20', endTime: '14:40' }, { startTime: '14:40', endTime: '15:20' },
-                { startTime: '17:00', endTime: '17:20' }, { startTime: '17:30', endTime: '17:45' },
-                { startTime: '18:00', endTime: '18:20' }, { startTime: '20:00', endTime: '20:25' }
-            ]
+            reservationTimeList: []
         }
+    }
+
+    componentDidMount() {
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+
     }
 
     getSelectedBarTime(data) {
@@ -50,10 +53,58 @@ class TimeSelectionModal extends Component {
         e.preventDefault();
 
         //서버에 요청보내기
+        const date = this.props.date;
+        const dateFormat = date.year + '-' + date.month + '-' + date.day + 'T';
+        let endTimeHour = parseInt(this.state.startTimeHour);
+        let endTimeMinute = parseInt(this.state.startTimeMinute);
+
+        endTimeMinute += parseInt(this.state.exerciseMinute);
+        if (endTimeMinute >= 60) {
+            endTimeMinute -= 60;
+            endTimeHour += 1;
+        }
+
+        console.log(dateFormat + this.getTimeFormat(this.state.startTimeHour, this.state.startTimeMinute))
+        console.log(dateFormat + this.getTimeFormat(endTimeHour, endTimeMinute))
+
+        axios.post("http://localhost:8080/reservation/makeReservation",
+            {
+                userID: window.sessionStorage.getItem('id'),
+                equipmentID: this.props.equipmentID,
+                startTime: dateFormat + this.getTimeFormat(this.state.startTimeHour, this.state.startTimeMinute),
+                endTime: dateFormat + this.getTimeFormat(endTimeHour, endTimeMinute)
+            },
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then((response) => {
+                const reservationTimeList = response.data.data;
+                if (response.data.success) {
+                    this.setState({ reservationTimeList: reservationTimeList })
+                    window.location.reload();
+                }
+            })
+            .catch((response) => {
+                console.log('Error');
+                console.log(response);
+            })
+    }
+
+    getTimeFormat(hour, minute) {
+        return this.fillterTimeZero(hour) + ':' + this.fillterTimeZero(minute) + ':00';
+    }
+
+    fillterTimeZero(number) {
+        return number / 10 < 1 ? '0' + number : number;
     }
 
     checkOverlap() {
+
         let start = this.state.startTimeHour + ":" + this.state.startTimeMinute;
+        console.log(start)
         let exercieMinute = this.state.exerciseMinute;
         let startTime = this.changeTimeNumber(start);
         let endTime = startTime + exercieMinute / 60;
@@ -97,42 +148,47 @@ class TimeSelectionModal extends Component {
 
 
     handleChange(e, propertyName) {
-        console.log(e.target.value)
         this.setState({ [propertyName]: e.target.value }, () => {
             this.checkOverlap();
         });
-
     }
 
-
-
     render() {
-
         let startHour = Array.from({ length: 24 }, (v, i) => i);
         let startHourOptions = startHour.map((value, index) => {
-            return <OptionStyle value={value} key={value}>{value}</OptionStyle>
+            return <OptionStyle value={value} key={'hour-' + value}>{value}</OptionStyle>
         })
 
         let StartMinute = Array.from({ length: 12 }, (v, i) => i * 5);
         let StartMinuteOptions = StartMinute.map((value, index) => {
-            return <OptionStyle value={value} key={value} > {value}</OptionStyle >
+            return <OptionStyle value={value} key={'minute-' + value} > {value}</OptionStyle >
         })
 
         let exerciseMinute = Array.from({ length: 7 }, (v, i) => i * 5 + 10);
         let exerciseMinuteOptions = exerciseMinute.map((value, index) => {
-            return <OptionStyle value={value} key={value} > {value}</OptionStyle >
+            return <OptionStyle value={value} key={'exercise-time-' + value} > {value}</OptionStyle >
         })
 
 
         return (
             <Modal onClick={this.props.closeModal} >
-                {this.props.children}
-                < br />
-                <TimeTable selectTime={this.getSelectedBarTime.bind(this)} reservationTimeList={this.state.reservationTimeList}></TimeTable>
+                <DateStyle>
+                    {this.props.date.month + "월 " + this.props.date.day + "일 "}
+                </DateStyle>
+                <EquipNameStyle>
+                    {this.props.children}
+                </EquipNameStyle>
+                <TimeTable selectTime={this.getSelectedBarTime.bind(this)}
+                    reservationTimeList={this.state.reservationTimeList}
+                    selectedData={{
+                        year: this.props.date.year,
+                        month: this.props.date.month,
+                        day: this.props.date.day,
+                        equipmentID: this.props.equipmentID,
+                    }}></TimeTable>
                 <MessageStyle barColor={this.state.selectedBarColor}>
                     {this.state.selectedStartTime} -  {this.state.selectedEndTime}
                 </MessageStyle>
-
                 <form onSubmit={this.handleSubmit.bind(this)} autoComplete={"off"}>
                     <ReservationTimeStyle>
                         <SelectStyle name="시" id="startHour" value={this.state.startTimeHour}
@@ -212,5 +268,16 @@ let ErrorMessageStyle = styled.div`
     width:100%;
 `;
 
+let DateStyle = styled.div`
+    display:inline-block;
+    font-size:16px;
+    padding:0 10px 30px 0;
+`;
+let EquipNameStyle = styled.div`
+    display:inline-block;
+    font-size:24px;
+    padding:0 0 30px 0;
+
+`;
 
 export default TimeSelectionModal;

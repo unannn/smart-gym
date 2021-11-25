@@ -13,12 +13,13 @@ let StyledInputText = styled.input`
     margin-bottom: 10px;
     border-width: 0px;
     width:225px;
+    width:${props => props.width};
     height:30px;
 `;
 
 function InputText(props) {
     return <StyledInputText name={props.name} type={props.type} value={props.value} onChange={props.onChange}
-        placeholder={props.placeholder} backgroundColor={props.backgroundColor} onBlur={props.onBlur}>
+        placeholder={props.placeholder} backgroundColor={props.backgroundColor} onBlur={props.onBlur} width={props.width}>
     </StyledInputText>;
 }
 

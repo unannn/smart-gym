@@ -6,6 +6,7 @@ import Calendar from '../../../components/user/Calendar';
 import ReservationEquipTray from '../../../components/user/ReservationEquipTray';
 import moment from 'moment';
 import axios from "axios";
+import { gridColumnsTotalWidthSelector } from '@material-ui/data-grid';
 
 class DateSelection extends Component {
     constructor(props) {
@@ -27,18 +28,27 @@ class DateSelection extends Component {
     }
 
     componentDidMount() {
-        //여기서 휴일 받아오기
-        const holidays = this.getHolidays('http://localhost:8080/reservation/calRegularHolidayDate', this.state.year, this.state.month);
-        holidays.concat(this.getHolidays('http://localhost:8080/reservation/calHolidayDate', this.state.year, this.state.month));
+        const queryString = '?year=' + this.state.year + '&month=' + this.state.month;
+        let regularHolidays = [];
+        let specialHolidays = [];
+        let holidays = [];
 
-        const currentDate = moment();
-        const isHoliday = holidays.includes(currentDate.format("YYYYMMDD"));
+        //여기서 휴일 받아오기
+        this.getHolidays('http://localhost:8080/reservation/calRegularHolidayDate' + queryString);
+
+        this.getHolidays('http://localhost:8080/reservation/calHolidayDate' + queryString);
+
+        // // holidays = regularHolidays[0].concat(specialHolidays[0]);
+        // console.log(regularHolidays[0]);
+        // console.log(specialHolidays);
+        // console.log([[1, 2, 3]]);
+
+        const isHoliday = this.state.holidays.includes(parseInt(this.state.day));
 
         this.getSelectDateEquipList(this.state.year, this.state.month, this.state.day);
 
         this.getRezValidDate();
 
-        this.getHolidays(this.state.year, this.state.month);
 
         this.setState({
             isHoliday: isHoliday,
@@ -47,30 +57,25 @@ class DateSelection extends Component {
         })
     }
 
-    getHolidays(uri, year, month) {
+    getHolidays(uri) {
 
-        let holidays = [];
+        let processResponse = async function (response) {
+            const holidays = response.data.data;
+            await this.setState({ holidays: this.state.holidays.concat(holidays) })
+        }
+
         axios.get(uri,
-            {
-                year: year,
-                month: month
-            },
             {
                 headers: {
                     'Content-type': 'application/json',
                     'Accept': 'application/json'
                 }
             })
-            .then((response) => {
-                holidays = response.data.data;
-                console.log(response.data.data)
-            })
+            .then(processResponse.bind(this))
             .catch((response) => {
                 console.log('Error');
                 console.log(response);
-            });
-
-        return holidays;
+            })
     }
 
     getRezValidDate() {
@@ -107,7 +112,7 @@ class DateSelection extends Component {
             })
             .then((response) => {
                 const equipList = response.data.data;
-                this.setState({ equipList: equipList === null ? [] : equipList });
+                this.setState({ equipList: equipList });
             })
             .catch((response) => {
                 console.log('Error');
@@ -155,30 +160,8 @@ class DateSelection extends Component {
     }
 
     render() {
-        const rezValidDate = 4;
         return (
             <div>
-                <TopBar>기구 예약 - 날짜 선택</TopBar>
-                <br />
-                {/* 
-                [예약가능 날짜 면수] 
-                rezValidDate 정수로 몇일인지 주면됨 ex) rezValidDate={4}
-                
-                [선택 날짜 가져오는 메소드]
-                onClickDate 아래와 같은메소드를 통해 사용, 현재 컴포넌트의 state에 선택한 날짜를 가져오기 위함
-                    selectDate = (data) => {
-                    this.setState({
-                        year: data.year,
-                        month: data.month,
-                        day: data.day
-                    })
-                }
-                [현재 선택 날짜]
-                onClickDate를 통해설정한 선택한 날짜를 보내줌 this.state 보내주면 됨
-
-                [휴무일로 선택하고자 하는 날짜 리스트]
-                holidays 에 배열로 설정후 넣어주기 ex)["20211106", "20211113", "20211120"]
-                */}
                 <Calendar onClickDate={this.selectDate} selectedDate={this.state}
                     rezValidDate={this.state.rezValidDate} holidays={this.state.holidays}></Calendar>
                 <br />

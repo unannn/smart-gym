@@ -4,8 +4,9 @@ import TopBar from '../../../components/user/TopBar';
 import styled from "styled-components";
 import ReservationEquipTray from '../../../components/user/ReservationEquipTray';
 import EquipList from '../../../components/user/EquipList';
-import TimeSelectionModal from './TimeSelection';
+import TimeSelectionModal from './TimeSelectionModal';
 import { CollectionsOutlined } from '@material-ui/icons';
+import axios from "axios";
 
 class DateSelection extends Component {
 
@@ -15,19 +16,48 @@ class DateSelection extends Component {
 
         this.state = {
             modal: false,
-            data: this.props.location.state,
-            selectedEquip: ''
+            data: null,
+            equipList: [],
+            selectedEquipmentID: ''
         }
     }
 
+    static getDerivedStateFromProps(nextProps, prevState) {
+        console.log("getDerivedStateFromProps");
+        console.log(nextProps.location.state.equipList);
+        return { data: nextProps.location.state };
+    }
+
     componentDidMount() {
+        axios.post('http://localhost:8080/reservation/readMyReservationOfSelectedDay',
+            {
+                year: this.props.location.state.year,
+                month: this.props.location.state.month,
+                day: this.props.location.state.day,
+                userID: window.sessionStorage.getItem('id')
+            },
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then((response) => {
+                const equipList = response.data.data;
+                this.setState({ equipList: equipList });
+            })
+            .catch((response) => {
+                console.log('Error');
+                console.log(response);
+            });
     }
 
     openEquipRezModal(e) {
         console.log(e.target.innerText)
         this.setState({
             modal: true,
-            selectedEquip: e.target.innerText
+            selectedEquip: e.target.innerText,
+            selectedEquipmentID: e.target.id
         })
     }
 
@@ -37,27 +67,51 @@ class DateSelection extends Component {
         })
     }
 
+    cancelReservation(reservationID) {
+        axios.post('http://localhost:8080/reservation/cancleReservation',
+            {
+                reservationID: reservationID
+            },
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then((response) => {
+                const res = response.data;
+                if (res.success && res.data) {
+                    console.log("success!!!")
+                }
+
+            })
+            .catch((response) => {
+                console.log('Error');
+                console.log(response);
+            });
+
+    }
 
 
     render() {
         return (
             <StyledDateSelection>
-                <TopBar>기구 예약 - 운동기구 선택</TopBar>
-                <br />
+                {this.state.data.year + '.' + this.state.data.month + '.' + this.state.data.day}
                 <StyledEquipBoard>
                     <EquipList openEquipRezModal={this.openEquipRezModal.bind(this)}></EquipList>
                 </StyledEquipBoard>
                 <br />
-                <ReservationEquipTray canDelete={true} equipList={this.state.data.equipList}></ReservationEquipTray>
+                <ReservationEquipTray canDelete={true} equipList={this.state.equipList} cancelReservation={this.cancelReservation.bind(this)}></ReservationEquipTray>
                 <br />
                 <StyledLink to="/user">
                     <StyledButtonArea>
                         <StyledMenuText>
-                            10/30 예약 완료
+                            {this.state.data.month + '/' + this.state.data.day} 예약 완료
                         </StyledMenuText>
                     </StyledButtonArea>
                 </StyledLink>
-                {this.state.modal ? <TimeSelectionModal closeModal={this.closeModal.bind(this)}>
+                {this.state.modal ? <TimeSelectionModal closeModal={this.closeModal.bind(this)}
+                    date={this.state.data} equipmentID={this.state.selectedEquipmentID}>
                     {this.state.selectedEquip}
                 </TimeSelectionModal> : ''}
             </StyledDateSelection>
@@ -65,6 +119,21 @@ class DateSelection extends Component {
     }
 }
 var StyledDateSelection = styled.div`
+    height:100%;
+
+`;
+
+
+const StyledEquipBoard = styled.div`
+    position:relative;
+    background-color: #E0E0E0;
+    margin: 0 auto;
+    width:100%;
+    max-width:600px;
+
+    height:100%;
+    max-height:900px;
+
 `;
 
 var StyledMenuText = styled.div`
@@ -88,17 +157,6 @@ var StyledButtonArea = styled.div`
     border-radius:6px;
 `
 
-const StyledEquipBoard = styled.div`
-    position:relative;
-    background-color: #E0E0E0;
-    margin: 0 auto;
-    width:100%;
-    max-width:600px;
-    height:500px;
-    max-height:900px;
-    margin-top:20px;
-
-`;
 
 const StyledLink = styled(Link)`
     text-decoration:none;

@@ -101,9 +101,10 @@ class Calendar extends Component {
         }
         return false;
     }
-    isHoliday(date) {
 
-        if (this.props.holidays.includes(date)) {
+    isHoliday(month, date) {
+        console.log(month)
+        if (this.props.holidays.includes(parseInt(date)) && month === moment().format('MM')) {
             return true;
         }
         return false;
@@ -129,7 +130,7 @@ class Calendar extends Component {
 
                 return <Day key={weekIndex * 7 + dayIndex} onClickDate={this.props.onClickDate} year={date.year}
                     month={date.month} day={date.day} selectedMonth={this.state.month} isSelected={isSelected}
-                    isRezDay={this.isRezValidDay(todayDate, date.year + date.month + date.day)} isHoliday={this.isHoliday(date.year + date.month + date.day)} ></Day>
+                    isRezDay={this.isRezValidDay(todayDate, date.year + date.month + date.day)} isHoliday={this.isHoliday(date.month, date.day)} ></Day>
             })
             return <tr>{week}</tr>
         });
