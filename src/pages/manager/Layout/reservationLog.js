@@ -9,7 +9,7 @@ import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 //import Listpage from '../Layout/Equipment/lpL';
 import EquipmentItemL from '../Layout/Equipment/equipmentItemL';
-import RListpage from "./Reservation/reservationlp";
+import ReservationItem from "./Reservation/reservationItem";
 import ManagerBar from './component/menubar.js';
 import Footer from './component/footer';
 //require("bootstrap/less/bootstrap.less");
@@ -72,6 +72,7 @@ let Cell = styled.li`
    text-align: left;
    list-style-type: none;
    `;
+let EEid;
 class ReservationLog extends React.Component {
     // 제일 common한 state값 초기 셋팅
     constructor(props) {
@@ -85,21 +86,27 @@ class ReservationLog extends React.Component {
     }
 
     loadItem = async () => {
-        // Json Data 불러오기
-        axios.get('http://localhost:8080/equipment/readAll') // json을 가져온다음
-            .then((data) => {
-                // data라는 이름으로 json 파일에 있는 값에 state값을 바꿔준다.
-                console.log(data.data)
+        axios.post('http://localhost:8080/equipment/readAll',
+            {
+                select: 1
+            },
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            }
+        )
+            .then((response) => {
+                console.log(response.data)
                 this.setState({
                     loading: true, // load되었으니 true,
-                    ItemList: data.data,
+                    ItemList: response.data,
                     flog: "전체" // 비어있던 Itemlist는 data에 Item객체를 찾아넣어준다. ( Item : json파일에 있는 항목)
                 });
-                localStorage.setItem("reservation", 0);
             })
-            .catch(e => {
-                // json이 로드되지않은 시간엔
-                console.error(e); // 에러표시
+            .catch((response) => {
+                console.error(response); // 에러표시
                 this.setState({
                     loading: false // 이때는 load 가 false 유지
                 });
@@ -107,8 +114,8 @@ class ReservationLog extends React.Component {
             });
     };
     parentFunction = (data) => {
+        console.log("pare");
         console.log(data);
-
         this.setState({
             RItemList: data // 이때는 load 가 false 유지
         });
@@ -119,7 +126,7 @@ class ReservationLog extends React.Component {
     }
     render() {
         const { ItemList } = this.state;
-        //console.log(ItemList);
+        const { RItemList } = this.state;
         return (
             <div>
                 <ManagerBar></ManagerBar>
@@ -169,7 +176,23 @@ class ReservationLog extends React.Component {
                                 <div>
                                     <RowLineBox style={{ top: '-50px', left: '210px', width: '1105px' }} />
                                     <ReservationList>
-                                        <RListpage Itemcard={this.state.RItemList} />
+                                        <ul className="list__itemview">
+                                            {RItemList &&
+                                                RItemList.map((itemdata, insertIndex) => {
+                                                    return (
+                                                        <ReservationItem
+                                                            key={insertIndex}
+                                                            ReservatopmId={itemdata.reservationID}
+                                                            EquipmentName={itemdata.equipmentName}
+                                                            EquipmentNameNth={itemdata.equipmentNameNth}
+                                                            UserID={itemdata.userID}
+                                                            StartTime={itemdata.startTime}
+                                                            EndTime={itemdata.endTime}
+                                                            setState={this.parentFunction}
+                                                        />
+                                                    );
+                                                })}
+                                        </ul>
                                     </ReservationList>
                                 </div>
                             </div>

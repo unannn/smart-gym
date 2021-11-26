@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import $ from "jquery";
+import jquery from "jquery";
+import axios from "axios";
 //background: #949494; #545454;
 let MenuBar = styled.li`
 &:hover {                
@@ -20,18 +23,42 @@ let MenuBar = styled.li`
 
 class ManagerBar extends React.Component {
     loadItem = async () => {
-        console.log(window.sessionStorage.getItem('AdminId'));
-        if (window.sessionStorage.getItem('AdminId') == "false") {
-            alert("권한이 없습니다.\n로그인을 먼저해주세요.");
-            window.location.href = "/";
-        }
+        axios.get('http://localhost:8080/manager/isLogin')
+            .then((data) => {
+                console.log(data.data)
+                if (data.data == false) {
+                    alert("권한이 없습니다.\n로그인을 먼저해주세요.");
+                    window.location.href = "/";
+                }
+            })
+            .catch(e => {
+                console.error(e);
+                alert("error! 로그인 정보를 불러올 수 없습니다.");
+            });
+
     };
     logOut = function () {
         console.log("logOUt");
         if (window.confirm("로그아웃하면 다시 돌아올 수 없습니다.\n로그아웃 하시겠습니까?")) {
-            window.sessionStorage.setItem('AdminId', false);
-            alert("로그아웃 되었습니다.\n다시 관리자 화면으로 돌아오시려면 재로그인 해주세요.");
-            window.location.href = "/";
+            axios.post('http://localhost:8080/manager/saveLoginStatus',
+                {
+                    managerLoginStatus: "false"
+                },
+                {
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                }
+            )
+                .then((response) => {
+                    console.log("response");
+                    alert("로그아웃 되었습니다.\n다시 관리자 화면으로 돌아오시려면 재로그인 해주세요.");
+                    window.location.href = "/";
+                })
+                .catch((response) => {
+                    alert("error! 로그아웃을 할 수 없습니다.");
+                });
         }
     }
     componentDidMount() {

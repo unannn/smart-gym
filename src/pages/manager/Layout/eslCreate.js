@@ -189,7 +189,6 @@ class ESLCreate extends React.Component {
                                 <div style={{ position: "relative", top: "64px", left: "0px" }}>
                                     <ListKey style={{ width: "600px", left: "85px", top: "-200px" }}>
                                         <div>
-                                            <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "100px" }}>MatchESL</Cell>
                                             <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "120px" }}>EquipmentID</Cell>
                                             <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "200px" }}>Equipment/Nth</Cell>
                                         </div>

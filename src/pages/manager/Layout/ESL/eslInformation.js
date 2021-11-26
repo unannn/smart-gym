@@ -66,7 +66,7 @@ let ESLInnerBox = styled.div`
    background: white;
 `;
 
-let Cell = styled.li`
+let Cell = styled.input`
    position: relative;
    top:0px;
    height: 100%;
@@ -74,6 +74,9 @@ let Cell = styled.li`
    line-height: 50px;
    text-align: center;
    list-style-type: none;
+   border: 0px;
+   font-weight: bold;
+   background: pink;
    `;
 //background: 'pink',
 let RowLineBox = styled.div`
@@ -111,83 +114,46 @@ class ESLInfo extends React.Component {
         this.state = {
             loading: false,
             ItemList: [],
-            flog: "", // 스프린트에서는 fakedata값이 있어서 그내용을 넣어두었었다.
-            gymName: "",
+            flog: "",
             urlLink: "",
             Hvalue: "90px"
         };
     }
 
-    loadItem = async () => {
-        //gyminformation Read
-        axios.get('http://localhost:8080/gymInfo/read') // json을 가져온다음
-            .then((data) => {
-                console.log(data.data)
-                this.setState({
-                    gymName: data.data.gymInfoName
-                });
-
-            })
-            .catch(e => {
-                console.error(e);
-                alert("error! 헬스장 정보 조회에 실패했습니다.");
-            });
-        /* axios.get('http://localhost:8080/equipment/readAll') // json을 가져온다음
-             .then((data) => {
-                 // data라는 이름으로 json 파일에 있는 값에 state값을 바꿔준다.
-                 console.log(data.data)
-                 this.setState({
-                     loading: true, // load되었으니 true,
-                     ItemList: data.data,
-                     flog: "전체" // 비어있던 Itemlist는 data에 Item객체를 찾아넣어준다. ( Item : json파일에 있는 항목)
-                 });
-             })
-             .catch(e => {
-                 // json이 로드되지않은 시간엔
-                 console.error(e); // 에러표시
-                 this.setState({
-                     loading: false // 이때는 load 가 false 유지
-                 });
-                 alert("error! 운동기구 목록 조회에 실패했습니다.");
-             });*/
-    };
 
     qrCheck = function (e) {
-        console.log("qrCheck");
-        this.props.parentFunction("https://www.youtube.com/watch?v=KOW1pGlXNdk");
+        console.log("qrCheck" + $("#QrValue").val());
+        this.props.parentFunction($("#QrValue").val());
         this.setState({
-            urlLink: "https://www.youtube.com/watch?v=KOW1pGlXNdk",
+            urlLink: $("#QrValue").val(),
             Hvalue: "400px"
         });
-    }
-    componentDidMount() {
-        this.loadItem();
     }
     render() {
         const { urlLink } = this.state;
         const { Hvalue } = this.state;
-        //console.log(ItemList);
         return (
             <div>
                 <center>
-                    <label style={{ position: "relative", left: "-510px" }}>ESL No. 12</label>
+                    <Cell id="ESLNo" style={{ position: "relative", left: "-490px", width: '150px' }} disabled />
                     <ESLOutBox />
                     <BInnerBox>
                         <img src="./image/barcode.png" width="40px" height="250px" style={{ position: 'relative', top: "5px", left: '-10px' }} />
                     </BInnerBox>
                     <ESLInnerBox>
                         <div>
-                            <Cell style={{ position: 'relative', fontSize: '20px', top: '-10px', left: '500px', width: '220px' }}>{this.state.gymName}</Cell>
-                            <Cell style={{ position: 'relative', fontSize: '30px', top: '-5px', left: '38%', width: '200px' }}>000{ }회원님</Cell>
-                            <Cell style={{ position: 'relative', fontSize: '50px', top: '0px', left: '25%', width: '400px' }}>13:00{ }-{ }13:30</Cell>
+                            <Cell id="GymNameInfo" style={{ textAlign: 'right', float: "right", position: 'relative', fontSize: '20px', top: '-10px', left: '0px', width: '230px' }} disabled />
+                            <Cell id="userName" style={{ textAlign: 'center', position: 'relative', fontSize: '30px', top: '50px', left: '38%', width: '200px' }} disabled />
+                            <Cell id="Times" style={{ textAlign: 'center', position: 'relative', fontSize: '50px', top: '50px', left: '20%', width: '450px' }} disabled />
                         </div>
                         <div>
                             <QRdiv>
-                                <img src="./icon/icon_qr.png" style={{ width: '120px', height: '120px', cursor: "pointer" }} onClick={this.qrCheck} />
+                                <img id="QRESL" src="./icon/icon_qr.png" style={{ width: '120px', height: '120px', cursor: "pointer" }} onClick={this.qrCheck} />
+                                <input type="hidden" id="QrValue" />
                             </QRdiv>
                             <UnderBox>
                                 <label style={{ float: 'left', fontSize: '20px', width: '250px' }}>운동기구 사용법 확인하기</label>
-                                <label style={{ float: 'right', fontSize: '30px', width: '300px' }}>{ } 긴 텍스트 확인용 기구</label>
+                                <Cell id="equipESL" style={{ position: 'relative', top: '-10px', left: '5%', textAlign: 'right', border: '0px', fontSize: '30px', width: '300px', height: '50px' }} disabled />
                             </UnderBox>
                         </div>
                     </ESLInnerBox>
