@@ -23,6 +23,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import UserNavBar from './components/user/UserNavBar';
 import styled from "styled-components";
 import UserFooter from './components/user/UserFooter'
+
 function App() {
 
   let logged = window.sessionStorage.getItem('id');
@@ -32,8 +33,10 @@ function App() {
       <div className="App">
         {logged && <UserNavBar></UserNavBar>}
         <Switch>
+
           <Redirect exact from='/' to='/login' />
           {logged ? <Redirect from="/login" to='/user' /> : <Redirect from="/user" to='/login' />}
+
           <Route exact path='/login'>
             <ContentStyle><Login ></Login></ContentStyle>
           </Route>
@@ -58,8 +61,7 @@ function App() {
           <Route exact path='/user/centerinfo'>
             <ContentStyle><CenterInfo></CenterInfo></ContentStyle>
           </Route>
-          <ContentStyle>{logged && <UserFooter></UserFooter>}</ContentStyle>
-
+          {logged && <UserFooter></UserFooter>}
 
           <Route exact path='/userManage'>
             <UserM></UserM>
@@ -94,8 +96,8 @@ function App() {
           <Route exact path='/eslCreate'>
             <ESLCreate />
           </Route>
-        </Switch>
-      </div>
+        </Switch >
+      </div >
 
     </BrowserRouter >
 
