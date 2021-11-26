@@ -22,7 +22,7 @@ import ESLCreate from './pages/manager/Layout/eslCreate';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import UserNavBar from './components/user/UserNavBar';
 import styled from "styled-components";
-
+import UserFooter from './components/user/UserFooter'
 function App() {
 
   let logged = window.sessionStorage.getItem('id');
@@ -35,31 +35,30 @@ function App() {
           <Redirect exact from='/' to='/login' />
           {logged ? <Redirect from="/login" to='/user' /> : <Redirect from="/user" to='/login' />}
           <Route exact path='/login'>
-            <Login></Login>
+            <ContentStyle><Login ></Login></ContentStyle>
           </Route>
-          <ContentStyle>
-            <Route exact path='/user'>
-              <UserMain></UserMain>
-            </Route>
-            <Route exact path='/manager'>
-              <ManagerMain></ManagerMain>
-            </Route>
-            <Route exact path='/user/reservation/date'>
-              <DateSelection></DateSelection>
-            </Route>
-            <Route exact path='/user/reservation/equip'>
-              <EquiptionSelection></EquiptionSelection>
-            </Route>
-            <Route exact path='/user/equipguide'>
-              <EquiptionGuide></EquiptionGuide>
-            </Route>
-            <Route exact path='/user/mypage'>
-              <MyPage></MyPage>
-            </Route>
-            <Route exact path='/user/centerinfo'>
-              <CenterInfo></CenterInfo>
-            </Route>
-          </ContentStyle>
+          <Route exact path='/user'>
+            <ContentStyle><UserMain></UserMain></ContentStyle>
+          </Route>
+          <Route exact path='/manager'>
+            <ContentStyle><ManagerMain></ManagerMain></ContentStyle>
+          </Route>
+          <Route exact path='/user/reservation/date'>
+            <ContentStyle><DateSelection></DateSelection></ContentStyle>
+          </Route>
+          <Route exact path='/user/reservation/equip'>
+            <ContentStyle><EquiptionSelection></EquiptionSelection></ContentStyle>
+          </Route>
+          <Route exact path='/user/equipguide'>
+            <ContentStyle><EquiptionGuide></EquiptionGuide></ContentStyle>
+          </Route>
+          <Route exact path='/user/mypage'>
+            <ContentStyle><MyPage></MyPage></ContentStyle>
+          </Route>
+          <Route exact path='/user/centerinfo'>
+            <ContentStyle><CenterInfo></CenterInfo></ContentStyle>
+          </Route>
+          <ContentStyle>{logged && <UserFooter></UserFooter>}</ContentStyle>
 
 
           <Route exact path='/userManage'>

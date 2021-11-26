@@ -27,10 +27,15 @@ class UserMain extends React.Component {
 
             //현재 사용중인 기구가 있을 때
             usingEqiupmentName: 'Default',
-            usingEqiupmentStartTime: '11:00',
-            usingEqiupmentEndTime: '11:15',
-            reservationID: ''
+            usingEqiupmentStartTime: '',
+            usingEqiupmentEndTime: '',
+            reservationID: '',
 
+            //다음 사용할 기구가 있을 때
+            nextEqiupmentName: 'Default',
+            nextEqiupmentStartTime: '11:00',
+            nextEqiupmentEndTime: '11:15',
+            nextReservationID: ''
         }
     }
 
@@ -63,28 +68,48 @@ class UserMain extends React.Component {
     }
 
     findUsingEquipment(equipList) {
-        let currentTime = moment().format('hh:mm');
+        let currentTime = moment().format('HH:mm');
+        let i;
         console.log(currentTime)
         console.log('10:02' < '20:01')
 
-        for (let i = 0; i < equipList.length; i++) {
+        for (i = 0; i < equipList.length; i++) {
+
             let startTime = String(equipList[i].startTime.split('T')[1]).substring(0, 5);
             let endTime = String(equipList[i].endTime.split('T')[1]).substring(0, 5);
+
+            console.log(startTime);
+            console.log(endTime);
+
             if (currentTime >= startTime && currentTime <= endTime) {
+
                 this.setState({
                     existUsingEquipment: true,
-                    usingEqiupmentName: equipList[i].equipmentName + ' ' + equipList[i].equipmentNameNth,
+                    usingEqiupmentName: equipList[i].equipmentName + equipList[i].equipmentNameNth,
                     usingEqiupmentStartTime: startTime,
                     usingEqiupmentEndTime: endTime,
                     reservationID: equipList[i].reservationID
                 })
-                break;
             }
+            // else if (currentTime <= startTime) {
+
+            //     this.setState({
+            //         existUsingEquipment: true,
+            //         usingEqiupmentName: equipList[i].equipmentName + ' ' + equipList[i].equipmentNameNth,
+            //         usingEqiupmentStartTime: startTime,
+            //         usingEqiupmentEndTime: endTime,
+            //         reservationID: equipList[i].reservationID
+            //     })
+            //     break;
+            // }
         }
     }
 
-    EndReservation() {
+    findNextUsingEquipment() {
 
+    }
+
+    EndReservation() {
         axios.post('http://localhost:8080/reservation/cancleReservation',
             {
                 reservationID: this.state.reservationID
@@ -112,7 +137,8 @@ class UserMain extends React.Component {
         return (
             <UserMainStyle id="main">
                 <StyledTodayRezBoard>
-                    <RedirectButtonStyle onClick={() => window.location.reload()}>
+                    <RedirectButtonStyle onClick={() => window.location.reload()} style={{ cursor: 'pointer' }}>
+                        새로고침
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
                             <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
@@ -154,8 +180,8 @@ class UserMain extends React.Component {
                             <NextEquipStyle>
                                 <NextEquipTextStyle>
                                     <NextEquipMessageStyle>다음에 사용할 기구</NextEquipMessageStyle>
-                                    <NextEquipNameStyle>벤치 프레스 1</NextEquipNameStyle>
-                                    <NextEquipTimeStyle>12:00 - 12:30</NextEquipTimeStyle>
+                                    <NextEquipNameStyle>{this.state.nextEqiupmentName}</NextEquipNameStyle>
+                                    <NextEquipTimeStyle>{this.state.nextEqiupmentStartTime + '-' + this.state.nextEqiupmentEndTime}</NextEquipTimeStyle>
                                 </NextEquipTextStyle>
 
                                 <NextEquipImage>
