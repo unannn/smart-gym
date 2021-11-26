@@ -144,7 +144,7 @@ class ReservationLog extends React.Component {
                                 </div>
                             </ListKey>
                             <div>
-                                <RowLineBox style={{ top: '-50px', left: '-105px', width: '280px' }} />
+                                <RowLineBox style={{ top: '-50px', left: '-115px', width: '280px' }} />
                                 <EquiList>
                                     <ul className="list__itemview">
                                         {ItemList &&

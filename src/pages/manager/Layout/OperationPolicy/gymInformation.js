@@ -35,7 +35,6 @@ const informationUpdate = (Iname, Iadd, Iphone, e) => {
                 }
                 else {
                     alert("헬스장 정보가 정상적으로 등록되었습니다.");
-                    window.location.reload();
                 }
             })
             .catch((response) => {
