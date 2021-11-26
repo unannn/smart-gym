@@ -44,8 +44,24 @@ class ManagerLogin extends Component {
             .then((response) => {
                 console.log(response.data);
                 if (response.data == 0) {
+                    axios.post('http://localhost:8080/manager/saveLoginStatus',
+                        {
+                            managerLoginStatus: "true"
+                        },
+                        {
+                            headers: {
+                                'Content-type': 'application/json',
+                                'Accept': 'application/json'
+                            }
+                        }
+                    )
+                        .then((response) => {
+                            console.log("response");
+                        })
+                        .catch((response) => {
+                            alert("error! 로그인을 할 수 없습니다.");
+                        });
                     alert("관리자 로그인 성공!\n관리자 페이지로 이동합니다.");
-                    window.sessionStorage.setItem('AdminId', true);
                     window.location.href = "/manager";
                 }
                 else if (response.data == 1) {

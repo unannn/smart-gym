@@ -59,6 +59,11 @@ const KorCList = ["가슴", "등", "목", "복부", "삼두", "승모근", "어�
 let textFlag = "none";
 let Ccategory = "";
 class DetailE extends React.Component {
+    constructor(props) {
+        super(props);
+        this.deleteEquipment = this.deleteEquipment.bind(this);
+    }
+
     updateEquipment = function () {
         var fileInput = document.querySelector("#imageFileOpenInput");
         const formData = new FormData();
@@ -180,8 +185,7 @@ class DetailE extends React.Component {
                 .then((response) => {
                     console.log(response.data);
                     alert("운동기구 정보가 삭제되었습니다.");
-                    localStorage.setItem("detilID", "");
-                    window.location.reload()
+                    this.props.loadItem();
                 })
                 .catch((response) => {
                     console.log('Error!');

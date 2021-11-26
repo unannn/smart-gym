@@ -10,7 +10,7 @@ import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 import ManagerBar from './component/menubar.js';
 import Footer from './component/footer';
-import UserListpage from "./UserManage/uAlp";
+import UserApprovalItem from "./UserManage/uAItem";
 
 let SearchBox = styled.input`
  position: relative;
@@ -35,7 +35,7 @@ let EquiList = styled.div`
 top: -140px;
 left: 10px;
    width: 900px;
-   height: 440px;
+   height: 700px;
    text-align: center;
    overflow:auto;
    border-radius: 10px;
@@ -230,7 +230,19 @@ class UserA extends React.Component {
                                     </div>
                                 </ListKey>
                                 <EquiList>
-                                    <UserListpage Itemcard={ItemList} />
+                                    <ul className="list__itemview">
+                                        {ItemList &&
+                                            ItemList.map((itemdata, insertIndex) => {
+                                                return (
+                                                    <UserApprovalItem
+                                                        key={insertIndex}
+                                                        UserApprovalId={itemdata.userID}
+                                                        UserApprovalName={itemdata.userName}
+                                                        reloadF={this.loadItem}
+                                                    />
+                                                );
+                                            })}
+                                    </ul>
                                 </EquiList>
                                 <RowLineBox />
                             </center>

@@ -27,6 +27,10 @@ let Space = styled.div`
    display: inline;
    `;
 let MenuLabel = styled.label`
+&:hover {
+    background: darkgray;
+  }
+   cursor: pointer;
    border: 5px solid gray;
    font-size: 18px;
    border-radius: 10px;
@@ -56,9 +60,15 @@ class ManagerMain extends React.Component {
                                 <Link to="/equipmentLayout" style={{ color: "black" }}>
                                     <img src="./icon/icon_Layout_noLabel.png" width="130px" /><br />
                                 </Link>
-                                <MenuLabel style={{ position: "relative", left: '-115px' }}>회원가입 승인</MenuLabel>
-                                <MenuLabel style={{ position: "relative", left: '-15px' }}>회원 관리</MenuLabel>
-                                <MenuLabel style={{ position: "relative", left: '95px' }}>배치도 등록</MenuLabel>
+                                <Link to="/userApproval" style={{ color: "black" }}>
+                                    <MenuLabel style={{ position: "relative", left: '-115px' }}>회원가입 승인</MenuLabel>
+                                </Link>
+                                <Link to="/userManage" style={{ color: "black" }}>
+                                    <MenuLabel style={{ position: "relative", left: '-15px' }}>회원 관리</MenuLabel>
+                                </Link>
+                                <Link to="/equipmentLayout" style={{ color: "black" }}>
+                                    <MenuLabel style={{ position: "relative", left: '95px' }}>배치도 등록</MenuLabel>
+                                </Link>
                             </Icons>
                             <br /><br /><br />
                             <Icons style={{ width: '800px' }}>
@@ -73,9 +83,15 @@ class ManagerMain extends React.Component {
                                 <Link to="/operPolicy" style={{ color: "black" }}>
                                     <img src="./icon/icon_operpolicy.png" width="120px" /><br />
                                 </Link>
-                                <MenuLabel style={{ position: "relative", left: '-70px', top: "15px" }}>운동기구 관리</MenuLabel>
-                                <MenuLabel style={{ position: "relative", left: '10px', top: "15px" }}>운동기구 등록</MenuLabel>
-                                <MenuLabel style={{ position: "relative", left: '80px', top: "15px" }}>헬스장 운영정책</MenuLabel>
+                                <Link to="/equipment" style={{ color: "black" }}>
+                                    <MenuLabel style={{ position: "relative", left: '-70px', top: "15px" }}>운동기구 관리</MenuLabel>
+                                </Link>
+                                <Link to="/cEquipment" style={{ color: "black" }}>
+                                    <MenuLabel style={{ position: "relative", left: '10px', top: "15px" }}>운동기구 등록</MenuLabel>
+                                </Link>
+                                <Link to="/operPolicy" style={{ color: "black" }}>
+                                    <MenuLabel style={{ position: "relative", left: '80px', top: "15px" }}>헬스장 운영정책</MenuLabel>
+                                </Link>
                             </Icons>
                             <br /><br /><br />
                             <Icons style={{ width: '800px' }}>
@@ -90,9 +106,15 @@ class ManagerMain extends React.Component {
                                 <Link to="/esl" style={{ color: "black" }}>
                                     <img src="./icon/icon_esl.png" width="120px" /><br />
                                 </Link >
-                                <MenuLabel style={{ position: "relative", left: '-90px', top: "15px" }}>예약 이력</MenuLabel>
-                                <MenuLabel style={{ position: "relative", left: '10px', top: "15px" }}>헬스장 통계</MenuLabel>
-                                <MenuLabel style={{ position: "relative", left: '100px', top: "15px" }}>ESL 장치관리</MenuLabel>
+                                <Link to="/reservationLog" style={{ color: "black" }}>
+                                    <MenuLabel style={{ position: "relative", left: '-90px', top: "15px" }}>예약 이력</MenuLabel>
+                                </Link >
+                                <Link to="/statistic" style={{ color: "black" }}>
+                                    <MenuLabel style={{ position: "relative", left: '10px', top: "15px" }}>헬스장 통계</MenuLabel>
+                                </Link >
+                                <Link to="/esl" style={{ color: "black" }}>
+                                    <MenuLabel style={{ position: "relative", left: '100px', top: "15px" }}>ESL 장치관리</MenuLabel>
+                                </Link >
                             </Icons>
                         </div>
                     </BodyBox>

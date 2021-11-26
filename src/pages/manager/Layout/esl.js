@@ -165,6 +165,7 @@ class ESLManage extends React.Component {
                                                         Category={itemdata.equipmentCategoryList}
                                                         EnthNumber={itemdata.equipmentNameNth}
                                                         apiNumber={2}
+                                                        ESL={itemdata.eslid}
                                                     />
                                                 );
                                             })}

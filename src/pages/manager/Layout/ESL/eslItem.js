@@ -59,8 +59,17 @@ function ESLItem({ key, ESLId, EquipmentId, ReservationId }) {
                 });
         }
     }
-    const selectedESL = (ESLId, e) => {
+    const selectedESL = (ESLId, equi, e) => {
         $("#ESLMatchID").val(ESLId);
+        $("#EquipmentMatchID").val(equi);
+        $("#originEquip").val(equi);
+        if ($("#EquipmentMatchID").val() == "None") {
+            $("#MatchedIMG").attr("src", "./icon/icon_unmatching.png");
+        }
+        else {
+            $("#MatchedIMG").attr("src", "./icon/icon_matching.png");
+        }
+
     }
     let equi = EquipmentId;
     let re = ReservationId;
@@ -72,7 +81,7 @@ function ESLItem({ key, ESLId, EquipmentId, ReservationId }) {
     }
     return (
         <div>
-            <div onClick={(e) => { selectedESL(ESLId, e) }}>
+            <div onClick={(e) => { selectedESL(ESLId, equi, e) }}>
                 <InfoBox className="component component--item_card" key={key}>
                     <input type="hidden" id="Eid" value={ESLId} />
                     <Cell style={{ float: 'left', fontSize: '17px', width: "80px" }} id="eslId">&nbsp;{ESLId}</Cell>

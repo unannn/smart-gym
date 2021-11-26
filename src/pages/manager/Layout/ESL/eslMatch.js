@@ -66,10 +66,11 @@ class ESLMatch extends React.Component {
                 <ESLMatchBox>
                     <InfoBox>
                         <img src="./icon/icon_esl.png" style={{ width: "150px", heigth: "80px", cursor: "Default" }} /><br />
-                        <InfoCell style={{ width: '100px' }} id="ESLMatchID"></InfoCell><br /><br />
-                        <img src="./icon/icon_matching.png" style={{ width: "50px", heigth: "80px", cursor: "pointer" }} onClick={this.matchTheItem} /><br /><br />
-                        <InfoCell style={{ width: '100px' }} id="EquipmentMatchID"></InfoCell><br />
+                        <InfoCell style={{ textAlign: 'center', width: '100px' }} id="ESLMatchID"></InfoCell><br /><br />
+                        <img id="MatchedIMG" src="./icon/icon_matching.png" style={{ width: "50px", heigth: "80px", cursor: "pointer" }} onClick={this.matchTheItem} /><br /><br />
+                        <InfoCell style={{ textAlign: 'center', width: '100px' }} id="EquipmentMatchID"></InfoCell><br />
                         <img src="./icon/icon_equipment.png" style={{ width: "150px", heigth: "80px", cursor: "Default" }} /><br /><br />
+                        <input type="hidden" id="originEquip" />
                     </InfoBox>
                 </ESLMatchBox>
             </div >

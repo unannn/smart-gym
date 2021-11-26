@@ -44,7 +44,7 @@ function App() {
             <ContentStyle><UserMain></UserMain></ContentStyle>
           </Route>
           <Route exact path='/manager'>
-            <ContentStyle><ManagerMain></ManagerMain></ContentStyle>
+            <ManagerMain></ManagerMain>
           </Route>
           <Route exact path='/user/reservation/date'>
             <ContentStyle><DateSelection></DateSelection></ContentStyle>

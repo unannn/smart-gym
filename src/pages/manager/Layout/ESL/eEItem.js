@@ -37,7 +37,15 @@ const KorCList = ["가슴", "등", "목", "복부", "삼두", "승모근", "어�
 
 
 const selectedEquipment = (EquipmentId, e) => {
-    $("#EquipmentMatchID").val(EquipmentId);
+    console.log($("#originEquip").val());
+    console.log($("#EquipmentMatchID").val());
+    if (EquipmentId != $("#originEquip").val()) {
+        $("#EquipmentMatchID").val(EquipmentId);
+        $("#MatchedIMG").attr("src", "./icon/icon_unmatching.png")
+    }
+    else {
+        $("#MatchedIMG").attr("src", "./icon/icon_matching.png");
+    }
 }
 function EEItem({ key, ESLId, EquipmentId, EquipmentName, EquipmentNth }) {
     let eslIDinfo = ESLId;
@@ -49,7 +57,6 @@ function EEItem({ key, ESLId, EquipmentId, EquipmentName, EquipmentNth }) {
             <div>
                 <InfoBox className="component component--item_card" key={key}>
                     <input type="hidden" id="Eid" value={ESLId} />
-                    <Cell style={{ float: 'left', fontSize: '17px', width: '100px' }} id="EslID">&nbsp;{eslIDinfo}</Cell>
                     <Cell style={{ float: 'left', fontSize: '17px', width: '120px' }} id="equiID">{EquipmentId}</Cell>
                     <Cell style={{ float: 'left', fontSize: '17px', width: '200px' }} id="equipmentInfo">{EquipmentName}/{EquipmentNth}</Cell>
                 </ InfoBox >

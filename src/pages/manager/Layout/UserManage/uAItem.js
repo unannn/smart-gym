@@ -45,68 +45,68 @@ let ButtonCus = styled.button`
    font-size: 16px;
    width: 85px;
    `;
-const approvalUser = (UserApprovalId, UserApprovalName, e) => {
-    console.log(UserApprovalId);
-    console.log("approvalUser");
-    if (window.confirm("ID: " + UserApprovalId +
-        "\nName: " + UserApprovalName + "\n해당 대기자의 가입을 승인하시겠습니까?")) {
-        axios.post('http://localhost:8080/unAllowedUser/approve',
-            {
-                userID: UserApprovalId
-            },
-            {
-                headers: {
-                    'Content-type': 'application/json',
-                    'Accept': 'application/json'
+function UserApprovalItem({ key, UserApprovalId, UserApprovalName, reloadF }) {
+    const approvalUser = (UserApprovalId, UserApprovalName, e) => {
+        console.log(UserApprovalId);
+        console.log("approvalUser");
+        if (window.confirm("ID: " + UserApprovalId +
+            "\nName: " + UserApprovalName + "\n해당 대기자의 가입을 승인하시겠습니까?")) {
+            axios.post('http://localhost:8080/unAllowedUser/approve',
+                {
+                    userID: UserApprovalId
+                },
+                {
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Accept': 'application/json'
+                    }
                 }
-            }
-        )
-            .then((response) => {
-                console.log(response.data);
-                alert("가입이 승인되었습니다.");
-                window.location.reload();
-            })
-            .catch((response) => {
-                console.log('Error!');
-                alert("error! 가입 승인에 실패하였습니다.");
-            });
+            )
+                .then((response) => {
+                    console.log(response.data);
+                    alert("가입이 승인되었습니다.");
+                    { reloadF() };
+                })
+                .catch((response) => {
+                    console.log('Error!');
+                    alert("error! 가입 승인에 실패하였습니다.");
+                });
+        }
+        else {
+            alert("가입승인 요청을 취소하였습니다.");
+        }
     }
-    else {
-        alert("가입승인 요청을 취소하였습니다.");
-    }
-}
 
-const notApprovalUser = (UserApprovalId, UserApprovalName, e) => {
-    console.log(UserApprovalId);
-    console.log("notApprovalUser");
-    if (window.confirm("ID: " + UserApprovalId +
-        "\nName: " + UserApprovalName + "\n해당 대기자의 가입을 승인불가하시겠습니까?")) {
-        axios.post('http://localhost:8080/unAllowedUser/unApprove',
-            {
-                userID: UserApprovalId
-            },
-            {
-                headers: {
-                    'Content-type': 'application/json',
-                    'Accept': 'application/json'
+    const notApprovalUser = (UserApprovalId, UserApprovalName, e) => {
+        console.log(UserApprovalId);
+        console.log("notApprovalUser");
+        if (window.confirm("ID: " + UserApprovalId +
+            "\nName: " + UserApprovalName + "\n해당 대기자의 가입을 승인불가하시겠습니까?")) {
+            axios.post('http://localhost:8080/unAllowedUser/unApprove',
+                {
+                    userID: UserApprovalId
+                },
+                {
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Accept': 'application/json'
+                    }
                 }
-            }
-        )
-            .then((response) => {
-                console.log(response.data);
-                alert("가입승인이 불가되었습니다.");
-                window.location.reload();
-            })
-            .catch((response) => {
-                console.log('Error!');
-                alert("error! 가입승인 불가에 실패하였습니다.");
-            });
+            )
+                .then((response) => {
+                    console.log(response.data);
+                    alert("가입승인이 불가되었습니다.");
+                    { reloadF() };
+                })
+                .catch((response) => {
+                    console.log('Error!');
+                    alert("error! 가입승인 불가에 실패하였습니다.");
+                });
+        }
+        else {
+            alert("가입승인 불가 요청을 취소하였습니다.");
+        }
     }
-    else {
-        alert("가입승인 불가 요청을 취소하였습니다.");
-    }
-}
-function UserApprovalItem({ key, UserApprovalId, UserApprovalName }) {
     return (
         <div style={{ cursor: 'pointer' }}>
             <div>

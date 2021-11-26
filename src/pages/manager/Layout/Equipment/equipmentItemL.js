@@ -35,9 +35,9 @@ const CList = ["chest", "back", "neck", "stomach", "triceps", "trapezius", "shou
 const KorCList = ["가슴", "등", "목", "복부", "삼두", "승모근", "어깨", "유산소", "이두", "하체", "허리", "기타"];
 //useState({ endTime: "", equipmentName: "", equipmentNameNth: "", reservationID: 0, startTime: "", userID: "" });
 
-function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber, apiNumber, setState }) {
+function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber, apiNumber, setState, ESL }) {
     //apiNumber 0: Layout/1:Reservation/2:ESL
-    const apiKind = (EquipmentId, apiNumber, e) => {
+    const apiKind = (EquipmentId, ESL, apiNumber, e) => {
         localStorage.setItem("reservation", EquipmentId);
         console.log(apiNumber);
         if (apiNumber == 0) {
@@ -60,6 +60,7 @@ function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber,
                     console.log($("#Hob").val());
                     console.log(response.data);
                     { setState(response.data) };
+                    window.sessionStorage.setItem('reservation', EquipmentId);
                 })
                 .catch((response) => {
                     console.log('Error!');
@@ -68,11 +69,11 @@ function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber,
         }
         else if (apiNumber == 2) {
             let ESLState = -1;
+            console.log(ESL);
             //ESL
-            /*
-            axios.post('http://localhost:8080/equipment/detailedRead',
+            axios.post('http://localhost:8080/esl/detailedRead',
                 {
-                    equipmentID: EquipmentId
+                    eslID: ESL
                 },
                 {
                     headers: {
@@ -83,29 +84,48 @@ function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber,
             )
                 .then((response) => {
                     console.log(response.data);
-                    ESLState=response.data;
+                    ESLState = response.data.equipmentAvailable;
+
+                    if (response.data.gymInfoName == "" || response.data.gymInfoName == " " || response.data.gymInfoName == null) {
+                        $("#GymNameInfo").val("Gym Name unregistered");
+                    }
+                    else {
+                        $("#GymNameInfo").val(response.data.gymInfoName);
+                    }
+                    $("#userName").val(response.data.userName);
+                    $("#equipESL").val(response.data.equipmentName + " " + response.data.equipmentNameNth);
+                    $("#QrValue").val(response.data.equipmentQRCode);
+                    //els state
+                    //사용불가(고장)
+                    if (ESLState == 0) {
+                        $("#Times").val("breakdown");
+                        //$("#ESLNo").val(response.data.);
+                    }
+                    //예약 중
+                    else if (ESLState == 1) {
+                        console.log("1번상태");
+                        $("#Times").val(response.data.startTime + "~" + response.data.endTime);
+                    }
+                    //누구나 사용가능
+                    else if (ESLState == 2) {
+                        console.log("2번상태");
+                        $("#Times").val("현재 누구나 사용 가능");
+                    }
+                    //Not Matched
+                    else if (ESLState == 4) {
+                        console.log("4번상태");
+                        $("#Times").val("ESL Not Matched");
+                    }
+                    //error code -1
+                    else {
+                        alert("error! ESL정보를 조회할 수 없습니다.");
+                    }
                 })
                 .catch((response) => {
                     console.log('Error!');
                     alert("error! ESL정보를 조회할 수 없습니다.");
-                });*/
-            //els state
-            //사용불가
-            if (ESLState == 0) {
+                });
 
-            }
-            //예약 중
-            else if (ESLState == 1) {
-
-            }
-            //누구나 사용가능
-            else if (ESLState == 2) {
-
-            }
-            //error code -1
-            else {
-                alert("error! ESL정보를 조회할 수 없습니다.");
-            }
         }
         else {
             console.log("detailed Read");
@@ -160,7 +180,7 @@ function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber,
     }
     return (
         <div>
-            <div style={{ cursor: 'pointer' }} onClick={(e) => { apiKind(EquipmentId, apiNumber, e) }}>
+            <div style={{ cursor: 'pointer' }} onClick={(e) => { apiKind(EquipmentId, ESL, apiNumber, e) }}>
                 <InfoBox className="component component--item_card" key={key}>
                     <input type="hidden" id="Eid" value={EquipmentId} />
                     <Cell style={{ float: 'left', fontSize: '17px', width: "200px" }} id="nameE" >&nbsp;{EquipmentName}</Cell>

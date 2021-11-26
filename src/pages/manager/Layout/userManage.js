@@ -10,7 +10,6 @@ import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 import ManagerBar from './component/menubar.js';
 import Footer from './component/footer';
-import UserListpage from "./UserManage/ulp";
 import UserItem from "./UserManage/userItem";
 import DetailU from "./UserManage/detailedUser";
 
@@ -38,7 +37,7 @@ let EquiList = styled.div`
    left: -275px;
    top: -139px;
    width: 700px;
-   height: 440px;
+   height: 600px;
    text-align: center;
    overflow:auto;
    border-radius: 10px;
@@ -230,7 +229,20 @@ class UserM extends React.Component {
                                     </div>
                                 </ListKey>
                                 <EquiList>
-                                    <UserListpage Itemcard={ItemList} />
+                                    <ul className="list__itemview">
+                                        {ItemList &&
+                                            ItemList.map((itemdata, insertIndex) => {
+                                                return (
+                                                    <UserItem
+                                                        key={insertIndex}
+                                                        UserId={itemdata.userID}
+                                                        UserName={itemdata.userName}
+                                                        UserAuthority={itemdata.allowedUserReservationAuthority}
+                                                        reloadF={this.loadItem}
+                                                    />
+                                                );
+                                            })}
+                                    </ul>
                                 </EquiList>
                                 <RowLineBox />
                             </center>
