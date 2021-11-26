@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from "styled-components";
 import moment from 'moment';
 import { RestorePageSharp } from '@material-ui/icons';
+import { Pointer } from 'highcharts';
 
 class Day extends Component {
     constructor(props) {

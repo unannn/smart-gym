@@ -14,9 +14,9 @@ class Timer extends Component {
     }
 
     componentDidMount() {
-        let currentTime = moment().format("hh:mm");
+        let currentTime = moment().format("HH:mm");
 
-        let currentTimeHour = parseInt(currentTime.substring(0, 2)) % 12;
+        let currentTimeHour = parseInt(currentTime.substring(0, 2));
         let currentTimeMinute = parseInt(currentTime.substring(3, 5));
         let currentTimeNum = currentTimeHour * 60 + currentTimeMinute;
         console.log(currentTimeNum);
@@ -27,10 +27,7 @@ class Timer extends Component {
         console.log(EndTimeNum);
 
         let remainingTime = EndTimeNum - currentTimeNum;
-        let remainingTimeHour = parseInt(remainingTime / 60);
-        let remainingTimeMinute = remainingTime % 60;
-        remainingTimeHour = remainingTimeHour / 10 < 1 ? '0' + remainingTimeHour : remainingTimeHour;
-        remainingTimeMinute = remainingTimeMinute / 10 < 1 ? '0' + remainingTimeMinute : remainingTimeMinute;
+
         console.log(remainingTime);
 
         this.setState({ remainingTime: remainingTime })
