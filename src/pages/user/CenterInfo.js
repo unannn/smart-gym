@@ -4,72 +4,96 @@ import Box from '../../components/user/Box';
 import styled from "styled-components";
 import InputText from '../../components/user/InputText';
 import InputButton from '../../components/user/InputButton'
+import axios from 'axios'
 
 class CenterInfo extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            gymInfoID: null,
+            gymInfoName: null,
+            gymInfoAddress: null,
+            gymInfoPhoneNumber: null,
+            gymInfoEquipmentLayout: null
+        }
+    }
+
+    componentDidMount() {
+        axios.get('http://localhost:8080/gymInfo/read',
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then((response) => {
+                const centerInfo = response.data;
+                console.log(centerInfo)
+                this.setState({
+                    gymInfoID: centerInfo.gymInfoID,
+                    gymInfoName: centerInfo.gymInfoName,
+                    gymInfoAddress: centerInfo.gymInfoAddress,
+                    gymInfoPhoneNumber: centerInfo.gymInfoPhoneNumber,
+                    gymInfoEquipmentLayout: centerInfo.gymInfoEquipmentLayout
+                })
+
+            })
+            .catch((response) => {
+                console.log('Error');
+                console.log(response);
+            });
+    }
+
     render() {
         return (
             <div>
-                <TopBar>센터 정보</TopBar>
                 <br />
                 <StyledMyInfo>
-                    SEJONG GYM
+                    {String(this.state.gymInfoName).length > 1 ? this.state.gymInfoName : '등록된 이름이 없습니다.'}
                 </StyledMyInfo>
                 <br />
-                <Box>
-                    여러 정보들
-                </Box>
-                <Box>
-                    여러 정보들
-                </Box>
+                <MyPageBoxStyle>
+                    <div>
+                        센터 주소
+                    </div>
+                    <div>[{String(this.state.gymInfoAddress).length > 1 ? this.state.gymInfoAddress : '등록된 주소가 없습니다.'}]</div>
+                    <br />
+                    <div>
+                        센터 전화번호
+                    </div>
+                    <div>
+                        <div>[{String(this.state.gymInfoPhoneNumber).length > 1 ? this.state.gymInfoPhoneNumber : '등록된 전화번호가 없습니다.'}]</div>
+
+                    </div>
+                </MyPageBoxStyle>
+                <MyPageBoxStyle>
+                    [사진]
+                </MyPageBoxStyle>
             </div >
         );
     }
 }
-
-
-var StyledMenuText = styled.div`
-    font-size:15px;
-    display: inline-block;
-    padding-left : 10px;
-    margin-bottom:15px;
-    margin-top:15px;
+const MyPageBoxStyle = styled.div`
+    background-color:#F5F5F5;
+    padding:20px;
+    min-width:350px;
+    width:100%;
+    text-align:center;
+    margin:0 auto;
+    margin-bottom:4px;
+    border-top:1px #E0E0E0 solid;
+    border-bottom:1px #E0E0E0 solid;
 `;
 
-
-var StyledButtonArea = styled.div`
-    width:99%;
-    max-width:500px;
-    margin: 0 auto;
-    padding-top:10px;
-    padding-bottom:10px;
-    margin-top:10px;
-    background-color:red;
-    color:white;
-    border-radius:6px;
-`
-
-let MangerLoginDiv = styled.div`
-   max-width: 400px;
-   margin: 0 auto;
-   text-align:right;
-   margin-top:10px;
-   font-size:14px;
-`
 
 let StyledMyInfo = styled.div`
     margin:0 auto;
-    font-size:24px;
-    width:400px;
-    height:100px;
-    display: table-cell;
     text-align:center;
+    font-size:24px;
+    width:100%;
+    height:100px;
     vertical-align:middle;
 `;
-
-let InputTitle = styled.div`
-    text-align:left;
-    margin: 0 auto;
-    width:225px;
-`
 
 export default CenterInfo;

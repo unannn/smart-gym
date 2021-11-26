@@ -361,7 +361,6 @@ let ErrorMessageStyle = styled.div`
     text-align:left;
     margin: 0 auto;
     width:225px;
-
 `;
 
 let InputGuideStyle = styled.span`

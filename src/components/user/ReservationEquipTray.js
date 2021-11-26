@@ -15,15 +15,18 @@ class EquipmentItem extends Component {
     }
 
     render(children) {
+        let startTime = String(this.props.children.startTime.split('T')[1]).substring(0, 5);
+        const endTime = String(this.props.children.endTime.split('T')[1]).substring(0, 5);
         return (
             <EquipmentItemStyle canDelete={this.props.canDelete}>
-                <EquipNameStyle>{this.props.children.name}</EquipNameStyle>
-                <ReservationTimeStyle>{this.props.children.startTime}~{this.props.children.endTime}</ReservationTimeStyle>
+                <EquipNameStyle>{this.props.children.equipmentName + ' ' + this.props.children.equipmentNameNth}</EquipNameStyle>
+                <ReservationTimeStyle>{startTime}~{endTime}</ReservationTimeStyle>
                 {this.props.canDelete ? <DeleteButtonStyle onClick={(e) => this.props.onClickDelete(this.props)}><img src="\image\x.png" alt="" width="20px" /></DeleteButtonStyle> : ''}
             </EquipmentItemStyle>
         );
     }
 }
+
 var DeleteButtonStyle = styled.div`
     position: relative;
     left:30px;
@@ -65,13 +68,30 @@ class ReservationEquipTray extends Component {
         super(props);
         this.state = {
             modalOn: false,
-            modalEquipData: ''
+            modalEquipData: '',
+            equipList: this.props.equipList
         }
+    }
+
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        return { equipList: nextProps.equipList }
     }
 
     componentDidMount() {
         //scroll 끝에 갖다 놓기
         $('.EquipScroll').scrollLeft(10000);
+
+        let equips = this.state.equipList;
+        console.log("eq" + equips);
+        if (equips === null) equips = [];
+
+        // equips.push({
+        //     equipmentID: '10', equipmentName: '이 곳에 추가됩니다', startTime: '', endTime: ''
+        // })
+
+        this.setState({ equipList: equips });
+
     }
 
 
@@ -83,24 +103,37 @@ class ReservationEquipTray extends Component {
 
     }
 
-
+    handleSubmit(e) {
+        e.preventDefault();
+        console.log(this.state.modalEquipData);
+        this.props.cancelReservation(this.state.modalEquipData.reservationID);
+        this.setState({
+            modalOn: false,
+            equipList: this.props.equipList
+        })
+        window.location.reload();
+    }
 
     render() {
-        let equips = [{ id: 1, name: '벤치 1', startTime: '09:00', endTime: '09:20' }, { id: 2, name: '인클라인 벤치', startTime: '09:20', endTime: '09:40' },
-        { id: 3, name: '멀티렉', startTime: '09:40', endTime: '10:00' }, { id: 4, name: '딥스 머신', startTime: '10:10', endTime: '10:25' },
-        { id: 6, name: '랫풀 다운 머신', startTime: '10:30', endTime: '10:50' }, { id: 5, name: '케이블 머신', startTime: '10:50', endTime: '11:00' }];
-        // 나중에 아이디 적용할 것
-
-
-        const equipList = equips.map((equip) => <StyledEquipLI key={equip.id}>
-            <EquipmentItem onClickDelete={this.onClickDelete.bind(this)} canDelete={this.props.canDelete} equipId={equip.id}>{equip}</EquipmentItem>
+        const equipsList = this.state.equipList.map((equip, index) => <StyledEquipLI key={equip.equipmentID + index}>
+            <EquipmentItem onClickDelete={this.onClickDelete.bind(this)} canDelete={this.props.canDelete} equipId={equip.equipmentID}>{equip}</EquipmentItem>
         </StyledEquipLI>)
+        // let equips = [{ equipmentID: 1, equipmentName: '벤치 1', startTime: '09:00', endTime: '09:20' }, { equipmentID: 2, equipmentName: '인클라인 벤치', startTime: '09:20', endTime: '09:40' },
+        // { equipmentID: 3, equipmentName: '멀티렉', startTime: '09:40', endTime: '10:00' }, { equipmentID: 4, equipmentName: '딥스 머신', startTime: '10:10', endTime: '10:25' },
+        // { equipmentID: 6, equipmentName: '랫풀 다운 머신', startTime: '10:30', endTime: '10:50' }, { equipmentID: 5, equipmentName: '케이블 머신', startTime: '10:50', endTime: '11:00' }];
+        // //나중에 아이디 적용할 것
+
+        // if (equipList.length === 0) {
+        //     equipList = <StyledEquipLI >
+        //         <EquipmentItem equipId={'none'}>{{ equipmentName: '알수없음', startTime: '', endTime: '' }}</EquipmentItem>
+        //     </StyledEquipLI>
+        // }
 
         return (
             <StyledRezEquipList>
                 {/* <StyledLeftButton>{'<'}</StyledLeftButton> */}
                 <StyledEquipUL className="EquipScroll">
-                    {equipList}
+                    {equipsList.length !== 0 ? equipsList : '예약한 운동기구가 없습니다.'}
                 </StyledEquipUL>
                 {/* <StyledRightButton>{'>'}</StyledRightButton> */}
                 {this.state.modalOn ? <Modal onClick={(e) => this.setState({ modalOn: false })}>
@@ -115,7 +148,9 @@ class ReservationEquipTray extends Component {
                         </div>
                         <br />
                         <div>
-                            <InputButton type="button" value="확인"></InputButton>
+                            <form onSubmit={this.handleSubmit.bind(this)} autoComplete={"off"}>
+                                <InputButton type="submit" value="확인"></InputButton>
+                            </form>
                         </div>
                     </div>
                 </Modal> : ""}

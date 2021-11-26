@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import axios from "axios";
 
 
 class TimeTable extends Component {
@@ -14,42 +15,97 @@ class TimeTable extends Component {
             height: '730px',
             timeData: this.props.reservationTimeList,
             timeCoordinate: []
-
         }
     }
     componentDidMount() {
 
+        axios.post("http://localhost:8080/reservation/readEquipmentReservationOfSeletedDay",
+            {
+                year: this.props.selectedData.year,
+                month: this.props.selectedData.month,
+                day: this.props.selectedData.day,
+                equipmentID: this.props.selectedData.equipmentID,
+            },
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then((response) => {
+                const reservationTimeList = response.data.data;
+                if (response.data.success) {
+                    this.setState({ timeData: reservationTimeList });
+                    this.canvas = document.querySelector("canvas");
+                    this.canvas.width = window.innerWidth - 30;
+                    this.ctx = this.canvasRef.current.getContext("2d");
+                    this.ctx.fillStyle = 'black';
+                    this.ctx.font = '14px 나눔스퀘어';
+
+                    //테이블 바탕 출력
+                    this.drawBaseTimeTable();
+
+                    this.currentSelectedTimeIndex = 0;
+
+                    console.log(this.state.timeData)
+                    //초기 그래프 그리기
+                    reservationTimeList.forEach((value, index) => {
+                        //운동시작시간에 해당하는 좌표와 종료시간의 좌표로 높이 구하기
+                        console.log(this.filterTimeFormat(value.startTime));
+                        let y = parseInt(this.getYCoordinate(this.filterTimeFormat(value.startTime)));
+                        let height = parseInt(this.getYCoordinate(this.filterTimeFormat(value.endTime)) - y);
+
+                        this.state.timeCoordinate.push({ startY: y, endY: y + height });
+                        this.ctx.fillStyle = this.colorTable[index % this.colorTable.length];
+
+                        this.ctx.fillRect(50, y, 600, height);
+
+                        // if (index === this.currentSelectedTimeIndex) {
+                        //     this.ctx.fillRect(40, y, 600, height);
+
+                    })
+                }
+            })
+            .catch((response) => {
+                console.log('Error');
+                console.log(response);
+            })
+
         //캔버스 설정(DOM 접근은 compnentDidMount 에서만 접근할 수 있으므로 여기서 캔버스를 설정해 준다.)
-        this.canvas = document.querySelector("canvas");
-        this.canvas.width = window.innerWidth - 30;
-        this.ctx = this.canvasRef.current.getContext("2d");
-        this.ctx.fillStyle = 'black';
-        this.ctx.font = '14px 나눔스퀘어';
+        // this.canvas = document.querySelector("canvas");
+        // this.canvas.width = window.innerWidth - 30;
+        // this.ctx = this.canvasRef.current.getContext("2d");
+        // this.ctx.fillStyle = 'black';
+        // this.ctx.font = '14px 나눔스퀘어';
 
-        //테이블 바탕 출력
-        this.drawBaseTimeTable();
+        // //테이블 바탕 출력
+        // this.drawBaseTimeTable();
 
-        this.currentSelectedTimeIndex = 0;
+        // this.currentSelectedTimeIndex = 0;
 
-        //초기 그래프 그리기
-        this.state.timeData.forEach((value, index) => {
-            //운동시작시간에 해당하는 좌표와 종료시간의 좌표로 높이 구하기
-            let y = parseInt(this.getYCoordinate(value.startTime));
-            let height = parseInt(this.getYCoordinate(value.endTime) - y);
+        // console.log(this.state.timeData)
+        // //초기 그래프 그리기
+        // this.state.timeData.forEach((value, index) => {
+        //     //운동시작시간에 해당하는 좌표와 종료시간의 좌표로 높이 구하기
+        //     console.log(this.filterTimeFormat(value.startTime));
+        //     let y = parseInt(this.getYCoordinate(this.filterTimeFormat(value.startTime)));
+        //     let height = parseInt(this.getYCoordinate(this.filterTimeFormat(value.endTime)) - y);
 
-            this.state.timeCoordinate.push({ startY: y, endY: y + height });
-            this.ctx.fillStyle = this.colorTable[index % this.colorTable.length];
+        //     this.state.timeCoordinate.push({ startY: y, endY: y + height });
+        //     this.ctx.fillStyle = this.colorTable[index % this.colorTable.length];
 
-            this.ctx.fillRect(50, y, 600, height);
+        //     this.ctx.fillRect(50, y, 600, height);
 
-            // if (index === this.currentSelectedTimeIndex) {
-            //     this.ctx.fillRect(40, y, 600, height);
-            // }
+        //     // if (index === this.currentSelectedTimeIndex) {
+        //     //     this.ctx.fillRect(40, y, 600, height);
 
-        })
-
+        // })
     }
 
+    filterTimeFormat(time) {
+        let filterTime = time.split('T')[1].substring(0, 5);
+        return filterTime;
+    }
 
     onClickCanvas(e) {
         var rect = this.canvas.getBoundingClientRect();
@@ -126,6 +182,9 @@ class TimeTable extends Component {
     }
 
     render() {
+
+
+
         return (
             <TimeTableStyle>
                 <canvas ref={this.canvasRef} width={this.state.width} height={this.state.height}

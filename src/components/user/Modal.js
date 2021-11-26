@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 let ModalBackground = styled.div`
     position: fixed;
+    z-index:2;
     top:0px;
     left:0px;
     width:100vw;
@@ -11,7 +12,7 @@ let ModalBackground = styled.div`
     background : rgba(0, 0, 0, 0.6);
 `
 let StyledModal = styled.div`
-    width: 93%;
+    width: 98%;
     //min-height: 100px;
     max-width: 400px;
     padding-left: 20px;
@@ -41,17 +42,12 @@ class Modal extends React.Component {
     render() {
 
         return (
-            <div>
-
-                <ModalBackground>
-                    <StyledModal>
-                        <CloseButton onClick={this.props.onClick}>x</CloseButton>
-                        {this.props.children}
-                    </StyledModal>
-                </ModalBackground>
-
-
-            </div>
+            <ModalBackground>
+                <StyledModal>
+                    <CloseButton onClick={this.props.onClick}>x</CloseButton>
+                    {this.props.children}
+                </StyledModal>
+            </ModalBackground>
         )
     }
 
