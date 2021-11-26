@@ -139,7 +139,7 @@ class UserMain extends React.Component {
                                     <RecentEquipRightBottmStyle>
                                         <RemainingTimeText>남은 시간</RemainingTimeText>
                                         <Timer endTime={this.state.usingEqiupmentEndTime}></Timer>
-                                        <EndButton >사용 종료</EndButton>
+                                        <EndButton onClick={this.EndReservation.bind(this)} >사용 종료</EndButton>
                                     </RecentEquipRightBottmStyle>
                                 </RecentEquipIOStyle>
                             </div>
@@ -170,8 +170,8 @@ class UserMain extends React.Component {
                     {/* 혼잡도, 타이머 */}
                     <AddInfoStyle>
                         <ContentBox width={this.state.pageWidth / 2 - 15 + "px"} height='130px' margin='0 4px 0 0'
-                            backgroundColor={'red'} border={' 2px red solid'}>
-                            <Congestion percentage={72}></Congestion>
+                            backgroundColor={'#70AD47'} border={' 2px #70AD47 solid'}>
+                            <Congestion percentage={0}></Congestion>
                         </ContentBox>
                         <ContentBox width={this.state.pageWidth / 2 - 15 + "px"} height='130px' margin={'0 0 0 4px'}
                             backgroundColor={'white'} border={' 1px #000000 solid'}>
