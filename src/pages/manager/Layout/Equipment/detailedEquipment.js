@@ -48,7 +48,7 @@ let ImgBox = styled.div`
    top: -10px;
    width: 310px;
    height: 310px;
-   background: gray;
+   border: 7px solid gray;
    border-radius: 2px;
    padding:5px;
    margin:0 auto;
@@ -208,7 +208,7 @@ class DetailE extends React.Component {
                 <EquiInfo>
                     <center>
                         <ImgBox>
-                            <img id="Eimg" name="Eimg" src="image/ImageNotFound.png" height="300" width="300" alt="EquiIcon" /><br />
+                            <img style={{ position: "relative", top: "-7.1px", left: "-6.7px" }} id="Eimg" name="Eimg" src="image/ImageNotFound.png" height="300" width="300" alt="EquiIcon" /><br />
                         </ImgBox>
                     </center>
                     <label className="btn btn-secondary" for="imageFileOpenInput">

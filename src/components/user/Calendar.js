@@ -138,9 +138,9 @@ class Calendar extends Component {
 
         return <CalendarStyle>
             <div>
-                <span onClick={this.clickPreviousMonth.bind(this)}>{`<`}  </span>
+                <span style={{ cursor: "pointer" }} onClick={this.clickPreviousMonth.bind(this)}>{`< `}  </span>
                 {this.state.year}.{this.state.month}
-                <span onClick={this.clickNextMonth.bind(this)}>  {`>`}</span>
+                <span style={{ cursor: "pointer" }} onClick={this.clickNextMonth.bind(this)}>  {` >`}</span>
             </div>
             <table>
                 <thead>

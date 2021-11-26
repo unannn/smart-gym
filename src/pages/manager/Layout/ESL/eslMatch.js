@@ -12,7 +12,7 @@ let ESLMatchBox = styled.div`
    left: 900px;
    border: 5px solid gray;
    width: 380px;
-   height: 490px;
+   height: 520px;
    font-size: 10pt;
    border-radius: 10px;
    padding:20px;
@@ -56,6 +56,21 @@ let InfoCell = styled.input`
    color: black;
    font-weight: bold;
    `;
+let Matchingdiv = styled.div`
+&:hover {
+     transform: scale(1.05);
+  transition: transform 1s;
+  filter: brightness(93%);
+  background: #FDFDFD;
+  }
+   width: 55px;
+   height: 55px;
+   overflow: hidden;
+   border-radius: 10px;
+   padding:0px;
+   margin:0 auto;
+   margin-bottom:5px;
+   `;
 class ESLMatch extends React.Component {
     matchTheItem = function () {
         console.log("아직 안됨");
@@ -67,9 +82,14 @@ class ESLMatch extends React.Component {
                     <InfoBox>
                         <img src="./icon/icon_esl.png" style={{ width: "150px", heigth: "80px", cursor: "Default" }} /><br />
                         <InfoCell style={{ textAlign: 'center', width: '100px' }} id="ESLMatchID"></InfoCell><br /><br />
-                        <img id="MatchedIMG" src="./icon/icon_matching.png" style={{ width: "50px", heigth: "80px", cursor: "pointer" }} onClick={this.matchTheItem} /><br /><br />
+                        <Matchingdiv>
+                            <img id="MatchedIMG" src="./icon/icon_matching.png" style={{ hover: 'background: gray', width: "50px", heigth: "80px", cursor: "pointer" }} onClick={this.matchTheItem} /><br /><br />
+                        </Matchingdiv>
+                        <br />
                         <InfoCell style={{ textAlign: 'center', width: '100px' }} id="EquipmentMatchID"></InfoCell><br />
-                        <img src="./icon/icon_equipment.png" style={{ width: "150px", heigth: "80px", cursor: "Default" }} /><br /><br />
+                        <img src="./icon/icon_equipment.png" style={{ width: "150px", heigth: "80px", cursor: "Default" }} /><br />
+                        <input style={{ textAlign: 'center', width: '220px', background: "white", border: "0", fontWeight: 'bold', fontSize: '16px' }} id="EquipmentNameMatched" disabled></input>
+                        <br /><br />
                         <input type="hidden" id="originEquip" />
                     </InfoBox>
                 </ESLMatchBox>

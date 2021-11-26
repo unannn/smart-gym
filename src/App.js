@@ -14,7 +14,6 @@ import EquipmentM from './pages/manager/Layout/equipment';
 import CreateEqui from './pages/manager/Layout/equipmentCreate';
 import OperPolicy from './pages/manager/Layout/operPolicy';
 import LayoutE from './pages/manager/Layout/equipmentLayout';
-import Prac from './pages/manager/Layout/prac';
 import Statistic from './pages/manager/Layout/statistic';
 import ReservationLog from './pages/manager/Layout/reservationLog';
 import ESLManage from './pages/manager/Layout/esl';
@@ -77,9 +76,6 @@ function App() {
           </Route>
           <Route exact path='/equipmentLayout'>
             <LayoutE></LayoutE>
-          </Route>
-          <Route exact path='/prac'>
-            <Prac></Prac>
           </Route>
           <Route exact path='/userApproval'>
             <UserA></UserA>

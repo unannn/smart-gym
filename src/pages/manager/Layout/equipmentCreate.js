@@ -70,11 +70,11 @@ let RegisterBox = styled.div`
    `;
 let LayoutBox = styled.div`
    position: relative;
-   width: 330px;
-   height: 330px;
+   width: 337px;
+   height: 337px;
    top: 10px;
    left: -200px;
-   background: gray;
+   border: 10px solid gray;
    border-radius: 2px;
    padding:5px;
    margin:0 auto;
@@ -227,7 +227,7 @@ class CreateEqui extends React.Component {
                             </div>
                             <div style={{ position: "relative", top: "0px", left: "0px" }}>
                                 <LayoutBox>
-                                    <img id="Eimg" name="Eimg" src="image/ImageNotFound.png" height="320" width="320" alt="EquiIcon" /><br /><br />
+                                    <img id="Eimg" name="Eimg" src="image/ImageNotFound.png" height="320" width="320" alt="EquiIcon" style={{ position: "relative", top: '-6px', left: "-7px" }} /><br /><br />
                                 </LayoutBox>
                                 <ImageBox>
                                     <label className="btn btn-secondary" for="imageFileOpenInput">

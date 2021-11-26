@@ -9,9 +9,9 @@ let InfoBox = styled.div`
 &:hover {                
     background: #FFD2D5;
   }
-  left: -0%;
+  left: -10%;
    position: relative;
-   width: 430px;
+   width: 400px;
    height: 40px;
 
    text-align: center;
@@ -36,9 +36,10 @@ const KorCList = ["가슴", "등", "목", "복부", "삼두", "승모근", "어�
 //useState({ endTime: "", equipmentName: "", equipmentNameNth: "", reservationID: 0, startTime: "", userID: "" });
 
 
-const selectedEquipment = (EquipmentId, e) => {
+const selectedEquipment = (EquipmentId, EquipmentName, EquipmentNth, e) => {
     console.log($("#originEquip").val());
     console.log($("#EquipmentMatchID").val());
+    $("#EquipmentNameMatched").val(EquipmentName + "/" + EquipmentNth);
     if (EquipmentId != $("#originEquip").val()) {
         $("#EquipmentMatchID").val(EquipmentId);
         $("#MatchedIMG").attr("src", "./icon/icon_unmatching.png")
@@ -53,12 +54,12 @@ function EEItem({ key, ESLId, EquipmentId, EquipmentName, EquipmentNth }) {
         eslIDinfo = "None";
     }
     return (
-        <div style={{ cursor: 'pointer' }} onClick={(e) => { selectedEquipment(EquipmentId, e) }}>
+        <div style={{ cursor: 'pointer' }} onClick={(e) => { selectedEquipment(EquipmentId, EquipmentName, EquipmentNth, e) }}>
             <div>
                 <InfoBox className="component component--item_card" key={key}>
                     <input type="hidden" id="Eid" value={ESLId} />
-                    <Cell style={{ float: 'left', fontSize: '17px', width: '120px' }} id="equiID">{EquipmentId}</Cell>
-                    <Cell style={{ float: 'left', fontSize: '17px', width: '200px' }} id="equipmentInfo">{EquipmentName}/{EquipmentNth}</Cell>
+                    <Cell style={{ float: 'left', fontSize: '17px', width: '120px' }} id="equiID">&nbsp;{EquipmentId}</Cell>
+                    <Cell style={{ float: 'left', fontSize: '17px', width: '250px' }} id="equipmentInfo">{EquipmentName}/{EquipmentNth}</Cell>
                 </ InfoBox >
             </div >
         </div>

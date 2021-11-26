@@ -33,8 +33,6 @@ let Cell = styled.li`
    text-align: left;
    list-style-type: none;
    `;
-const CList = ["chest", "back", "neck", "stomach", "triceps", "trapezius", "shoulder", "aerobic", "biceps", "lower_body", "waist", "etc"];
-const KorCList = ["가슴", "등", "목", "복부", "삼두", "승모근", "어깨", "유산소", "이두", "하체", "허리", "기타"];
 const nowTime = moment().format('YYYY-MM-DD HH:mm:ss');
 console.log(nowTime);
 let cancelButton = "";

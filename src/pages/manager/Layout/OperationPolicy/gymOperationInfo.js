@@ -7,63 +7,63 @@ import jquery from "jquery";
 import axios from "axios";
 const RDList = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const KorRDList = ["월", "화", "수", "목", "금", "토", "일"];
-const operationUpdate = (start, end, e) => {
-    console.log("OperUpdate");
-    console.log($('input[name="Redu"]').val());
-    let RHD = "";
-    for (let i = 0; i < 7; i++) {
-        console.log($("input:checkbox[name='ReHoliyDay']:checkbox[value=" + RDList[i] + "]").is(":checked"));
-        if ($("input:checkbox[name='ReHoliyDay']:checkbox[value=" + RDList[i] + "]").is(":checked") === true) {
-            RHD = RHD + KorRDList[i];
-            console.log(RHD);
+function StaticTimePickerLandscape({ id, start, end, RholiyD, reserveD, reloadF }) {
+    const operationUpdate = (start, end, e) => {
+        console.log("OperUpdate");
+        console.log($('input[name="Redu"]').val());
+        let RHD = "";
+        for (let i = 0; i < 7; i++) {
+            console.log($("input:checkbox[name='ReHoliyDay']:checkbox[value=" + RDList[i] + "]").is(":checked"));
+            if ($("input:checkbox[name='ReHoliyDay']:checkbox[value=" + RDList[i] + "]").is(":checked") === true) {
+                RHD = RHD + KorRDList[i];
+                console.log(RHD);
+            }
+        }
+        if (window.confirm("해당 헬스장 운영 정보를 등록하시겠습니까?\nOpen Time: " + start +
+            "\nClose Time: " + end +
+            "\nReservation Duration(day): " + $('input[name="Redu"]').val() +
+            "\nRegularHoliday: " + RHD)) {
+            axios.post('http://localhost:8080/gymOperationInfo/update',
+                {
+                    gymOperationInfoReservationDuration: $('input[name="Redu"]').val(),
+                    gymOperationInfoRegularHoliday: RHD,
+                    gymOperationInfoOperatingStartTime: start,
+                    gymOperationInfoOperatingEndTime: end
+                },
+                {
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                }
+            )
+                .then((response) => {
+                    console.log(response.data);
+                    if (response.data == 1) {
+                        alert("빈 값이 있습니다. 확인 후 다시 등록해 주세요.");
+                    }
+                    else if (response.data == 2) {
+                        alert("Open Time과 Close Time을 다시 확인해 주세요.");
+                    }
+                    else if (response.data == 3) {
+                        alert("정기휴무를 일주일 내내로 선택할 수 없습니다. 다시 선택해주세요.");
+                    }
+                    else if (response.data == 4) {
+                        alert("error! 헬스장 운영정보를 등록할 수 없습니다.");
+                    }
+                    else {
+                        alert("헬스장 운영정보가 정상적으로 등록되었습니다.");
+                        { reloadF() }
+                    }
+                })
+                .catch((response) => {
+                    console.log('Error!')
+                });
+        }
+        else {
+            //alert("헬스장 운영정보 등록을 취소하셨습니다.");
         }
     }
-    if (window.confirm("해당 헬스장 운영 정보를 등록하시겠습니까?\nOpen Time: " + start +
-        "\nClose Time: " + end +
-        "\nReservation Duration(day): " + $('input[name="Redu"]').val() +
-        "\nRegularHoliday: " + RHD)) {
-        axios.post('http://localhost:8080/gymOperationInfo/update',
-            {
-                gymOperationInfoReservationDuration: $('input[name="Redu"]').val(),
-                gymOperationInfoRegularHoliday: RHD,
-                gymOperationInfoOperatingStartTime: start,
-                gymOperationInfoOperatingEndTime: end
-            },
-            {
-                headers: {
-                    'Content-type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            }
-        )
-            .then((response) => {
-                console.log(response.data);
-                if (response.data == 1) {
-                    alert("빈 값이 있습니다. 확인 후 다시 등록해 주세요.");
-                }
-                else if (response.data == 2) {
-                    alert("Open Time과 Close Time을 다시 확인해 주세요.");
-                }
-                else if (response.data == 3) {
-                    alert("정기휴무를 일주일 내내로 선택할 수 없습니다. 다시 선택해주세요.");
-                }
-                else if (response.data == 4) {
-                    alert("error! 헬스장 운영정보를 등록할 수 없습니다.");
-                }
-                else {
-                    alert("헬스장 운영정보가 정상적으로 등록되었습니다.");
-                    window.location.reload();
-                }
-            })
-            .catch((response) => {
-                console.log('Error!')
-            });
-    }
-    else {
-        //alert("헬스장 운영정보 등록을 취소하셨습니다.");
-    }
-}
-function StaticTimePickerLandscape({ id, start, end, RholiyD, reserveD }) {
     const [value, setValue] = React.useState(new Date());
     console.log(reserveD);
     return (

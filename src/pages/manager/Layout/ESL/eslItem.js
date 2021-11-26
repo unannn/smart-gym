@@ -9,9 +9,9 @@ let InfoBox = styled.div`
 &:hover {                
     background: #FFD2D5;
   }
-  left: 2%;
+  left: -5%;
    position: relative;
-   width: 415px;
+   width: 410px;
    height: 40px;
    cursor: pointer;
    text-align: center;
@@ -31,7 +31,7 @@ let Cell = styled.li`
    text-align: left;
    list-style-type: none;
    `;
-function ESLItem({ key, ESLId, EquipmentId, ReservationId }) {
+function ESLItem({ key, ESLId, EquipmentId, ReservationId, reloadF }) {
     //apiNumber 0: Layout/1:Reservation/2:ESL
     const deleteESL = (ESLId, e) => {
         console.log("deleteESL");
@@ -50,16 +50,17 @@ function ESLItem({ key, ESLId, EquipmentId, ReservationId }) {
                 .then((response) => {
                     console.log(response);
                     alert("삭제되었습니다.");
-                    window.location.reload();
+                    { reloadF() };
                 })
                 .catch((response) => {
                     console.log('Error!');
                     alert("error! 해당 ESL장치를 삭제할 수 없습니다.");
-                    window.location.reload();
+                    { reloadF() };
                 });
         }
     }
     const selectedESL = (ESLId, equi, e) => {
+        let EuipmentIDValue = equi;
         $("#ESLMatchID").val(ESLId);
         $("#EquipmentMatchID").val(equi);
         $("#originEquip").val(equi);
@@ -70,6 +71,32 @@ function ESLItem({ key, ESLId, EquipmentId, ReservationId }) {
             $("#MatchedIMG").attr("src", "./icon/icon_matching.png");
         }
 
+        if (equi == "None") {
+            EuipmentIDValue = -1;
+        }
+        axios.post('http://localhost:8080/equipment/detailedReadOnlyName',
+            {
+                equipmentID: EuipmentIDValue
+            },
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            }
+        )
+            .then((response) => {
+                console.log(response.data);
+                if (response.data.equipmentName == " ") {
+                    $("#EquipmentNameMatched").val(" ");
+                }
+                else {
+                    $("#EquipmentNameMatched").val(response.data.equipmentName + "/" + response.data.equipmentNameNth);
+                }
+            })
+            .catch((response) => {
+                alert("error! ESL에 매칭된 운동기구 이름을 불러올 수 없습니다.");
+            });
     }
     let equi = EquipmentId;
     let re = ReservationId;

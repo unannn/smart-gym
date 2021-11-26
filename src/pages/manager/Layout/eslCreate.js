@@ -17,11 +17,11 @@ import { Link } from 'react-router-dom';
 //background - color:"#F2F2F2";
 let ESLList = styled.div`
  position: absolute;
- left: -100px;
+ left: -80px;
  top: -50px;
    margin: 0.3px;
-   width: 480px;
-   height: 500px;
+   width: 460px;
+   height: 520px;
    font-size: 10pt;
    text-align: center;
    overflow:auto;
@@ -32,11 +32,11 @@ let ESLList = styled.div`
    `;
 let EELList = styled.div`
  position: absolute;
- left: 350px;
+ left: 400px;
  top: -50px;
    margin: 0.3px;
-   width: 510px;
-   height: 500px;
+   width: 460px;
+   height: 520px;
    font-size: 10pt;
    text-align: center;
    overflow:auto;
@@ -77,10 +77,29 @@ let Cell = styled.li`
    text-align: left;
    list-style-type: none;
    `;
+let SearchBox = styled.input`
+ position: relative;
+ background-color: #F8F8F8;
+	background-position:left top;
+	padding-top:5px;
+	font-family:tahoma;
+	font-size:16px;
+	color:black;
+    resize:none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    border-width: 0px;
+    width:100px;
+    height:38px;
+    top: -130px;
+    left: 18px;
+    border: 3px solid gray;
+   `;
 class ESLCreate extends React.Component {
     // 제일 common한 state값 초기 셋팅
     constructor(props) {
         super(props);
+        this.ESLItemCreate = this.ESLItemCreate.bind(this);
         this.state = {
             loading: false,
             ItemList: [],
@@ -108,20 +127,27 @@ class ESLCreate extends React.Component {
                 });
                 alert("error! 운동기구 목록 조회에 실패했습니다.");
             });
-        //Equipment and Match목록 조회
-        axios.get('http://localhost:8080/equipment/readAll') // json을 가져온다음
-            .then((data) => {
-                // data라는 이름으로 json 파일에 있는 값에 state값을 바꿔준다.
-                console.log(data.data)
+        axios.post('http://localhost:8080/equipment/readAll',
+            {
+                select: 1
+            },
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            }
+        )
+            .then((response) => {
+                console.log(response.data)
                 this.setState({
                     loading: true, // load되었으니 true,
-                    ItemList: data.data,
+                    ItemList: response.data,
                     flog: "전체" // 비어있던 Itemlist는 data에 Item객체를 찾아넣어준다. ( Item : json파일에 있는 항목)
                 });
             })
-            .catch(e => {
-                // json이 로드되지않은 시간엔
-                console.error(e); // 에러표시
+            .catch((response) => {
+                console.error(response); // 에러표시
                 this.setState({
                     loading: false // 이때는 load 가 false 유지
                 });
@@ -131,12 +157,38 @@ class ESLCreate extends React.Component {
 
     ESLItemCreate = function () {
         console.log("Create");
-        axios.get('http://localhost:8080/esl/create')
-            .then((data) => {
-                console.log(data.data);
+        console.log($("#ESLCreateID").val());
+
+        axios.post('http://localhost:8080/esl/create',
+            {
+                eslID: $("#ESLCreateID").val()
+            },
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            }
+        )
+            .then((response) => {
+                console.log(response.data);
+                if (response.data == 0) {
+                    alert("ESL이 추가되었습니다.");
+                    this.loadItem();
+                }
+                else if (response.data == 1) {
+                    alert("ESL ID를 입력 후, 생성해주세요.");
+                }
+                else if (response.data == 2) {
+                    alert("이미 존재하는 ESL ID입니다.");
+                }
+                //3
+                else {
+                    alert("error! ESL 추가에 실패했습니다.");
+                }
             })
-            .catch(e => {
-                console.error(e); // 에러표시
+            .catch((response) => {
+                console.error(response); // 에러표시
                 alert("error! ESL 추가에 실패했습니다.");
             });
     }
@@ -160,7 +212,7 @@ class ESLCreate extends React.Component {
                             <Button variant="btn btn-secondary" style={{ position: "relative", top: "-50px", left: "570px" }}>ESL 조회하러 가기</Button>
                         </Link>
                         <div style={{ position: "relative", top: "64px", left: "0px" }}>
-                            <ListKey style={{ width: "500px", left: "-410px", top: "-85px" }}>
+                            <ListKey style={{ width: "730px", left: "-300px", top: "-85px" }}>
                                 <div >
                                     <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "80px" }}>ESLID</Cell>
                                     <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "120px" }}>EquipmentID</Cell>
@@ -169,7 +221,7 @@ class ESLCreate extends React.Component {
                                 </div>
                             </ListKey>
                             <div>
-                                <RowLineBox style={{ left: '-50px', width: '425px' }} />
+                                <RowLineBox style={{ left: '-55px', width: '418px' }} />
                                 <ESLList>
                                     <ul className="list__itemview">
                                         {ESLItemList &&
@@ -180,13 +232,14 @@ class ESLCreate extends React.Component {
                                                         ESLId={itemdata.eslID}
                                                         EquipmentId={itemdata.equipmentID}
                                                         ReservationId={itemdata.reservationID}
+                                                        reloadF={this.loadItem}
                                                     />
                                                 );
                                             })}
                                     </ul>
                                 </ESLList>
 
-                                <div style={{ position: "relative", top: "64px", left: "0px" }}>
+                                <div style={{ position: "relative", top: "64px", left: "10px" }}>
                                     <ListKey style={{ width: "600px", left: "85px", top: "-200px" }}>
                                         <div>
                                             <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "120px" }}>EquipmentID</Cell>
@@ -194,7 +247,7 @@ class ESLCreate extends React.Component {
                                         </div>
                                     </ListKey>
                                 </div>
-                                <RowLineBox style={{ left: '390px', width: '440px' }} />
+                                <RowLineBox style={{ left: '400px', width: '420px' }} />
                                 <EELList>
                                     <ul className="list__itemview">
                                         {ItemList &&
@@ -214,7 +267,8 @@ class ESLCreate extends React.Component {
                             </div>
                         </div>
                         <ESLMatchBox />
-                        <Button variant="btn btn-secondary" onClick={this.ESLItemCreate} style={{ position: "relative", top: '-165px', left: '-970px' }}>ESL생성</Button>
+                        <SearchBox id="ESLCreateID" name="ESLCreateID" style={{ position: "relative", top: '-165.5px', left: '-660px' }} />
+                        <Button variant="btn btn-secondary" onClick={this.ESLItemCreate} style={{ position: "relative", top: '-170px', left: '-655px' }}>ESL생성</Button>
                     </BodyBox >
                     <div style={{ position: 'relative', bottom: '-650px' }}>
                         <br />

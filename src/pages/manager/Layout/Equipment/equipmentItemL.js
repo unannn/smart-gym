@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import $ from "jquery";
 import jquery from "jquery";
 import axios from "axios";
-import La from "../Reservation/lalala";
 let InfoBox = styled.div`
 &:hover {                
     background: #FFD2D5;

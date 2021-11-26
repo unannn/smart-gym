@@ -93,19 +93,27 @@ class ESLManage extends React.Component {
 
     loadItem = async () => {
         // Json Data 불러오기
-        axios.get('http://localhost:8080/equipment/readAll') // json을 가져온다음
-            .then((data) => {
-                // data라는 이름으로 json 파일에 있는 값에 state값을 바꿔준다.
-                console.log(data.data)
+        axios.post('http://localhost:8080/equipment/readAll',
+            {
+                select: 1
+            },
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            }
+        )
+            .then((response) => {
+                console.log(response.data)
                 this.setState({
                     loading: true, // load되었으니 true,
-                    ItemList: data.data,
+                    ItemList: response.data,
                     flog: "전체" // 비어있던 Itemlist는 data에 Item객체를 찾아넣어준다. ( Item : json파일에 있는 항목)
                 });
             })
-            .catch(e => {
-                // json이 로드되지않은 시간엔
-                console.error(e); // 에러표시
+            .catch((response) => {
+                console.error(response); // 에러표시
                 this.setState({
                     loading: false // 이때는 load 가 false 유지
                 });

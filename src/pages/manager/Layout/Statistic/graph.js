@@ -38,7 +38,7 @@ class GraphInfo extends React.Component {
                 backgroundColor: 'rgba(255, 255, 255, 0)'//글씨 없는거 아닙니다. 색깔 미리보기때문에 안보이는 겁니다...(투명색)
             },
             title: {
-                text: 'Smart Gym Statistics'
+                text: 'Gym Statistics'
             },
             credits: {
                 enabled: false

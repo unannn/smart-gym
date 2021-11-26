@@ -14,12 +14,12 @@ import UserApprovalItem from "./UserManage/uAItem";
 
 let SearchBox = styled.input`
  position: relative;
- background-color: gray;
+ background-color: #F8F8F8;
 	background-position:left top;
 	padding-top:5px;
 	font-family:tahoma;
 	font-size:16px;
-	color:#FFFFFF;
+	color: gray;
     resize:none;
     border-radius: 5px;
     margin-bottom: 10px;
@@ -28,6 +28,7 @@ let SearchBox = styled.input`
     height:38px;
     top: -130px;
     left: 4px;
+    border: 3px solid gray;
    `;
 
 let EquiList = styled.div`
@@ -75,6 +76,14 @@ let RowLineBox = styled.div`
     width: 740px;
     height: 1.5px;
     background: black;
+   `;
+let SearchClick = styled.div`
+    &:hover {
+     transform: scale(1.05);
+  transition: transform 1s;
+  filter: brightness(93%);
+  }
+  background: #FDFDFD;
    `;
 let Cell = styled.li`
    position: relative;
@@ -220,7 +229,9 @@ class UserA extends React.Component {
                                 </Box>
                             </FilterBox>
                             <SearchBox id="searchValue" name="searchValue" />
-                            <Button color="white" variant="" style={{ position: "relative", top: "-133px", left: "20px" }} onClick={this.filterSearch}><img src="./icon/icon_search.png" width="35px" /></Button>
+                            <SearchClick style={{ position: "relative", top: "-133px", left: "20px" }} onClick={this.filterSearch}>
+                                <img src="./icon/icon_search.png" width="35px" />
+                            </SearchClick>
                             <center>
                                 <ListKey>
                                     <div >

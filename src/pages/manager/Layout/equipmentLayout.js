@@ -55,8 +55,8 @@ let ListKey = styled.div`
 let RowLineBox = styled.div`
     position: absolute;
     top: -52px;
-    left: 10px;
-    width: 280px;
+    left: 25px;
+    width: 260px;
     height: 1.5px;
     background: black;
    `;

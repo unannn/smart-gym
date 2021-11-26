@@ -16,12 +16,12 @@ import DetailU from "./UserManage/detailedUser";
 //background - color:#F2F2F2;
 let SearchBox = styled.input`
  position: relative;
- background-color: gray;
+ background-color: #F8F8F8;
 	background-position:left top;
 	padding-top:5px;
 	font-family:tahoma;
 	font-size:16px;
-	color:#FFFFFF;
+	color:black;
     resize:none;
     border-radius: 5px;
     margin-bottom: 10px;
@@ -30,6 +30,7 @@ let SearchBox = styled.input`
     height:38px;
     top: -130px;
     left: 18px;
+    border: 3px solid gray;
    `;
 
 let EquiList = styled.div`

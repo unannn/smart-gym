@@ -119,19 +119,18 @@ class OperPolicy extends React.Component {
                             continue;
                         }
                         st = st + ((response.data[i]).gymHolidayDate[j]);
-                        console.log("st: " + st);
+                        //console.log("st: " + st);
                     }
                     holidays.push(st);
-                    console.log(holidays);
+                    //console.log(holidays);
                 }
-                console.log("total holidays: " + holidays);
+                // console.log("total holidays: " + holidays);
                 this.setState({
                     holidays: holidays
                 })
-                console.log("!!" + this.state.holidays);
+                //console.log("!!" + this.state.holidays);
             })
             .catch((response) => {
-                console.log('Error!');
                 console.log(response);
                 alert("error! 휴무일 불러오기에 실패하였습니다.");
             });
@@ -169,8 +168,9 @@ class OperPolicy extends React.Component {
                 .then((response) => {
                     console.log(response.data);
                     selectedDay = "";
-                    window.location.reload();
+                    //window.location.reload();
                     alert("휴무일로 변경 되었습니다.");
+                    this.holiyRead();
                 })
                 .catch((response) => {
                     console.log('Error!');
@@ -216,8 +216,9 @@ class OperPolicy extends React.Component {
                 .then((response) => {
                     console.log(response.data);
                     selectedDay = "";
-                    window.location.reload();
+                    //window.location.reload();
                     alert("영업일로 변경되었습니다.");
+                    this.holiyRead();
                 })
                 .catch((response) => {
                     console.log('Error!');
@@ -314,7 +315,7 @@ class OperPolicy extends React.Component {
 
         const currentDate = moment();
         const isHoliday = holidays.includes(currentDate.format("YYYY-MM-DD"));
-        console.log("holidays: " + holidays);
+        //console.log("holidays: " + holidays);
 
         this.setState({
             holidays: holidays,
@@ -352,6 +353,7 @@ class OperPolicy extends React.Component {
                                 end={ItemList.gymOperationInfoOperatingEndTime}
                                 RholiyD={ItemList.gymOperationInfoRegularHoliday}
                                 reserveD={ItemList.gymOperationInfoReservationDuration}
+                                reloadF={this.loadItem}
                             />
                         </GymOperinfoBox>
                         <div style={{ position: "absolute", left: "570px", top: "-67px" }}>
@@ -360,7 +362,7 @@ class OperPolicy extends React.Component {
                         </div>
                         <CalendarBox>
                             <Calendar onClickDate={this.selectDate} selectedDate={this.state}
-                                rezValidDate={rezValidDate} holidays={this.state.holidays}></Calendar>
+                                rezValidDate={rezValidDate} holidays={this.state.holidays} ></Calendar>
                             <br />
                             <StyledMenuText isValid={this.state.isRezValid}>
                                 {this.state.buttonText}

@@ -163,15 +163,15 @@ class Login extends React.Component {
                         </form>
 
                         <LoginMenu>
-                            <LoginMenuElement onClick={() => this.setState({ findId: !this.state.findId })}>
+                            <LoginMenuElement style={{ cursor: "pointer" }} onClick={() => this.setState({ findId: !this.state.findId })}>
                                 아이디 찾기
                             </LoginMenuElement>
                             <StyledSpan>|</StyledSpan>
-                            <LoginMenuElement onClick={() => this.setState({ findPwd: !this.state.findPwd })}>
+                            <LoginMenuElement style={{ cursor: "pointer" }} onClick={() => this.setState({ findPwd: !this.state.findPwd })}>
                                 비밀번호 찾기
                             </LoginMenuElement>
                             <StyledSpan>|</StyledSpan>
-                            <LoginMenuElement onClick={() => this.setState({ signUp: !this.state.signUp })}>
+                            <LoginMenuElement style={{ cursor: "pointer" }} onClick={() => this.setState({ signUp: !this.state.signUp })}>
                                 회원가입
                             </LoginMenuElement>
                         </LoginMenu>
