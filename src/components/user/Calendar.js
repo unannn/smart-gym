@@ -130,7 +130,7 @@ class Calendar extends Component {
             month: moment(this.state.year + this.state.month).add(1, 'month').format('MM'),
             previousMonth: moment(this.state.previousYear + this.state.previousMonth).add(1, 'month').format('MM'),
             nextMonth: moment(this.state.nextYear + this.state.nextMonth).add(1, 'month').format('MM'),
-            previousYear: moment(this.state.previousYear + this.state.previousMonth).add(-1, 'month').format('YYYY'),
+            previousYear: moment(this.state.previousYear + this.state.previousMonth).add(1, 'month').format('YYYY'),
             nextYear: moment(this.state.nextYear + this.state.nextMonth).add(1, 'month').format('YYYY'),
             holidays: [],
             nextMonthHolidays: [],
@@ -155,6 +155,8 @@ class Calendar extends Component {
             month: moment(this.state.year + this.state.month).add(-1, 'month').format('MM'),
             previousMonth: moment(this.state.year + this.state.previousMonth).add(-1, 'month').format('MM'),
             nextMonth: moment(this.state.year + this.state.nextMonth).add(-1, 'month').format('MM'),
+            previousYear: moment(this.state.previousYear + this.state.previousMonth).add(-1, 'month').format('YYYY'),
+            nextYear: moment(this.state.nextYear + this.state.nextMonth).add(-1, 'month').format('YYYY'),
             holidays: [],
             nextMonthHolidays: [],
             previousMonthHolidays: []
