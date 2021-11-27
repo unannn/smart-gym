@@ -216,8 +216,7 @@ class Calendar extends Component {
             const week = days.map((date, dayIndex) => {
 
                 const isSelected = Object.entries(selectedDate).toString() === Object.entries(date).toString();
-                console.log(Object.entries(selectedDate).toString())
-                console.log(Object.entries(date).toString())
+
                 return <Day keyValue={weekIndex * 7 + dayIndex} onClickDate={this.props.onClickDate} year={date.year}
                     month={date.month} day={date.day} dayOfWeek={date.dayOfWeek} selectedMonth={this.state.month} isSelected={isSelected}
                     isRezDay={this.isRezValidDay(todayDate, date.year + date.month + date.day)} isHoliday={this.isHoliday(date.month, date.day)} ></Day>

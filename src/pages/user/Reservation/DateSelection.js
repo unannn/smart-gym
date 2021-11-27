@@ -126,6 +126,7 @@ class DateSelection extends Component {
             year: data.year,
             month: data.month,
             day: data.day,
+            dayOfWeek: data.dayOfWeek,
             isHoliday: data.isHoliday,
             isRezValidDay: data.isRezValidDay
         }, () => {
