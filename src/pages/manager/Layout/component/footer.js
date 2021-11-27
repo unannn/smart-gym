@@ -1,28 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import $ from "jquery";
-import jquery from "jquery";
-//background: #949494; #545454;
-let FooterBox = styled.div`  
-    color: #5C5C5C;
-    height: 100px;
-    position: absolute;
-    bottom: 0px; 
-    width: 100%;
-`;
-let LabelBox = styled.label`  
-    color: #5C5C5C;
-    font-size: 13px;
-`;
-let EmailBox = styled.div`  
-    color: #5C5C5C;
-    font-size: 13px;
-    cursor: pointer;
-    line-height: 2;
-    color: blue;
-    width: 150px;
-`;
+
 class Footer extends React.Component {
     copy = function () {
         if (!document.queryCommandSupported("copy")) {
@@ -62,4 +40,33 @@ class Footer extends React.Component {
     }
 }
 
+
+let FooterBox = styled.div`
+    color: #5C5C5C;
+    height: 100px;
+    position: absolute;
+    bottom: 0px; 
+    width: 100%;
+`;
+let LabelBox = styled.label`  
+    color: #5C5C5C;
+    font-size: 13px;
+`;
+let EmailBox = styled.div`  
+    color: #5C5C5C;
+    font-size: 13px;
+    cursor: pointer;
+    line-height: 2;
+    color: blue;
+    width: 150px;
+`;
+
+let UserFooterStyle = styled.div`
+position: absolute;
+bottom: 0;
+left: 0;
+right: 0;
+color: white;
+background-color: #333333;
+`
 export default Footer

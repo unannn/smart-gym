@@ -29,9 +29,6 @@ class DateSelection extends Component {
 
     componentDidMount() {
         const queryString = '?year=' + this.state.year + '&month=' + this.state.month;
-        let regularHolidays = [];
-        let specialHolidays = [];
-        let holidays = [];
 
         //여기서 휴일 받아오기
         this.getHolidays('http://localhost:8080/reservation/calRegularHolidayDate' + queryString);
@@ -163,7 +160,7 @@ class DateSelection extends Component {
         return (
             <div>
                 <Calendar onClickDate={this.selectDate} selectedDate={this.state}
-                    rezValidDate={this.state.rezValidDate} holidays={this.state.holidays}></Calendar>
+                    rezValidDate={this.state.rezValidDate} ></Calendar>
                 <br />
                 <ReservationEquipTray equipList={this.state.equipList}></ReservationEquipTray>
                 <br />

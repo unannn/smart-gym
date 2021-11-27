@@ -36,13 +36,8 @@ let EmailBox = styled.div`
     width: 150px;
 `;
 
-let UserFooterStyle = styled.div`
-position: absolute;
-bottom: 0;
-left: 0;
-right: 0;
-color: white;
-background-color: #333333;
+let UserFooterStyle = styled.footer`
+
 `;
 
 export default UserFooter;

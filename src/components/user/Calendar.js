@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import styled from "styled-components";
 import moment from 'moment';
-import { RestorePageSharp } from '@material-ui/icons';
+import { ModeComment, RestorePageSharp } from '@material-ui/icons';
 import { Pointer } from 'highcharts';
+import axios from 'axios';
 
 class Day extends Component {
     constructor(props) {
@@ -15,6 +16,7 @@ class Day extends Component {
             isRezValidDay: this.props.isRezDay
         }
     }
+
     render() {
         //const key = this.state.year + this.state.month + this.state.day;
         return <TD onClick={(e) => {
@@ -46,20 +48,60 @@ class Calendar extends Component {
         super(props);
         this.state = {
             year: moment().format('YYYY'),
-            month: moment().format('MM')
+            previousYear: moment().add(-1, 'month').format('YYYY'),
+            nextYear: moment().add(1, 'month').format('YYYY'),
+
+            month: moment().format('MM'),
+            previousMonth: moment().add(-1, 'month').format('MM'),
+            nextMonth: moment().add(1, 'month').format('MM'),
+
+            holidays: [],
+            nextMonthHolidays: [],
+            previousMonthHolidays: []
         }
     }
 
     componentDidMount() {
-
+        const queryString = '?year=' + this.state.year + '&month=' + this.state.month;
+        const nextQuery = '?year=' + this.state.nextYear + '&month=' + this.state.nextMonth;
+        const prevQuery = '?year=' + this.state.previousYear + '&month=' + this.state.previousMonth;
+        //여기서 휴일 받아오기
+        this.getHolidays('http://localhost:8080/reservation/calRegularHolidayDate' + queryString, 'holidays');
+        this.getHolidays('http://localhost:8080/reservation/calHolidayDate' + queryString, 'holidays');
+        this.getHolidays('http://localhost:8080/reservation/calRegularHolidayDate' + prevQuery, 'previousMonthHolidays');
+        this.getHolidays('http://localhost:8080/reservation/calHolidayDate' + prevQuery, 'previousMonthHolidays');
+        this.getHolidays('http://localhost:8080/reservation/calRegularHolidayDate' + nextQuery, 'nextMonthHolidays');
+        this.getHolidays('http://localhost:8080/reservation/calHolidayDate' + nextQuery, 'nextMonthHolidays');
     }
+
+    getHolidays(uri, order) {
+        let processResponse = async function (response) {
+            const holidays = response.data.data;
+            await this.setState({ [order]: this.state[order].concat(holidays) })
+        }
+
+        axios.get(uri,
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(processResponse.bind(this))
+            .catch((response) => {
+                console.log('Error');
+                console.log(response);
+            })
+    }
+
+
+
 
     // 매개변수 안주면 현재 달의 날짜 리스트 반환, 주면 그 년도와 달에 해당하는 날짜 리스트 반환
     getCalendarDayList(year, month) {
         const week = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         let selectedDate = year + month;
         var monthStartDay = week.indexOf(moment(selectedDate).locale('en').format('ddd'));
-        console.log(moment(selectedDate).locale('en').format('ddd'))
 
         var calendarStart = -1 * monthStartDay;
         var days = new Array(6);
@@ -85,14 +127,50 @@ class Calendar extends Component {
     clickNextMonth() {
         this.setState({
             year: moment(this.state.year + this.state.month).add(1, 'month').format('YYYY'),
-            month: moment(this.state.year + this.state.month).add(1, 'month').format('MM')
+            month: moment(this.state.year + this.state.month).add(1, 'month').format('MM'),
+            previousMonth: moment(this.state.previousYear + this.state.previousMonth).add(1, 'month').format('MM'),
+            nextMonth: moment(this.state.nextYear + this.state.nextMonth).add(1, 'month').format('MM'),
+            previousYear: moment(this.state.previousYear + this.state.previousMonth).add(1, 'month').format('YYYY'),
+            nextYear: moment(this.state.nextYear + this.state.nextMonth).add(1, 'month').format('YYYY'),
+            holidays: [],
+            nextMonthHolidays: [],
+            previousMonthHolidays: []
+        }, () => {
+            const queryString = '?year=' + this.state.year + '&month=' + this.state.month;
+            const nextQuery = '?year=' + this.state.nextYear + '&month=' + this.state.nextMonth;
+            const prevQuery = '?year=' + this.state.previousYear + '&month=' + this.state.previousMonth;
+            //여기서 휴일 받아오기
+            this.getHolidays('http://localhost:8080/reservation/calRegularHolidayDate' + queryString, 'holidays');
+            this.getHolidays('http://localhost:8080/reservation/calHolidayDate' + queryString, 'holidays');
+            this.getHolidays('http://localhost:8080/reservation/calRegularHolidayDate' + prevQuery, 'previousMonthHolidays');
+            this.getHolidays('http://localhost:8080/reservation/calHolidayDate' + prevQuery, 'previousMonthHolidays');
+            this.getHolidays('http://localhost:8080/reservation/calRegularHolidayDate' + nextQuery, 'nextMonthHolidays');
+            this.getHolidays('http://localhost:8080/reservation/calHolidayDate' + nextQuery, 'nextMonthHolidays');
         })
     }
 
     clickPreviousMonth() {
         this.setState({
             year: moment(this.state.year + this.state.month).add(-1, 'month').format('YYYY'),
-            month: moment(this.state.year + this.state.month).add(-1, 'month').format('MM')
+            month: moment(this.state.year + this.state.month).add(-1, 'month').format('MM'),
+            previousMonth: moment(this.state.year + this.state.previousMonth).add(-1, 'month').format('MM'),
+            nextMonth: moment(this.state.year + this.state.nextMonth).add(-1, 'month').format('MM'),
+            previousYear: moment(this.state.previousYear + this.state.previousMonth).add(-1, 'month').format('YYYY'),
+            nextYear: moment(this.state.nextYear + this.state.nextMonth).add(-1, 'month').format('YYYY'),
+            holidays: [],
+            nextMonthHolidays: [],
+            previousMonthHolidays: []
+        }, () => {
+            const queryString = '?year=' + this.state.year + '&month=' + this.state.month;
+            const nextQuery = '?year=' + this.state.nextYear + '&month=' + this.state.nextMonth;
+            const prevQuery = '?year=' + this.state.previousYear + '&month=' + this.state.previousMonth;
+            //여기서 휴일 받아오기
+            this.getHolidays('http://localhost:8080/reservation/calRegularHolidayDate' + queryString, 'holidays');
+            this.getHolidays('http://localhost:8080/reservation/calHolidayDate' + queryString, 'holidays');
+            this.getHolidays('http://localhost:8080/reservation/calRegularHolidayDate' + prevQuery, 'previousMonthHolidays');
+            this.getHolidays('http://localhost:8080/reservation/calHolidayDate' + prevQuery, 'previousMonthHolidays');
+            this.getHolidays('http://localhost:8080/reservation/calRegularHolidayDate' + nextQuery, 'nextMonthHolidays');
+            this.getHolidays('http://localhost:8080/reservation/calHolidayDate' + nextQuery, 'nextMonthHolidays');
         })
     }
 
@@ -104,8 +182,14 @@ class Calendar extends Component {
     }
 
     isHoliday(month, date) {
-        console.log(month)
-        if (this.props.holidays.includes(parseInt(date)) && month === moment().format('MM')) {
+
+        if (this.state.holidays.includes(parseInt(date)) && month === this.state.month) {
+            return true;
+        }
+        else if (this.state.nextMonthHolidays.includes(parseInt(date)) && month === this.state.nextMonth) {
+            return true;
+        }
+        else if (this.state.previousMonthHolidays.includes(parseInt(date)) && month === this.state.previousMonth) {
             return true;
         }
         return false;
@@ -124,6 +208,7 @@ class Calendar extends Component {
             month: this.props.selectedDate.month,
             day: this.props.selectedDate.day
         }
+
         const selectedEquipList = selectedMonthDays.map((days, weekIndex) => {
             const week = days.map((date, dayIndex) => {
 
