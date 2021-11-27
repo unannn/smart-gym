@@ -39,6 +39,7 @@ function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber,
     const apiKind = (EquipmentId, ESL, apiNumber, e) => {
         localStorage.setItem("reservation", EquipmentId);
         console.log(apiNumber);
+        console.log(ESL);
         if (apiNumber == 0) {
             //Layout
         }
@@ -66,6 +67,7 @@ function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber,
                     alert("error! 해당 예약 이력을 조회할 수 없습니다.");
                 });
         }
+        //ESL
         else if (apiNumber == 2) {
             let ESLState = -1;
             console.log(ESL);
@@ -91,13 +93,14 @@ function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber,
                     else {
                         $("#GymNameInfo").val(response.data.gymInfoName);
                     }
+                    $("#ESLNo").val("ESL ID:  " + response.data.eslID);
                     $("#userName").val(response.data.userName);
                     $("#equipESL").val(response.data.equipmentName + " " + response.data.equipmentNameNth);
                     $("#QrValue").val(response.data.equipmentQRCode);
                     //els state
                     //사용불가(고장)
                     if (ESLState == 0) {
-                        $("#Times").val("breakdown");
+                        $("#Times").val("운동기구 고장");
                         //$("#ESLNo").val(response.data.);
                     }
                     //예약 중
@@ -108,7 +111,13 @@ function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber,
                     //누구나 사용가능
                     else if (ESLState == 2) {
                         console.log("2번상태");
-                        $("#Times").val("현재 누구나 사용 가능");
+                        $("#userName").val("누구나 사용가능");
+                        if (response.data.startTime == "") {
+                            $("#Times").val("다음 예약 생성까지");
+                        }
+                        else {
+                            $("#Times").val(response.data.startTime + "까지");
+                        }
                     }
                     //Not Matched
                     else if (ESLState == 4) {
@@ -121,7 +130,7 @@ function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber,
                     }
                 })
                 .catch((response) => {
-                    console.log('Error!');
+                    console.log(response);
                     alert("error! ESL정보를 조회할 수 없습니다.");
                 });
 

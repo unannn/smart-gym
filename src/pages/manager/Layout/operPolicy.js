@@ -14,6 +14,7 @@ import Calendar from '../../../components/user/Calendar';
 import ReservationEquipList from '../../../components/user/ReservationEquipTray';
 import moment from 'moment';
 import { ContactlessOutlined } from '@material-ui/icons';
+import { ContentPasteOutlined } from '@mui/icons-material';
 /*   background: #F2F2F2;*/
 let GyminfoBox = styled.div`
    position: relative;
@@ -74,10 +75,13 @@ const KorRDList = ["월", "화", "수", "목", "금", "토", "일"];
 var rezValidDate = 0;
 var holidays = [];
 var selectedDay = "";
+let reRender = false;
 class OperPolicy extends React.Component {
     // 제일 common한 state값 초기 셋팅
     constructor(props) {
         super(props);
+        this.holiyCreate = this.holiyCreate.bind(this);
+        this.holiyDelete = this.holiyDelete.bind(this);
         const currentDate = moment();
         this.state = {
             loading: false,
@@ -92,7 +96,8 @@ class OperPolicy extends React.Component {
             rezValidDate: 0,
             buttonText: '',
             isRezValid: true,
-            flag: false
+            flag: false,
+            dayFlag: ""
         };
     }
     holiyRead = function () {
@@ -108,27 +113,21 @@ class OperPolicy extends React.Component {
             }
         )
             .then((response) => {
-                console.log(response.data);
-                console.log("length: " + (response.data).length);
+                //console.log(response.data);
                 holidays = [];
                 for (let i = 0; i < (response.data).length; i++) {
-                    console.log((response.data[i]).gymHolidayDate);
                     let st = "";
                     for (let j = 0; j < ((response.data[i]).gymHolidayDate).length; j++) {
                         if (((response.data[i]).gymHolidayDate[j]) == "-") {
                             continue;
                         }
                         st = st + ((response.data[i]).gymHolidayDate[j]);
-                        //console.log("st: " + st);
                     }
                     holidays.push(st);
-                    //console.log(holidays);
                 }
-                // console.log("total holidays: " + holidays);
                 this.setState({
                     holidays: holidays
                 })
-                //console.log("!!" + this.state.holidays);
             })
             .catch((response) => {
                 console.log(response);
@@ -136,8 +135,7 @@ class OperPolicy extends React.Component {
             });
     }
 
-    holiyCreate = function () {
-        console.log("holiyCreate");
+    holiyCreate = function (dayOF) {
         let year = "";
         let month = "";
         let day = "";
@@ -168,12 +166,10 @@ class OperPolicy extends React.Component {
                 .then((response) => {
                     console.log(response.data);
                     selectedDay = "";
-                    //window.location.reload();
                     alert("휴무일로 변경 되었습니다.");
-                    this.holiyRead();
+                    window.location.reload();
                 })
                 .catch((response) => {
-                    console.log('Error!');
                     console.log(response);
                     selectedDay = "";
                     alert("error! 휴무일로 변경에 실패하였습니다.");
@@ -184,11 +180,11 @@ class OperPolicy extends React.Component {
         }
     }
 
-    holiyDelete = function () {
-        console.log("holiyDelete");
+    holiyDelete = function (dayOF) {
         let year = "";
         let month = "";
         let day = "";
+        let changeFlag = true;
         for (let i = 0; i < selectedDay.length; i++) {
             if (i < 4) {
                 year = year + selectedDay[i];
@@ -200,35 +196,46 @@ class OperPolicy extends React.Component {
                 day = day + selectedDay[i];
             }
         }
-        if (window.confirm("Selected Date: " + year + "/" + month + "/" + day +
-            "\n해당 날짜의 휴무일을 다시 영업일로 바꾸시겠습니까?")) {
-            axios.post('http://localhost:8080/gymOperationInfo/holiday/delete',
-                {
-                    gymHolidayDate: selectedDay
-                },
-                {
-                    headers: {
-                        'Content-type': 'application/json',
-                        'Accept': 'application/json'
+
+        for (let i = 0; i < this.state.dayFlag.length; i++) {
+            console.log(this.state.dayFlag[i] + "와 " + dayOF);
+            if (this.state.dayFlag[i] == dayOF) {
+                changeFlag = false;
+            }
+        }
+        if (changeFlag) {
+            if (window.confirm("Selected Date: " + year + "/" + month + "/" + day +
+                "\n해당 날짜의 휴무일을 다시 영업일로 바꾸시겠습니까?")) {
+                axios.post('http://localhost:8080/gymOperationInfo/holiday/delete',
+                    {
+                        gymHolidayDate: selectedDay
+                    },
+                    {
+                        headers: {
+                            'Content-type': 'application/json',
+                            'Accept': 'application/json'
+                        }
                     }
-                }
-            )
-                .then((response) => {
-                    console.log(response.data);
-                    selectedDay = "";
-                    //window.location.reload();
-                    alert("영업일로 변경되었습니다.");
-                    this.holiyRead();
-                })
-                .catch((response) => {
-                    console.log('Error!');
-                    console.log(response);
-                    selectedDay = "";
-                    alert("error! 영업일로 변경이 실패하였습니다.");
-                });
+                )
+                    .then((response) => {
+                        console.log(response.data);
+                        selectedDay = "";
+                        alert("영업일로 변경되었습니다.");
+                        window.location.reload();
+                    })
+                    .catch((response) => {
+                        console.log('Error!');
+                        console.log(response);
+                        selectedDay = "";
+                        alert("error! 영업일로 변경이 실패하였습니다.");
+                    });
+            }
+            else {
+                //alert("영업일로 변경 요청을 취소하였습니다.");
+            }
         }
         else {
-            //alert("영업일로 변경 요청을 취소하였습니다.");
+            alert("Selected Date: " + year + "/" + month + "/" + day + "는 정기휴일입니다.");
         }
     }
     loadItem = async () => {
@@ -236,12 +243,13 @@ class OperPolicy extends React.Component {
         axios.get('http://localhost:8080/gymOperationInfo/read') // json을 가져온다음
             .then((data) => {
                 // data라는 이름으로 json 파일에 있는 값에 state값을 바꿔준다.
-                console.log(data.data);
+                //console.log(data.data);
                 rezValidDate = (data.data).gymOperationInfoReservationDuration;
                 this.setState({
                     loading: true, // load되었으니 true,
                     ItemList: (data.data),
-                    rezValidDate: rezValidDate
+                    rezValidDate: rezValidDate,
+                    dayFlag: (data.data).gymOperationInfoRegularHoliday
                 });
                 let StartI = 0;
                 for (let i = 0; i < ((data.data).gymOperationInfoRegularHoliday).length; i++) {
@@ -267,7 +275,7 @@ class OperPolicy extends React.Component {
         //gyminformation Read
         axios.get('http://localhost:8080/gymInfo/read') // json을 가져온다음
             .then((data) => {
-                console.log(data.data)
+                //console.log(data.data)
                 this.setState({
                     loading: true,
                     InfoList: (data.data),
@@ -286,6 +294,7 @@ class OperPolicy extends React.Component {
             });
     };
     selectDate = (data) => {
+        console.log(data);
         console.log("select! " + (data.year) + (data.month) + (data.day));
         selectedDay = (data.year) + (data.month) + (data.day);
         this.setState({
@@ -299,13 +308,13 @@ class OperPolicy extends React.Component {
                 console.log("휴무일");
                 this.setState({ isRezValid: false });
                 this.setState({ flag: true });
-                this.holiyDelete();
+                this.holiyDelete(data.dayOfWeek);
             }
             else {
                 console.log("영업일");
                 this.setState({ isRezValid: true })
                 this.setState({ flag: false });
-                this.holiyCreate();
+                this.holiyCreate(data.dayOfWeek);
             }
         })
     }
@@ -315,7 +324,6 @@ class OperPolicy extends React.Component {
 
         const currentDate = moment();
         const isHoliday = holidays.includes(currentDate.format("YYYY-MM-DD"));
-        //console.log("holidays: " + holidays);
 
         this.setState({
             holidays: holidays,
@@ -327,11 +335,7 @@ class OperPolicy extends React.Component {
 
     render() {
         const { InfoList } = this.state;
-        console.log(InfoList);
         const { ItemList } = (this.state);
-        console.log(ItemList);
-        console.log(this.state.InfoList);
-        console.log("render: " + rezValidDate);
         return (
             <div>
                 <ManagerBar></ManagerBar>
@@ -362,11 +366,7 @@ class OperPolicy extends React.Component {
                         </div>
                         <CalendarBox>
                             <Calendar onClickDate={this.selectDate} selectedDate={this.state}
-                                rezValidDate={rezValidDate} holidays={this.state.holidays} ></Calendar>
-                            <br />
-                            <StyledMenuText isValid={this.state.isRezValid}>
-                                {this.state.buttonText}
-                            </StyledMenuText>
+                                rezValidDate={rezValidDate} ></Calendar>
                         </CalendarBox>
                     </BodyBox>
                     <div>
