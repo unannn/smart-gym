@@ -76,7 +76,6 @@ let Cell = styled.input`
    list-style-type: none;
    border: 0px;
    font-weight: bold;
-   background: pink;
    `;
 //background: 'pink',
 let RowLineBox = styled.div`
@@ -135,7 +134,7 @@ class ESLInfo extends React.Component {
         return (
             <div>
                 <center>
-                    <Cell id="ESLNo" style={{ position: "relative", left: "-490px", width: '150px' }} disabled />
+                    <Cell id="ESLNo" style={{ position: "relative", left: "-480px", width: '150px', textAlign: 'left' }} disabled />
                     <ESLOutBox />
                     <BInnerBox>
                         <img src="./image/barcode.png" width="40px" height="250px" style={{ position: 'relative', top: "5px", left: '-10px' }} />
