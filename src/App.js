@@ -32,6 +32,7 @@ function App() {
     <BrowserRouter>
       <div className="App">
         {logged && <UserNavBar></UserNavBar>}
+
         <Switch>
 
           <Redirect exact from='/' to='/login' />
@@ -44,7 +45,7 @@ function App() {
             <ContentStyle><UserMain></UserMain></ContentStyle>
           </Route>
           <Route exact path='/manager'>
-            <ContentStyle><ManagerMain></ManagerMain></ContentStyle>
+            <ManagerMain></ManagerMain>
           </Route>
           <Route exact path='/user/reservation/date'>
             <ContentStyle><DateSelection></DateSelection></ContentStyle>
@@ -62,6 +63,7 @@ function App() {
             <ContentStyle><CenterInfo></CenterInfo></ContentStyle>
           </Route>
           {logged && <UserFooter></UserFooter>}
+
 
           <Route exact path='/userManage'>
             <UserM></UserM>
@@ -105,7 +107,7 @@ function App() {
 }
 
 const ContentStyle = styled.div`
-  position: relative;
+    position: relative;
     max-width: 1130px;
     margin: 0 auto;
 `;
