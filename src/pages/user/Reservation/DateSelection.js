@@ -18,6 +18,8 @@ class DateSelection extends Component {
             year: currentDate.format('YYYY'),
             month: currentDate.format('MM'),
             day: currentDate.format('DD'),
+            dayOfWeek: currentDate.format('ddd'),
+
             isHoliday: false,
             isRezValidDay: true,
             rezValidDate: 0,
@@ -124,6 +126,7 @@ class DateSelection extends Component {
             year: data.year,
             month: data.month,
             day: data.day,
+            dayOfWeek: data.dayOfWeek,
             isHoliday: data.isHoliday,
             isRezValidDay: data.isRezValidDay
         }, () => {
