@@ -12,6 +12,7 @@ class Day extends Component {
             year: this.props.year,
             month: this.props.month,
             day: this.props.day,
+            dayOfWeek: this.props.dayOfWeek,
             isHoliday: this.props.isHoliday,
             isRezValidDay: this.props.isRezDay
         }
@@ -19,11 +20,12 @@ class Day extends Component {
 
     render() {
         //const key = this.state.year + this.state.month + this.state.day;
-        return <TD onClick={(e) => {
+        return <TD key={this.props.keyValue} onClick={(e) => {
             this.setState({
                 year: this.props.year,
                 month: this.props.month,
                 day: this.props.day,
+                dayOfWeek: this.props.dayOfWeek,
                 isHoliday: this.props.isHoliday,
                 isRezValidDay: this.props.isRezDay
             }, () => {
@@ -113,7 +115,8 @@ class Calendar extends Component {
                 const Fomatdate = {
                     year: date.format('YYYY'),
                     month: date.format('MM'),
-                    day: date.format('DD')
+                    day: date.format('DD'),
+                    dayOfWeek: date.locale('ko').format('ddd')
                 }
 
                 tmp[j] = Fomatdate;
@@ -206,16 +209,17 @@ class Calendar extends Component {
         const selectedDate = {
             year: this.props.selectedDate.year,
             month: this.props.selectedDate.month,
-            day: this.props.selectedDate.day
+            day: this.props.selectedDate.day,
+            dayOfWeek: this.props.selectedDate.dayOfWeek
         }
-
         const selectedEquipList = selectedMonthDays.map((days, weekIndex) => {
             const week = days.map((date, dayIndex) => {
 
                 const isSelected = Object.entries(selectedDate).toString() === Object.entries(date).toString();
-
-                return <Day key={weekIndex * 7 + dayIndex} onClickDate={this.props.onClickDate} year={date.year}
-                    month={date.month} day={date.day} selectedMonth={this.state.month} isSelected={isSelected}
+                console.log(Object.entries(selectedDate).toString())
+                console.log(Object.entries(date).toString())
+                return <Day keyValue={weekIndex * 7 + dayIndex} onClickDate={this.props.onClickDate} year={date.year}
+                    month={date.month} day={date.day} dayOfWeek={date.dayOfWeek} selectedMonth={this.state.month} isSelected={isSelected}
                     isRezDay={this.isRezValidDay(todayDate, date.year + date.month + date.day)} isHoliday={this.isHoliday(date.month, date.day)} ></Day>
             })
             return <tr>{week}</tr>
