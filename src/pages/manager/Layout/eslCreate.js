@@ -11,16 +11,16 @@ import NativeSelect from '@mui/material/NativeSelect';
 import ESLItem from "./ESL/eslItem";
 import ManagerBar from './component/menubar.js';
 import Footer from './component/footer';
-import ESLMatchBox from './ESL/eslMatch';
+import ESLMatch from './ESL/eslMatch';
 import EEItem from './ESL/eEItem';
 import { Link } from 'react-router-dom';
 //background - color:"#F2F2F2";
 let ESLList = styled.div`
  position: absolute;
- left: -80px;
+ left: -75px;
  top: -50px;
    margin: 0.3px;
-   width: 460px;
+   width: 470px;
    height: 520px;
    font-size: 10pt;
    text-align: center;
@@ -95,15 +95,18 @@ let SearchBox = styled.input`
     left: 18px;
     border: 3px solid gray;
    `;
+let sortFlag = 0;
 class ESLCreate extends React.Component {
     // 제일 common한 state값 초기 셋팅
     constructor(props) {
         super(props);
         this.ESLItemCreate = this.ESLItemCreate.bind(this);
+        this.sortChange = this.sortChange.bind(this);
         this.state = {
             loading: false,
             ItemList: [],
             ESLItemList: [],
+            flag: true
         };
     }
 
@@ -127,27 +130,21 @@ class ESLCreate extends React.Component {
                 });
                 alert("error! 운동기구 목록 조회에 실패했습니다.");
             });
-        axios.post('http://localhost:8080/equipment/readAll',
-            {
-                select: 1
-            },
-            {
-                headers: {
-                    'Content-type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            }
-        )
-            .then((response) => {
-                console.log(response.data)
+        //Equipment 조회/sort defalut: 0
+        //console.log("sort: " + sortFlag)
+        axios.get('http://localhost:8080/esl/readMatchableEquipmentList') // json을 가져온다음
+            .then((data) => {
+                // data라는 이름으로 json 파일에 있는 값에 state값을 바꿔준다.
+                console.log(data.data)
                 this.setState({
                     loading: true, // load되었으니 true,
-                    ItemList: response.data,
+                    ItemList: data.data,
                     flog: "전체" // 비어있던 Itemlist는 data에 Item객체를 찾아넣어준다. ( Item : json파일에 있는 항목)
                 });
             })
-            .catch((response) => {
-                console.error(response); // 에러표시
+            .catch(e => {
+                // json이 로드되지않은 시간엔
+                console.error(e); // 에러표시
                 this.setState({
                     loading: false // 이때는 load 가 false 유지
                 });
@@ -174,6 +171,7 @@ class ESLCreate extends React.Component {
                 console.log(response.data);
                 if (response.data == 0) {
                     alert("ESL이 추가되었습니다.");
+                    $("#ESLCreateID").val("");
                     this.loadItem();
                 }
                 else if (response.data == 1) {
@@ -191,6 +189,23 @@ class ESLCreate extends React.Component {
                 console.error(response); // 에러표시
                 alert("error! ESL 추가에 실패했습니다.");
             });
+    }
+
+    sortChange = function () {
+        if (this.state.flag) {
+            sortFlag = 1;
+            this.setState({
+                flag: false // 이때는 load 가 false 유지
+            });
+        }
+        else {
+            sortFlag = 0;
+            this.setState({
+                flag: true // 이때는 load 가 false 유지
+            });
+        }
+        console.log("flag: " + this.state.flag);
+        this.loadItem();
     }
     componentDidMount() {
         this.loadItem();
@@ -212,16 +227,16 @@ class ESLCreate extends React.Component {
                             <Button variant="btn btn-secondary" style={{ position: "relative", top: "-50px", left: "570px" }}>ESL 조회하러 가기</Button>
                         </Link>
                         <div style={{ position: "relative", top: "64px", left: "0px" }}>
-                            <ListKey style={{ width: "730px", left: "-300px", top: "-85px" }}>
+                            <ListKey style={{ width: "730px", left: "-310px", top: "-85px" }}>
                                 <div >
-                                    <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "80px" }}>ESLID</Cell>
+                                    <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "75px" }}>ESLID</Cell>
                                     <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "120px" }}>EquipmentID</Cell>
                                     <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "140px" }}>ReservationID</Cell>
                                     <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "80px" }}>Delete</Cell>
                                 </div>
                             </ListKey>
                             <div>
-                                <RowLineBox style={{ left: '-55px', width: '418px' }} />
+                                <RowLineBox style={{ left: '-60px', width: '430px' }} />
                                 <ESLList>
                                     <ul className="list__itemview">
                                         {ESLItemList &&
@@ -239,15 +254,13 @@ class ESLCreate extends React.Component {
                                     </ul>
                                 </ESLList>
 
-                                <div style={{ position: "relative", top: "64px", left: "10px" }}>
-                                    <ListKey style={{ width: "600px", left: "85px", top: "-200px" }}>
-                                        <div>
-                                            <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "120px" }}>EquipmentID</Cell>
-                                            <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "200px" }}>Equipment/Nth</Cell>
-                                        </div>
-                                    </ListKey>
-                                </div>
-                                <RowLineBox style={{ left: '400px', width: '420px' }} />
+                                <ListKey style={{ position: 'absolute', width: "620px", left: "395px", top: "-85px" }}>
+                                    <div>
+                                        <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "120px" }}>EquipmentID</Cell>
+                                        <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "200px" }}>Equipment/Nth</Cell>
+                                    </div>
+                                </ListKey>
+                                <RowLineBox style={{ left: '400px', width: '435px' }} />
                                 <EELList>
                                     <ul className="list__itemview">
                                         {ItemList &&
@@ -266,9 +279,11 @@ class ESLCreate extends React.Component {
                                 </EELList>
                             </div>
                         </div>
-                        <ESLMatchBox />
-                        <SearchBox id="ESLCreateID" name="ESLCreateID" style={{ position: "relative", top: '-165.5px', left: '-660px' }} />
-                        <Button variant="btn btn-secondary" onClick={this.ESLItemCreate} style={{ position: "relative", top: '-170px', left: '-655px' }}>ESL생성</Button>
+                        <ESLMatch loadItem={this.loadItem} />
+                        <SearchBox id="ESLCreateID" name="ESLCreateID" style={{ position: "relative", top: '-116.5px', left: '-550px' }} />
+                        <Button variant="btn btn-secondary" onClick={this.ESLItemCreate} style={{ position: "relative", top: '-120px', left: '-545px' }}>ESL생성</Button>
+
+                        <label style={{ color: 'red', fontSizeL: '15px', position: 'relative', top: '500px', left: "-950px" }}>*ESL 선택한 다음 운동기구를 선택하세요</label>
                     </BodyBox >
                     <div style={{ position: 'relative', bottom: '-650px' }}>
                         <br />

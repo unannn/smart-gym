@@ -19,7 +19,7 @@ let SearchBox = styled.input`
 	padding-top:5px;
 	font-family:tahoma;
 	font-size:16px;
-	color: gray;
+	color: black;
     resize:none;
     border-radius: 5px;
     margin-bottom: 10px;
@@ -33,9 +33,9 @@ let SearchBox = styled.input`
 
 let EquiList = styled.div`
  position: relative;
-top: -140px;
-left: 10px;
-   width: 900px;
+top: -180px;
+left: -50px;
+   width: 770px;
    height: 700px;
    text-align: center;
    overflow:auto;
@@ -46,8 +46,8 @@ left: 10px;
    `;
 let ListKey = styled.div`
  position: relative;
-top: -160px;
-left: 28px;
+top: -170px;
+left: 35px;
    width: 900px;
    height: 50px;
    text-align: center;
@@ -72,8 +72,8 @@ let FilterBox = styled.div`
 let RowLineBox = styled.div`
     position: absolute;
     top: 45px;
-    left: 170px;
-    width: 740px;
+    left: 185px;
+    width: 720px;
     height: 1.5px;
     background: black;
    `;
@@ -84,6 +84,11 @@ let SearchClick = styled.div`
   filter: brightness(93%);
   }
   background: #FDFDFD;
+   border-radius: 10px;
+   padding: 1px;
+   margin:0 auto;
+   margin-bottom:10px;
+   cursor: pointer;
    `;
 let Cell = styled.li`
    position: relative;
@@ -99,6 +104,7 @@ class UserA extends React.Component {
     constructor(props) {
         super(props);
         this.filterSearch = this.filterSearch.bind(this);
+        this.searchText = this.searchText.bind(this);
         this.state = {
             loading: false,
             ItemList: [],
@@ -106,7 +112,8 @@ class UserA extends React.Component {
         };
     }
     loadItem = async () => {
-        // Json Data 불러오기
+        $("#searchValue").val("검색하시려면 Filter를 바꿔주세요.");
+        $("#searchValue").attr("disabled", true);
         axios.get('http://localhost:8080/unAllowedUser/readAll') // json을 가져온다음
             .then((data) => {
                 // data라는 이름으로 json 파일에 있는 값에 state값을 바꿔준다.
@@ -127,9 +134,6 @@ class UserA extends React.Component {
             });
     };
     filterSearch = function () {
-        console.log("rePrint");
-        console.log($("#FilterID").val());
-        console.log($("#searchValue").val());
         if ($("#FilterID").val() == 0)//All
         {
             this.loadItem();
@@ -192,6 +196,25 @@ class UserA extends React.Component {
             }
         }
     }
+    searchText = function () {
+        console.log("필터변경");
+        if ($("#FilterID").val() == 0)//All
+        {
+            $("#searchValue").val("검색하시려면 Filter를 바꿔주세요.");
+            $("#searchValue").attr("disabled", true);
+            this.loadItem();
+        }
+        //ID
+        else if ($("#FilterID").val() == 1) {
+            $("#searchValue").val("");
+            $("#searchValue").attr("disabled", false);
+        }
+        //Name
+        else if ($("#FilterID").val() == 2) {
+            $("#searchValue").val("");
+            $("#searchValue").attr("disabled", false);
+        }
+    }
     componentDidMount() {
         this.loadItem();
     }
@@ -220,6 +243,7 @@ class UserA extends React.Component {
                                                 id: 'FilterID',
                                             }}
                                             color="secondary"
+                                            onChange={this.searchText}
                                         >
                                             <option value={0}>ALL</option>
                                             <option value={1}>ID</option>
@@ -229,13 +253,13 @@ class UserA extends React.Component {
                                 </Box>
                             </FilterBox>
                             <SearchBox id="searchValue" name="searchValue" />
-                            <SearchClick style={{ position: "relative", top: "-133px", left: "20px" }} onClick={this.filterSearch}>
+                            <SearchClick style={{ position: "relative", top: "-180px", left: "240px", width: "40px", heigth: "40px" }} onClick={this.filterSearch}>
                                 <img src="./icon/icon_search.png" width="35px" />
                             </SearchClick>
                             <center>
                                 <ListKey>
                                     <div >
-                                        <Cell style={{ float: "left", position: "relative", top: "-10px", width: '300px' }}>ID</Cell>
+                                        <Cell style={{ float: "left", position: "relative", top: "-10px", width: '295px' }}>ID</Cell>
                                         <Cell style={{ float: "left", position: "relative", top: "-10px", width: '280px' }}>Name</Cell>
                                         <Cell style={{ position: "relative", top: "-10px" }}>Approval</Cell>
                                     </div>

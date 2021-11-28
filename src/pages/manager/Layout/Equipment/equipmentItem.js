@@ -19,7 +19,7 @@ let InfoBox = styled.div`
    `;
 let Cell = styled.li`
    position: relative;
-   top:0px;
+   top: -5px;
    float: left;
    height: 100%;
    font-size: 13pt;
@@ -80,7 +80,7 @@ const detailedRead = (EquipmentId, e) => {
             }
         })
         .catch((response) => {
-            console.log('Error!');
+            console.log(response);
             alert("error! 해당 운동기구에 대한 조회를 할 수 없습니다.\n페이지를 새로고침합니다.");
             window.location.reload();
         });

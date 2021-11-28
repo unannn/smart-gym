@@ -17,7 +17,7 @@ import ReactPlayer from 'react-player';
 //background - color:"#F2F2F2";
 let EquiList = styled.div`
  position: absolute;
- left: 15px;
+ left: 0px;
  top: -50px;
    margin: 0.3px;
    width: 307px;
@@ -32,10 +32,7 @@ let EquiList = styled.div`
    `;
 let ListKey = styled.div`
  position: relative;
- left: -435px;
- top: -85px;
-   width: 300px;
-   height: 30px;
+ top: -90px;
    text-align: center;
    border-radius: 5px;
    padding:20px;
@@ -60,9 +57,9 @@ let VideoBox = styled.div`
    `;
 let RowLineBox = styled.div`
     position: absolute;
-    top: -52px;
+    top: -56px;
     left: 10px;
-    width: 280px;
+    width: 260px;
     height: 1.5px;
     background: black;
    `;
@@ -152,12 +149,10 @@ class ESLManage extends React.Component {
                         <Link to='eslCreate' style={{ color: "black" }}>
                             <Button variant="btn btn-secondary" style={{ position: "relative", top: "-50px", left: "570px" }}>ESL 등록하러 가기</Button>
                         </Link>
-                        <div style={{ position: "relative", top: "64px", left: "0px" }}>
+                        <div style={{ position: "relative", top: "30px", left: "15px" }}>
                             <ListKey>
-                                <div >
-                                    <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "200px" }}>Equipment</Cell>
-                                    <Cell style={{ position: "relative", top: "-30px", float: 'left', fontSize: '17px', width: "50px" }}>Nth</Cell>
-                                </div>
+                                <Cell style={{ position: "relative", top: "-30px", fontSize: '17px', width: "200px" }}>Equipment</Cell>
+                                <Cell style={{ position: "relative", top: "-30px", fontSize: '17px', width: "50px" }}>Nth</Cell>
                             </ListKey>
                             <div>
                                 <RowLineBox />
@@ -181,7 +176,7 @@ class ESLManage extends React.Component {
                                 </EquiList>
                             </div>
                         </div>
-                        <div style={{ position: "relative", top: '-20px' }}>
+                        <div style={{ width: '900px', position: "relative", top: '-80px', left: '-150px' }}>
                             <ESLInfo parentFunction={this.parentFunction} />
                         </div>
                         {this.state.flag ?

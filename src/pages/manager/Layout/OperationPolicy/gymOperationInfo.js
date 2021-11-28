@@ -53,7 +53,8 @@ function StaticTimePickerLandscape({ id, start, end, RholiyD, reserveD, reloadF 
                     }
                     else {
                         alert("헬스장 운영정보가 정상적으로 등록되었습니다.");
-                        { reloadF() }
+                        //{ reloadF() }
+                        window.location.reload();
                     }
                 })
                 .catch((response) => {

@@ -17,7 +17,7 @@ import Footer from './component/footer';
 let EquiList = styled.div`
  position: absolute;
  left: -120px;
- top: -50px;
+ top: -60px;
    margin: 0.3px;
    width: 307px;
    height: 500px;
@@ -32,7 +32,7 @@ let EquiList = styled.div`
 let ReservationList = styled.div`
     position: absolute;
     left: 175px;
-    top: -53px;
+    top: -60px;
    margin: 0.3px;
    width: 1100 px;
    height: 500px;

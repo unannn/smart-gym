@@ -21,8 +21,9 @@ let InfoBox = styled.div`
    margin-bottom:5px;
    `;
 let Cell = styled.li`
+
    position: relative;
-   top:0px;
+   top: -5px;
    float: left;
    width: 220px;
    height: 100%;
@@ -42,10 +43,12 @@ const selectedEquipment = (EquipmentId, EquipmentName, EquipmentNth, e) => {
     $("#EquipmentNameMatched").val(EquipmentName + "/" + EquipmentNth);
     if (EquipmentId != $("#originEquip").val()) {
         $("#EquipmentMatchID").val(EquipmentId);
-        $("#MatchedIMG").attr("src", "./icon/icon_unmatching.png")
+        $("#MatchedIMG").attr("src", "./icon/icon_unmatching.png");
+        $("#matchingID").val(0);
     }
     else {
         $("#MatchedIMG").attr("src", "./icon/icon_matching.png");
+        $("#matchingID").val(1);
     }
 }
 function EEItem({ key, ESLId, EquipmentId, EquipmentName, EquipmentNth }) {

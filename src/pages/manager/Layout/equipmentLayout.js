@@ -83,16 +83,12 @@ class LayoutE extends React.Component {
     constructor(props) {
         super(props);
         this.layoutUpload = this.layoutUpload.bind(this);
+        this.layoutCancel = this.layoutCancel.bind(this);
         this.state = {
             loading: false,
             ItemList: [],
-            flog: "전체", // 스프린트에서는 fakedata값이 있어서 그내용을 넣어두었었다.
         };
     }
-    /*state = {
-        loading: false,
-        ItemList: [], // 처음 Itemlist는 있는 상태로 기획 []
-    };*/
     loadItem = async () => {
         console.log($("input-file").val());
         axios.post('http://localhost:8080/equipment/readAll',
@@ -111,7 +107,6 @@ class LayoutE extends React.Component {
                 this.setState({
                     loading: true, // load되었으니 true,
                     ItemList: response.data,
-                    flog: "전체" // 비어있던 Itemlist는 data에 Item객체를 찾아넣어준다. ( Item : json파일에 있는 항목)
                 });
             })
             .catch((response) => {
@@ -124,7 +119,7 @@ class LayoutE extends React.Component {
         //배치도 조회
         axios.get('http://localhost:8080/gymInfo/equipmentLayout/read')
             .then((data) => {
-                console.log(data);
+                //console.log(data);
                 //서버 실행이 안되서 빈 값이 들어오는 경우 디폴트 이미지 띄우기
                 if (data.data == " " || data.data == "" || data.data == null) {
                     $("#layoutImg").attr("src", "image/ImageNotFound_Layout.png");
@@ -146,13 +141,7 @@ class LayoutE extends React.Component {
         var fileInput = document.querySelector("#input-file");
         const formData = new FormData();
         formData.append('gymInfoEquipmentLayout', fileInput.files[0]);
-        /*for (var key of formData.keys()) {
-            console.log(key);
-        }
 
-        for (var value of formData.values()) {
-            console.log(value);
-        }*/
         if (fileInput.files[0] == null) {
             alert("새로운 배치도가 선택되지 않았습니다.\n등록을 원할 경우 새로운 배치도를 선택해 주세요.");
         }
@@ -182,10 +171,6 @@ class LayoutE extends React.Component {
                         alert("error! 배치도 등록에 실패하였습니다.");
                     });
             }
-            else {
-                //alert("배치도 등록 요청이 취소되었습니다.");
-                window.location.reload();
-            }
         }
     }
 
@@ -193,7 +178,7 @@ class LayoutE extends React.Component {
         console.log("Layout Cancel");
         if (window.confirm("배치도 등록을 취소하시겠습니까?")) {
             alert("해당 이미지에 대해 새로운 등록 요청이 취소되었습니다.\n이미지 재선택 후, 등록 요청을 해주세요.");
-            window.location.reload();
+            this.loadItem();
         }
     }
     rePrintImage = function (e) {

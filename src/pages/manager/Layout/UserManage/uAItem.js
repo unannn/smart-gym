@@ -11,8 +11,8 @@ let InfoBox = styled.div`
    position: relative;
    display: block;
    float: left;
-   left: 0%;
-   width: 700px;
+   left: -1%;
+   width: 710px;
    height: 40px;
    font-size: 10pt;
    text-align: center;
@@ -23,7 +23,7 @@ let InfoBox = styled.div`
    `;
 let Cell = styled.li`
    position: relative;
-   top:0px;
+   top: -5px;
    float: left;
    height: 100%;
    font-size: 13pt;
@@ -112,11 +112,11 @@ function UserApprovalItem({ key, UserApprovalId, UserApprovalName, reloadF }) {
             <div>
                 <InfoBox className="component component--item_card" key={key}>
                     <input type="hidden" id="Eid" value={UserApprovalId} />
-                    <Cell style={{ float: 'left', fontSize: '17px', width: '300px' }} id="nameE">{UserApprovalId}</Cell>
+                    <Cell style={{ float: 'left', fontSize: '17px', width: '300px' }} id="nameE">&nbsp;{UserApprovalId}</Cell>
                     <Cell style={{ float: 'left', fontSize: '17px', width: '220px' }} id="nameE">{UserApprovalName}</Cell>
                     <div style={{ float: 'left' }}>
                         <ButtonCus variant="btn btn-primary" style={{ height: '40px' }} onClick={(e) => { approvalUser(UserApprovalId, UserApprovalName, e) }}>승인허가</ButtonCus>&nbsp;&nbsp;
-                        <Button variant="btn btn-secondary" style={{ height: '40px' }} onClick={(e) => { notApprovalUser(UserApprovalId, UserApprovalName, e) }}>승인불가</Button>
+                        <Button variant="btn btn-secondary" style={{ height: '40px', position: "relative", top: "-2px" }} onClick={(e) => { notApprovalUser(UserApprovalId, UserApprovalName, e) }}>승인불가</Button>
                     </div>
                 </ InfoBox >
             </div >
