@@ -9,9 +9,9 @@ let InfoBox = styled.div`
 &:hover {                
     background: #FFD2D5;
   }
-  left: -5%;
+  left: -10%;
    position: relative;
-   width: 410px;
+   width: 420px;
    height: 40px;
    cursor: pointer;
    text-align: center;
@@ -22,7 +22,7 @@ let InfoBox = styled.div`
    `;
 let Cell = styled.li`
    position: relative;
-   top:0px;
+   top:-5px;
    float: left;
    width: 220px;
    height: 100%;
@@ -66,9 +66,11 @@ function ESLItem({ key, ESLId, EquipmentId, ReservationId, reloadF }) {
         $("#originEquip").val(equi);
         if ($("#EquipmentMatchID").val() == "None") {
             $("#MatchedIMG").attr("src", "./icon/icon_unmatching.png");
+            $("#matchingID").val(0);
         }
         else {
             $("#MatchedIMG").attr("src", "./icon/icon_matching.png");
+            $("#matchingID").val(1);
         }
 
         if (equi == "None") {

@@ -23,7 +23,7 @@ let InfoBox = styled.div`
    `;
 let Cell = styled.li`
    position: relative;
-   top:0px;
+   top: -5px;
    float: left;
    height: 100%;
    font-size: 13pt;
@@ -193,7 +193,7 @@ function UserItem({ key, UserId, UserName, UserAuthority, reloadF }) {
                     <Cell style={{ fontSize: '17px', width: '200px' }} id="username">{UserName}</Cell>
                     <div style={{ float: 'left' }}>
                         {approvalButton}&nbsp;&nbsp;
-                        <Button variant="btn btn-secondary" style={{ height: '40px' }} onClick={(e) => { deleteUser(UserId, UserName, e) }}>회원탈퇴</Button>
+                        <Button variant="btn btn-secondary" style={{ position: "relative", height: '40px', top: "-1px" }} onClick={(e) => { deleteUser(UserId, UserName, e) }}>회원탈퇴</Button>
                     </div>
                 </ InfoBox >
             </div >

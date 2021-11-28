@@ -10,7 +10,9 @@ import NativeSelect from '@mui/material/NativeSelect';
 import { display } from '@mui/system';
 import { Label } from '@material-ui/icons';
 import ReactPlayer from 'react-player';
-
+let BodyBox = styled.div`
+   width: 900px;
+   `;
 let ESLOutBox = styled.div`
    position: absolute;
    top:0px;
@@ -76,6 +78,7 @@ let Cell = styled.input`
    list-style-type: none;
    border: 0px;
    font-weight: bold;
+   background: white
    `;
 //background: 'pink',
 let RowLineBox = styled.div`
@@ -132,33 +135,31 @@ class ESLInfo extends React.Component {
         const { urlLink } = this.state;
         const { Hvalue } = this.state;
         return (
-            <div>
-                <center>
-                    <Cell id="ESLNo" style={{ position: "relative", left: "-480px", width: '150px', textAlign: 'left' }} disabled />
-                    <ESLOutBox />
-                    <BInnerBox>
-                        <img src="./image/barcode.png" width="40px" height="250px" style={{ position: 'relative', top: "5px", left: '-10px' }} />
-                    </BInnerBox>
-                    <ESLInnerBox>
-                        <div>
-                            <Cell id="GymNameInfo" style={{ textAlign: 'right', float: "right", position: 'relative', fontSize: '20px', top: '-10px', left: '0px', width: '230px' }} disabled />
-                            <Cell id="userName" style={{ textAlign: 'center', position: 'relative', fontSize: '30px', top: '50px', left: '38%', width: '200px' }} disabled />
-                            <Cell id="Times" style={{ textAlign: 'center', position: 'relative', fontSize: '50px', top: '50px', left: '20%', width: '450px' }} disabled />
-                        </div>
-                        <div>
-                            <QRdiv>
-                                <img id="QRESL" src="./icon/icon_qr.png" style={{ width: '120px', height: '120px', cursor: "pointer" }} onClick={this.qrCheck} />
-                                <input type="hidden" id="QrValue" />
-                            </QRdiv>
-                            <UnderBox>
-                                <label style={{ float: 'left', fontSize: '20px', width: '250px' }}>운동기구 사용법 확인하기</label>
-                                <Cell id="equipESL" style={{ position: 'relative', top: '-10px', left: '5%', textAlign: 'right', border: '0px', fontSize: '30px', width: '300px', height: '50px' }} disabled />
-                            </UnderBox>
-                        </div>
-                    </ESLInnerBox>
-                    <RowLineBox />
-                </center>
-            </div >
+            <BodyBox>
+                <Cell id="ESLNo" style={{ position: "relative", left: "-30px", width: '150px', textAlign: 'left' }} disabled />
+                <ESLOutBox />
+                <BInnerBox>
+                    <img src="./image/barcode.png" width="40px" height="250px" style={{ position: 'relative', top: "5px", left: '-10px' }} />
+                </BInnerBox>
+                <ESLInnerBox>
+                    <div>
+                        <Cell id="GymNameInfo" style={{ textAlign: 'right', float: "right", position: 'relative', fontSize: '20px', top: '-10px', left: '0px', width: '230px' }} disabled />
+                        <Cell id="userName" style={{ textAlign: 'center', position: 'relative', fontSize: '30px', top: '50px', left: '35%', width: '250px' }} disabled />
+                        <Cell id="Times" style={{ textAlign: 'center', position: 'relative', fontSize: '50px', top: '50px', left: '20%', width: '450px' }} disabled />
+                    </div>
+                    <div>
+                        <QRdiv>
+                            <img id="QRESL" src="./icon/icon_qr.png" style={{ width: '120px', height: '120px', cursor: "pointer" }} onClick={this.qrCheck} />
+                            <input type="hidden" id="QrValue" />
+                        </QRdiv>
+                        <UnderBox>
+                            <label style={{ float: 'left', fontSize: '20px', width: '250px' }}>운동기구 사용법 확인하기</label>
+                            <Cell id="equipESL" style={{ position: 'relative', top: '-10px', left: '5%', textAlign: 'right', border: '0px', fontSize: '30px', width: '300px', height: '50px' }} disabled />
+                        </UnderBox>
+                    </div>
+                </ESLInnerBox>
+                <RowLineBox />
+            </BodyBox >
         )
     }
 }

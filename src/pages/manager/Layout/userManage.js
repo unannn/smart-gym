@@ -35,10 +35,10 @@ let SearchBox = styled.input`
 
 let EquiList = styled.div`
    position: relative;
-   left: -275px;
-   top: -139px;
-   width: 700px;
-   height: 600px;
+   left: -270px;
+   top: -180px;
+   width: 720px;
+   height: 450px;
    text-align: center;
    overflow:auto;
    border-radius: 10px;
@@ -48,7 +48,7 @@ let EquiList = styled.div`
    `;
 let ListKey = styled.div`
    position: relative;
-   top: -125px;
+   top: -170px;
    left: -290px;
    width: 700px;
    height: 50px;
@@ -89,10 +89,24 @@ let Cell = styled.li`
    text-align: left;
    list-style-type: none;
    `;
+let SearchClick = styled.div`
+    &:hover {
+     transform: scale(1.05);
+  transition: transform 1s;
+  filter: brightness(93%);
+  }
+  background: #FDFDFD;
+   border-radius: 10px;
+   padding: 1px;
+   margin:0 auto;
+   margin-bottom:10px;
+   cursor: pointer;
+   `;
 class UserM extends React.Component {
     constructor(props) {
         super(props);
         this.filterSearch = this.filterSearch.bind(this);
+        this.searchText = this.searchText.bind(this);
         this.state = {
             loading: false,
             ItemList: [],
@@ -100,6 +114,8 @@ class UserM extends React.Component {
         };
     }
     loadItem = async () => {
+        $("#searchValue").val("검색하시려면 Filter를 바꿔주세요.");
+        $("#searchValue").attr("disabled", true);
         axios.get('http://localhost:8080/allowedUser/readAll')
             .then((data) => {
                 console.log(data.data.data)
@@ -118,9 +134,6 @@ class UserM extends React.Component {
             });
     };
     filterSearch = function () {
-        console.log("rePrint");
-        console.log($("#FilterID").val());
-        console.log($("#searchValue").val());
         if ($("#FilterID").val() == 0)//All
         {
             this.loadItem();
@@ -183,6 +196,25 @@ class UserM extends React.Component {
             }
         }
     }
+    searchText = function () {
+        console.log("필터변경");
+        if ($("#FilterID").val() == 0)//All
+        {
+            $("#searchValue").val("검색하시려면 Filter를 바꿔주세요.");
+            $("#searchValue").attr("disabled", true);
+            this.loadItem();
+        }
+        //ID
+        else if ($("#FilterID").val() == 1) {
+            $("#searchValue").val("");
+            $("#searchValue").attr("disabled", false);
+        }
+        //Name
+        else if ($("#FilterID").val() == 2) {
+            $("#searchValue").val("");
+            $("#searchValue").attr("disabled", false);
+        }
+    }
     componentDidMount() {
         this.loadItem();
     }
@@ -211,6 +243,7 @@ class UserM extends React.Component {
                                                 id: 'FilterID',
                                             }}
                                             color="secondary"
+                                            onChange={this.searchText}
                                         >
                                             <option value={0}>ALL</option>
                                             <option value={1}>ID</option>
@@ -219,8 +252,10 @@ class UserM extends React.Component {
                                     </FormControl>
                                 </Box>
                             </FilterBox>
-                            <SearchBox id="searchValue" name="searchValue" />&nbsp; &nbsp; &nbsp; &nbsp;
-                            <Button color="white" variant="" style={{ position: "relative", top: "-133px", left: "6px" }} onClick={this.filterSearch}><img src="./icon/icon_search.png" width="35px" /></Button>
+                            <SearchBox id="searchValue" name="searchValue" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <SearchClick style={{ position: "relative", top: "-180px", left: "240px", width: "40px", heigth: "40px" }} onClick={this.filterSearch}>
+                                <img src="./icon/icon_search.png" width="35px" />
+                            </SearchClick>
                             <center>
                                 <ListKey>
                                     <div >

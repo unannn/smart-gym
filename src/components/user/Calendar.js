@@ -234,7 +234,7 @@ class Calendar extends Component {
                 <thead>
                     {tableHead}
                 </thead>
-                <tbody>
+                <tbody style={{ cursor: "pointer" }}>
                     {selectedEquipList}
                 </tbody>
             </table>
@@ -267,6 +267,9 @@ var TD = styled.td`
 
     /* border-right:${props => props.isRezDay && '1px #909090 solid'};
     border-left:${props => props.isRezDay && '1px #909090 solid'}; */
+    &:hover {
+        background-color: #909090;
+    }
 `
 
 var DateStyle = styled.div`

@@ -16,6 +16,7 @@ import moment from 'moment';
 import { ContactlessOutlined } from '@material-ui/icons';
 import { ContentPasteOutlined } from '@mui/icons-material';
 /*   background: #F2F2F2;*/
+//dayofWeek를 state에서 빼면 select표시 안생김
 let GyminfoBox = styled.div`
    position: relative;
    margin: 0.3px;
@@ -51,7 +52,7 @@ let CalendarBox = styled.div`
    left: 570px;
    top: -35px;
    width: 630px;
-   height: 523px;
+   height: 530px;
    font-size: 10pt;
    text-align: center;
    background: #F2F2F2;
@@ -91,13 +92,15 @@ class OperPolicy extends React.Component {
             year: currentDate.format('YYYY'),
             month: currentDate.format('MM'),
             day: currentDate.format('DD'),
+            dayOfWeek: currentDate.format('ddd'),
             isHoliday: false,
             isRezValidDay: true,
             rezValidDate: 0,
             buttonText: '',
             isRezValid: true,
             flag: false,
-            dayFlag: ""
+            dayFlag: "",
+
         };
     }
     holiyRead = function () {
@@ -175,9 +178,6 @@ class OperPolicy extends React.Component {
                     alert("error! 휴무일로 변경에 실패하였습니다.");
                 });
         }
-        else {
-            //alert("휴무일로 변경 요청을 취소하였습니다.");
-        }
     }
 
     holiyDelete = function (dayOF) {
@@ -198,7 +198,6 @@ class OperPolicy extends React.Component {
         }
 
         for (let i = 0; i < this.state.dayFlag.length; i++) {
-            console.log(this.state.dayFlag[i] + "와 " + dayOF);
             if (this.state.dayFlag[i] == dayOF) {
                 changeFlag = false;
             }
@@ -229,9 +228,6 @@ class OperPolicy extends React.Component {
                         selectedDay = "";
                         alert("error! 영업일로 변경이 실패하였습니다.");
                     });
-            }
-            else {
-                //alert("영업일로 변경 요청을 취소하였습니다.");
             }
         }
         else {
@@ -294,8 +290,34 @@ class OperPolicy extends React.Component {
             });
     };
     selectDate = (data) => {
-        console.log(data);
-        console.log("select! " + (data.year) + (data.month) + (data.day));
+        selectedDay = (data.year) + (data.month) + (data.day);
+        this.setState({
+            year: data.year,
+            month: data.month,
+            day: data.day,
+            dayOfWeek: data.dayOfWeek,
+            isHoliday: data.isHoliday,
+            isRezValidDay: data.isRezValidDay
+        }, () => {
+            if (this.state.isHoliday) {
+                console.log("휴무일");
+                this.setState({ isRezValid: false });
+                this.setState({ flag: true });
+                setTimeout(
+                    this.holiyDelete(data.dayOfWeek)
+                    , 1000);
+
+            }
+            else {
+                console.log("영업일");
+                this.setState({ isRezValid: true })
+                this.setState({ flag: false });
+                this.holiyCreate(data.dayOfWeek);
+            }
+        })
+    }
+    //내가 쓰던거
+    /*selectDate = (data) => {
         selectedDay = (data.year) + (data.month) + (data.day);
         this.setState({
             year: data.year,
@@ -317,7 +339,7 @@ class OperPolicy extends React.Component {
                 this.holiyCreate(data.dayOfWeek);
             }
         })
-    }
+    }*/
     componentDidMount() {
         this.loadItem();
         this.holiyRead();
@@ -326,13 +348,11 @@ class OperPolicy extends React.Component {
         const isHoliday = holidays.includes(currentDate.format("YYYY-MM-DD"));
 
         this.setState({
-            holidays: holidays,
             isHoliday: isHoliday,
             buttonText: '',
             isRezValid: !isHoliday
         })
     }
-
     render() {
         const { InfoList } = this.state;
         const { ItemList } = (this.state);
@@ -366,7 +386,7 @@ class OperPolicy extends React.Component {
                         </div>
                         <CalendarBox>
                             <Calendar onClickDate={this.selectDate} selectedDate={this.state}
-                                rezValidDate={rezValidDate} ></Calendar>
+                                rezValidDate={this.state.rezValidDate} ></Calendar>
                         </CalendarBox>
                     </BodyBox>
                     <div>

@@ -21,7 +21,7 @@ let InfoBox = styled.div`
    `;
 let Cell = styled.li`
    position: relative;
-   top:0px;
+   top: -5px;
    float: left;
    width: 220px;
    height: 100%;
@@ -111,7 +111,7 @@ function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber,
                     //누구나 사용가능
                     else if (ESLState == 2) {
                         console.log("2번상태");
-                        $("#userName").val("누구나 사용가능");
+                        $("#userName").val("모든 회원 사용 가능");
                         if (response.data.startTime == "") {
                             $("#Times").val("다음 예약 생성까지");
                         }
@@ -123,6 +123,11 @@ function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber,
                     else if (ESLState == 4) {
                         console.log("4번상태");
                         $("#Times").val("ESL Not Matched");
+                        $("#ESLNo").val("");
+                        $("#userName").val("");
+                        $("#equipESL").val("");
+                        $("#QrValue").val("");
+                        $("#GymNameInfo").val("");
                     }
                     //error code -1
                     else {
