@@ -60,6 +60,18 @@ class Calendar extends Component {
             holidays: [],
             nextMonthHolidays: [],
             previousMonthHolidays: [],
+
+            reRender: true
+        }
+
+
+    }
+
+    componentDidUpdate() {
+        if (this.props.reRender !== this.state.reRender) {
+            console.log("리렌더링")
+            this.forceUpdate();
+            this.setState({ reRender: !this.state.reRender });
         }
     }
 
@@ -75,9 +87,9 @@ class Calendar extends Component {
         this.getHolidays('http://localhost:8080/reservation/calRegularHolidayDate' + nextQuery, 'nextMonthHolidays');
         this.getHolidays('http://localhost:8080/reservation/calHolidayDate' + nextQuery, 'nextMonthHolidays');
 
-        // if (this.props.render) {
-        //     this.forceUpdate();
-        // }
+
+
+
     }
 
     getHolidays(uri, order) {
@@ -203,6 +215,9 @@ class Calendar extends Component {
     }
 
     render() {
+
+
+
         //요일 이름
         const week = ['일', '월', '화', '수', '목', '금', '토'];
         const tableHead = week.map(day => <TH>{day}</TH>);

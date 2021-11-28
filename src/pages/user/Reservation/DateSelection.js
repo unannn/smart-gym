@@ -169,10 +169,11 @@ class DateSelection extends Component {
             <div>
                 <Calendar onClickDate={this.selectDate} selectedDate={this.state}
                     rezValidDate={this.state.rezValidDate} reRender={this.state.reRender}></Calendar>
-                {/* <TestButton onClick={() => {
+                <TestButton onClick={() => {
+                    console.log("리렌더링버튼 클릭!")
                     this.setState({ reRender: !this.state.reRender });
 
-                }}>캘린더 리렌더링 버튼</TestButton> */}
+                }}>캘린더 리렌더링 버튼</TestButton>
 
                 <br />
                 <ReservationEquipTray equipList={this.state.equipList}></ReservationEquipTray>
