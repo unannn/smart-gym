@@ -7,6 +7,7 @@ import ReservationEquipTray from '../../../components/user/ReservationEquipTray'
 import moment from 'moment';
 import axios from "axios";
 import { gridColumnsTotalWidthSelector } from '@material-ui/data-grid';
+import isThisHour from 'date-fns/isThisHour/index';
 
 class DateSelection extends Component {
     constructor(props) {
@@ -161,14 +162,15 @@ class DateSelection extends Component {
         }
     }
 
-    reRender() {
 
-    }
+
     render() {
         return (
             <div>
                 <Calendar onClickDate={this.selectDate} selectedDate={this.state}
-                    rezValidDate={this.state.rezValidDate} reRender={this.state.reRender}></Calendar>
+                    rezValidDate={this.state.rezValidDate}
+                    reRender={this.state.reRender}
+                ></Calendar>
                 <TestButton onClick={() => {
                     console.log("리렌더링버튼 클릭!")
                     this.setState({ reRender: !this.state.reRender });
