@@ -61,18 +61,13 @@ class Calendar extends Component {
             nextMonthHolidays: [],
             previousMonthHolidays: [],
 
-            reRender: true
+            reRender: false
         }
 
 
     }
 
     componentDidUpdate() {
-        if (this.props.reRender !== this.state.reRender) {
-            console.log("리렌더링")
-            this.forceUpdate();
-            this.setState({ reRender: !this.state.reRender });
-        }
     }
 
     componentDidMount() {
@@ -86,10 +81,6 @@ class Calendar extends Component {
         this.getHolidays('http://localhost:8080/reservation/calHolidayDate' + prevQuery, 'previousMonthHolidays');
         this.getHolidays('http://localhost:8080/reservation/calRegularHolidayDate' + nextQuery, 'nextMonthHolidays');
         this.getHolidays('http://localhost:8080/reservation/calHolidayDate' + nextQuery, 'nextMonthHolidays');
-
-
-
-
     }
 
     getHolidays(uri, order) {
@@ -202,6 +193,8 @@ class Calendar extends Component {
 
     isHoliday(month, date) {
 
+        // console.log(this.state.holidays)
+
         if (this.state.holidays.includes(parseInt(date)) && month === this.state.month) {
             return true;
         }
@@ -216,7 +209,21 @@ class Calendar extends Component {
 
     render() {
 
+        if (this.props.reRender !== this.state.reRender) {
+            this.setState({ reRender: !this.state.reRender })
 
+            const queryString = '?year=' + this.state.year + '&month=' + this.state.month;
+            const nextQuery = '?year=' + this.state.nextYear + '&month=' + this.state.nextMonth;
+            const prevQuery = '?year=' + this.state.previousYear + '&month=' + this.state.previousMonth;
+            this.setState({ holidays: [] }, () => {
+                this.getHolidays('http://localhost:8080/reservation/calRegularHolidayDate' + queryString, 'holidays');
+                this.getHolidays('http://localhost:8080/reservation/calHolidayDate' + queryString, 'holidays');
+                this.getHolidays('http://localhost:8080/reservation/calRegularHolidayDate' + prevQuery, 'previousMonthHolidays');
+                this.getHolidays('http://localhost:8080/reservation/calHolidayDate' + prevQuery, 'previousMonthHolidays');
+                this.getHolidays('http://localhost:8080/reservation/calRegularHolidayDate' + nextQuery, 'nextMonthHolidays');
+                this.getHolidays('http://localhost:8080/reservation/calHolidayDate' + nextQuery, 'nextMonthHolidays');
+            });
+        }
 
         //요일 이름
         const week = ['일', '월', '화', '수', '목', '금', '토'];
