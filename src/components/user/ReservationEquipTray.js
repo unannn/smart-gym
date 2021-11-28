@@ -115,7 +115,7 @@ class ReservationEquipTray extends Component {
     }
 
     render() {
-        const equipsList = this.state.equipList.map((equip, index) => <StyledEquipLI key={equip.equipmentID + index}>
+        const equipsList = this.state.equipList.map((equip, index) => <StyledEquipLI key={equip.equipmentID + ' ' + index}>
             <EquipmentItem onClickDelete={this.onClickDelete.bind(this)} canDelete={this.props.canDelete} equipId={equip.equipmentID}>{equip}</EquipmentItem>
         </StyledEquipLI>)
         // let equips = [{ equipmentID: 1, equipmentName: '벤치 1', startTime: '09:00', endTime: '09:20' }, { equipmentID: 2, equipmentName: '인클라인 벤치', startTime: '09:20', endTime: '09:40' },

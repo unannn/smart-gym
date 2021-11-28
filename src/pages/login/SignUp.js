@@ -132,6 +132,7 @@ class SignUp extends Component {
                 const content = response.data;
 
                 if (content.data) { //사용가능한 아이디
+                    console.log("idCheck")
                     this.setState({
                         isValidID: true,
                         IDMessage: '사용 가능한 아이디 입니다.'
@@ -160,7 +161,7 @@ class SignUp extends Component {
             return;
         }
 
-        axios.post('http://localhost:8080/unAllowedUser/phoneDuplicateCheck',
+        axios.post('http://localhost:8080/user/phoneDuplicateCheck',
             {
                 userPhone: this.state.userPhone,
             },
@@ -207,7 +208,7 @@ class SignUp extends Component {
             return;
         }
 
-        axios.post('http://localhost:8080/unAllowedUser/emailDuplicateCheck',
+        axios.post('http://localhost:8080/user/emailDuplicateCheck',
             {
                 userEmail: this.state.userEmail,
             },
