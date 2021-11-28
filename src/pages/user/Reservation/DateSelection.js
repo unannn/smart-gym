@@ -25,7 +25,9 @@ class DateSelection extends Component {
             rezValidDate: 0,
             buttonText: '',
             isRezValid: true,
-            equipList: []
+            equipList: [],
+
+            reRender: false
         }
     }
 
@@ -159,11 +161,19 @@ class DateSelection extends Component {
         }
     }
 
+    reRender() {
+
+    }
     render() {
         return (
             <div>
                 <Calendar onClickDate={this.selectDate} selectedDate={this.state}
-                    rezValidDate={this.state.rezValidDate} ></Calendar>
+                    rezValidDate={this.state.rezValidDate} reRender={this.state.reRender}></Calendar>
+                {/* <TestButton onClick={() => {
+                    this.setState({ reRender: !this.state.reRender });
+
+                }}>캘린더 리렌더링 버튼</TestButton> */}
+
                 <br />
                 <ReservationEquipTray equipList={this.state.equipList}></ReservationEquipTray>
                 <br />
@@ -186,6 +196,10 @@ class DateSelection extends Component {
         );
     }
 }
+
+const TestButton = styled.div`
+background-color:red;
+`;
 
 var StyledMenuText = styled.div`
     font-size:15px;

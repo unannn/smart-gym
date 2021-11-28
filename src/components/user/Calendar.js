@@ -59,7 +59,7 @@ class Calendar extends Component {
 
             holidays: [],
             nextMonthHolidays: [],
-            previousMonthHolidays: []
+            previousMonthHolidays: [],
         }
     }
 
@@ -74,6 +74,10 @@ class Calendar extends Component {
         this.getHolidays('http://localhost:8080/reservation/calHolidayDate' + prevQuery, 'previousMonthHolidays');
         this.getHolidays('http://localhost:8080/reservation/calRegularHolidayDate' + nextQuery, 'nextMonthHolidays');
         this.getHolidays('http://localhost:8080/reservation/calHolidayDate' + nextQuery, 'nextMonthHolidays');
+
+        // if (this.props.render) {
+        //     this.forceUpdate();
+        // }
     }
 
     getHolidays(uri, order) {
