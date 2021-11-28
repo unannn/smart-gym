@@ -29,7 +29,7 @@ class EquipmentItem extends Component {
 
 var DeleteButtonStyle = styled.div`
     position: relative;
-    left:30px;
+    left:52px;
     bottom:90px;
     display: inline-block;
 `;
@@ -60,10 +60,12 @@ var EquipNameStyle = styled.div`
 `;
 var ReservationTimeStyle = styled.div`
     font-size:10px;
+    text-align:center;
 `;
 
 
 class ReservationEquipTray extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -91,12 +93,11 @@ class ReservationEquipTray extends Component {
         // })
 
         this.setState({ equipList: equips });
-
     }
-
 
     onClickDelete(equipData) {
         this.setState({ modalOn: true });
+        console.log(equipData.children);
         this.setState({
             modalEquipData: equipData.children
         });
@@ -118,30 +119,21 @@ class ReservationEquipTray extends Component {
         const equipsList = this.state.equipList.map((equip, index) => <StyledEquipLI key={equip.equipmentID + ' ' + index}>
             <EquipmentItem onClickDelete={this.onClickDelete.bind(this)} canDelete={this.props.canDelete} equipId={equip.equipmentID}>{equip}</EquipmentItem>
         </StyledEquipLI>)
-        // let equips = [{ equipmentID: 1, equipmentName: '벤치 1', startTime: '09:00', endTime: '09:20' }, { equipmentID: 2, equipmentName: '인클라인 벤치', startTime: '09:20', endTime: '09:40' },
-        // { equipmentID: 3, equipmentName: '멀티렉', startTime: '09:40', endTime: '10:00' }, { equipmentID: 4, equipmentName: '딥스 머신', startTime: '10:10', endTime: '10:25' },
-        // { equipmentID: 6, equipmentName: '랫풀 다운 머신', startTime: '10:30', endTime: '10:50' }, { equipmentID: 5, equipmentName: '케이블 머신', startTime: '10:50', endTime: '11:00' }];
-        // //나중에 아이디 적용할 것
 
-        // if (equipList.length === 0) {
-        //     equipList = <StyledEquipLI >
-        //         <EquipmentItem equipId={'none'}>{{ equipmentName: '알수없음', startTime: '', endTime: '' }}</EquipmentItem>
-        //     </StyledEquipLI>
-        // }
 
         return (
             <StyledRezEquipList>
                 {/* <StyledLeftButton>{'<'}</StyledLeftButton> */}
                 <StyledEquipUL className="EquipScroll">
-                    {equipsList.length !== 0 ? equipsList : '예약한 운동기구가 없습니다.'}
+                    {equipsList.length !== 0 ? equipsList : <NoEquipmentMessage>예약한 운동기구가 없습니다.</NoEquipmentMessage>}
                 </StyledEquipUL>
                 {/* <StyledRightButton>{'>'}</StyledRightButton> */}
                 {this.state.modalOn ? <Modal onClick={(e) => this.setState({ modalOn: false })}>
                     <div>
                         <div>
-                            <div>{this.state.modalEquipData.name}</div>
+                            <div>{this.state.modalEquipData.equipmentName + ' ' + this.state.modalEquipData.equipmentNameNth}</div>
 
-                            {this.state.modalEquipData.startTime}~{this.state.modalEquipData.endTime}
+                            {this.state.modalEquipData.startTime.split('T')[1].substring(0, 5)}~{this.state.modalEquipData.endTime.split('T')[1].substring(0, 5)}
                         </div>
                         <div>
                             정말 예약을 취소하시겠습니까?
@@ -158,6 +150,14 @@ class ReservationEquipTray extends Component {
         );
     }
 }
+
+const NoEquipmentMessage = styled.div`
+    background-color:whitesmoke;
+    text-align:center;
+    font-size:20px;
+    padding: 30px 0 30px 0;
+`;
+
 
 var StyledEquipLI = styled.li`
     /* padding-right:40px; */
@@ -177,28 +177,17 @@ var StyledEquipUL = styled.ul`
     ::-webkit-scrollbar{
         display:none;
     }
-`;
+    height:100px;
 
-
-var StyledLeftButton = styled.button`
-     position: relative;
-     right: 45%;
-     top:57px;
-    margin-top:7px;
 `;
-var StyledRightButton = styled.button`
-     position: relative;
-     left: 45%;
-     top:-81px;
-    margin-top:7px;
-`;
-
 
 var StyledRezEquipList = styled.div`
+    height:100px;
     width:100%;
     max-width:614px;
     display:inline-block;
     /* position: flex; */
+    background-color:whitesmoke;
     
 `;
 

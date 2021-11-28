@@ -34,7 +34,8 @@ class Day extends Component {
         }} isRezDay={this.props.isRezDay}>
             <ReservationDateStyle isRezDay={this.props.isRezDay}>
                 <DateStyle isSelected={this.props.isSelected} >
-                    <DateTextStyle isHoliday={this.props.isHoliday} isCurrentMonth={this.props.month === this.props.selectedMonth}>
+                    <DateTextStyle isHoliday={this.props.isHoliday} isCurrentMonth={this.props.month === this.props.selectedMonth}
+                        isSelected={this.props.isSelected}>
                         {this.props.day}
                     </DateTextStyle>
                 </DateStyle>
@@ -283,6 +284,7 @@ var TH = styled.th`
 
 
 var TD = styled.td`
+    background-color:white;
     width:90px;
     height:80px;
     vertical-align : top;
@@ -299,15 +301,17 @@ var TD = styled.td`
 `
 
 var DateStyle = styled.div`
-    background-color:${props => props.isSelected ? 'tomato' : 'white'}; 
+    background-color:${props => props.isSelected ? 'teal' : 'white'}; 
     border-radius: 50%;
     display: inline-block;
-    width:22px;
-    height:22px;
+    width:24px;
+    height:24px;
 `;
 
 var DateTextStyle = styled.div`
     color:${props => props.isHoliday ? 'red' : 'black'};
+    color:${props => props.isSelected && 'white'};
+    margin:0px 0 0 2px;
     
     display: inline-block;
     border-radius: 50%;

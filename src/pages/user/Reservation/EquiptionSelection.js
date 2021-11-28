@@ -101,7 +101,9 @@ class DateSelection extends Component {
                     <EquipList openEquipRezModal={this.openEquipRezModal.bind(this)}></EquipList>
                 </StyledEquipBoard>
                 <br />
-                <ReservationEquipTray canDelete={true} equipList={this.state.equipList} cancelReservation={this.cancelReservation.bind(this)}></ReservationEquipTray>
+                <TrayAlign>
+                    <ReservationEquipTray canDelete={true} equipList={this.state.equipList} cancelReservation={this.cancelReservation.bind(this)}></ReservationEquipTray>
+                </TrayAlign>
                 <br />
                 <StyledLink to="/user">
                     <StyledButtonArea>
@@ -163,6 +165,8 @@ const StyledLink = styled(Link)`
     color:black;
 `;
 
-
+const TrayAlign = styled.div`
+    text-align:left;
+`;
 
 export default withRouter(DateSelection);
