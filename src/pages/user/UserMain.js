@@ -8,6 +8,7 @@ import axios from "axios";
 import ContentBox from '../../components/user/ContentBox';
 import Congestion from '../../components/user/Congestion';
 import Timer from '../../components/user/Timer';
+import { scheduleJob } from 'node-schedule';
 
 class UserMain extends React.Component {
 
@@ -29,17 +30,34 @@ class UserMain extends React.Component {
             usingEqiupmentName: 'Default',
             usingEqiupmentStartTime: '',
             usingEqiupmentEndTime: '',
+            usingEquipmentImage: '',
             reservationID: '',
 
             //다음 사용할 기구가 있을 때
             nextEqiupmentName: 'Default',
             nextEqiupmentStartTime: '11:00',
             nextEqiupmentEndTime: '11:15',
-            nextReservationID: ''
+            nextEquipmentImage: '',
+            nextReservationID: '',
+            congestion: 0
         }
     }
 
     componentDidMount() {
+
+        this.getCurrentEquipUsingInfo();
+
+        this.setState({ pageWidth: document.getElementById('main').clientWidth });
+
+        this.getCenterCongestion();
+
+        this.job = scheduleJob('0,5,10,15,20,25,30,35,40,45,50,55 * * * *', () => {
+            this.getCenterCongestion();
+            this.getCurrentEquipUsingInfo();
+        })
+    }
+
+    getCurrentEquipUsingInfo() {
         axios.post('http://localhost:8080/reservation/readMyReservationOfSelectedDay',
             {
                 year: this.state.year,
@@ -63,8 +81,26 @@ class UserMain extends React.Component {
                 console.log('Error');
                 console.log(response);
             });
+    }
 
-        this.setState({ pageWidth: document.getElementById('main').clientWidth })
+    getCenterCongestion() {
+        axios.get('http://localhost:8080/gymInfo/readCongestion',
+
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then((response) => {
+                const congestion = response.data.data;
+                this.setState({ congestion: congestion });
+
+            })
+            .catch((response) => {
+                console.log('Error');
+                console.log(response);
+            });
     }
 
     findUsingEquipment(equipList) {
@@ -77,31 +113,37 @@ class UserMain extends React.Component {
 
             let startTime = String(equipList[i].startTime.split('T')[1]).substring(0, 5);
             let endTime = String(equipList[i].endTime.split('T')[1]).substring(0, 5);
+            console.log(endTime)
 
-            console.log(startTime);
-            console.log(endTime);
-
-            if (currentTime >= startTime && currentTime <= endTime) {
-
+            if (currentTime >= startTime && currentTime < endTime) {
                 this.setState({
                     existUsingEquipment: true,
                     usingEqiupmentName: equipList[i].equipmentName + equipList[i].equipmentNameNth,
                     usingEqiupmentStartTime: startTime,
                     usingEqiupmentEndTime: endTime,
-                    reservationID: equipList[i].reservationID
+                    usingEquipmentImage: equipList[i].equipmentImage,
+                    reservationID: equipList[i].reservationID,
+
+                }, () => console.log(endTime))
+            }
+            else if (currentTime < startTime) { //다음기구 설정
+
+                this.setState({
+                    existNextUsingEquipment: true,
+                    nextEqiupmentName: equipList[i].equipmentName + ' ' + equipList[i].equipmentNameNth,
+                    nextEqiupmentStartTime: startTime,
+                    nextEqiupmentEndTime: endTime,
+                    nextEquipmentImage: equipList[i].equipmentImage
+                })
+
+                break;
+            }
+            else {
+                this.setState({
+                    existUsingEquipment: false,
+                    existNextUsingEquipment: false
                 })
             }
-            // else if (currentTime <= startTime) {
-
-            //     this.setState({
-            //         existUsingEquipment: true,
-            //         usingEqiupmentName: equipList[i].equipmentName + ' ' + equipList[i].equipmentNameNth,
-            //         usingEqiupmentStartTime: startTime,
-            //         usingEqiupmentEndTime: endTime,
-            //         reservationID: equipList[i].reservationID
-            //     })
-            //     break;
-            // }
         }
     }
 
@@ -110,7 +152,8 @@ class UserMain extends React.Component {
     }
 
     EndReservation() {
-        axios.post('http://localhost:8080/reservation/cancleReservation',
+        console.log(this.state.reservationID)
+        axios.post('http://localhost:8080/reservation/terminateReservation',
             {
                 reservationID: this.state.reservationID
             },
@@ -123,7 +166,9 @@ class UserMain extends React.Component {
             .then((response) => {
                 const isSucess = response.data.data;
                 if (isSucess) {
-                    this.setState({ existUsingEquipment: false })
+                    this.setState({ existUsingEquipment: false });
+                    this.getCenterCongestion();
+                    this.getCurrentEquipUsingInfo();
                 }
             })
             .catch((response) => {
@@ -137,7 +182,13 @@ class UserMain extends React.Component {
         return (
             <UserMainStyle id="main">
                 <StyledTodayRezBoard>
-                    <RedirectButtonStyle onClick={() => window.location.reload()} style={{ cursor: 'pointer' }}>
+                    <RedirectButtonStyle onClick={(e) => {
+                        this.getCenterCongestion();
+                        this.getCurrentEquipUsingInfo();
+                        console.log("새로고침!")
+                    }
+
+                    } style={{ cursor: 'pointer' }}>
                         새로고침
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
@@ -160,12 +211,12 @@ class UserMain extends React.Component {
                                 </RecentEquipFrame>
                                 <RecentEquipIOStyle>
                                     <RecentEquipImage>
-                                        <img src="\image\equip-test-image.png" alt="" width="150px" />
+                                        <img src={this.state.usingEquipmentImage} alt="" width="150px" onerror="this.src='https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg'" />
                                     </RecentEquipImage>
                                     <RecentEquipRightBottmStyle>
                                         <RemainingTimeText>남은 시간</RemainingTimeText>
                                         <Timer endTime={this.state.usingEqiupmentEndTime}></Timer>
-                                        <EndButton >사용 종료</EndButton>
+                                        <EndButton onClick={this.EndReservation.bind(this)}>사용 종료</EndButton>
                                     </RecentEquipRightBottmStyle>
                                 </RecentEquipIOStyle>
                             </div>
@@ -185,7 +236,7 @@ class UserMain extends React.Component {
                                 </NextEquipTextStyle>
 
                                 <NextEquipImage>
-                                    <img src="\image\equip-test-image.png" alt="" width="90px" />
+                                    <img src={this.state.nextEquipmentImage} alt="" width="90px" />
                                 </NextEquipImage>
                             </NextEquipStyle>
                             : <div>
@@ -195,10 +246,8 @@ class UserMain extends React.Component {
                     </ContentBox>
                     {/* 혼잡도, 타이머 */}
                     <AddInfoStyle>
-                        <ContentBox width={this.state.pageWidth / 2 - 15 + "px"} height='130px' margin='0 4px 0 0'
-                            backgroundColor={'red'} border={' 2px red solid'}>
-                            <Congestion percentage={72}></Congestion>
-                        </ContentBox>
+
+                        <Congestion percentage={this.state.congestion}></Congestion>
                         <ContentBox width={this.state.pageWidth / 2 - 15 + "px"} height='130px' margin={'0 0 0 4px'}
                             backgroundColor={'white'} border={' 1px #000000 solid'}>
                             준비 중 입니다.
@@ -225,9 +274,10 @@ var RecentEquipStyle = styled.div`
     font-size:20px;
     margin-top:15px;
     margin-bottom:15px;
-    margin-left:15px;
+    margin-left:4px;
 
-    height: 250px;
+    height: 100%;
+    min-height:222px;
 `;
 
 const RecentEquipFrame = styled.div`
@@ -238,21 +288,21 @@ const RecentEquipFrame = styled.div`
 const EquipTextStyle = styled.div`
 `;
 const EquipNameStyle = styled.div`
-    font-size:35px;
+    font-size:28px;
 `;
 const EquipTimeStyle = styled.div`
     text-align:center;
 
 `;
 const UsingText = styled.div`
-    margin:18px 0 0 10px;
+    margin:18px 0 0 4px;
 `;
 
 
 
 const RecentEquipImage = styled.div`
     display:inline-block;
-    margin-left:10px;
+    margin-left:4px;
 `;
 
 
@@ -272,11 +322,7 @@ const RecentEquipRightBottmStyle = styled.div`
 const RemainingTimeText = styled.div`
 font-size:16px;
 `;
-const RemainingTime = styled.div`
-    font-size:28px;
-    font-weight:610;
-    margin-bottom:20px;
-`;
+
 const EndButton = styled.div`
     background-color:orange;
     border-radius:4px;
@@ -293,12 +339,12 @@ const EndButton = styled.div`
 // 디음 운동 할 기구
 
 const NextEquipImage = styled.div`
-    margin: 12px 12px 12px 40px;
+    margin: 12px 12px 12px 0;
     float:right;
 `;
 
 const NextEquipNameStyle = styled.div`
-    font-size:30px;
+    font-size:24px;
     text-align:center;
     padding-top:12px;
 `;
@@ -315,6 +361,7 @@ const NextEquipTimeStyle = styled.div`
 
 const NextEquipStyle = styled.div`
     display:flex;
+    justify-content:space-between;
     padding:10px;
     width:100%;
     min-width:355px;
@@ -340,11 +387,11 @@ const AddInfoStyle = styled.div`
 var StyledUserName = styled.div`
     font-size:24px;
     margin-bottom:12px;
-    margin-left:12px;
+    margin-left:4px;
 `;
 var StyledDate = styled.div`
     font-size:20px;
-    margin-left:12px;
+    margin-left:4px;
 `;
 
 var StyledTodayRezBoard = styled.div`

@@ -192,7 +192,7 @@ class TimeSelectionModal extends Component {
                 <form onSubmit={this.handleSubmit.bind(this)} autoComplete={"off"}>
                     <ReservationTimeStyle>
                         <SelectStyle name="시" id="startHour" value={this.state.startTimeHour}
-                            onChange={(e) => this.handleChange(e, 'startTimeHour')}>
+                            onChange={(e) => this.handleChange(e, 'startTimeHour')} size={1}>
                             {startHourOptions}
                         </SelectStyle>
                         시

@@ -9,7 +9,8 @@ class Timer extends Component {
 
         this.state = {
             endTime: this.props.endTime,
-            remainingTime: ''
+            remainingTime: '',
+            remainedTime: ''
         }
     }
 
@@ -18,34 +19,45 @@ class Timer extends Component {
 
         let currentTimeHour = parseInt(currentTime.substring(0, 2));
         let currentTimeMinute = parseInt(currentTime.substring(3, 5));
-        let currentTimeNum = currentTimeHour * 60 + currentTimeMinute;
-        console.log(currentTimeNum);
 
-        let endTimeHour = parseInt(this.state.endTime.substring(0, 2));
-        let endTimeMinute = parseInt(this.state.endTime.substring(3, 5));
-        let EndTimeNum = endTimeHour * 60 + endTimeMinute;
-        console.log(EndTimeNum);
 
-        let remainingTime = EndTimeNum - currentTimeNum;
+        let rt = moment(moment().format('YYYY-MM-DD ' + this.props.endTime + ":00")) - moment(moment().format('YYYY-MM-DD ' + currentTimeHour + ":" + currentTimeMinute + ":ss"));
+        console.log(moment(rt).format("mm:ss"))
 
-        console.log(remainingTime);
 
-        this.setState({ remainingTime: remainingTime })
+        this.setState({ remainingTime: moment(rt).format("mm:ss") });
+
+        this.interval = setInterval(this.timer, 1000)
+
 
     }
 
+    timer = () => {
+        let currentTime = moment().format("HH:mm");
+
+        let currentTimeHour = parseInt(currentTime.substring(0, 2));
+        let currentTimeMinute = parseInt(currentTime.substring(3, 5));
+        let rt = moment(moment().format('YYYY-MM-DD ' + this.props.endTime + ":00")) - moment(moment().format('YYYY-MM-DD ' + currentTimeHour + ":" + currentTimeMinute + ":ss"));
+
+        this.setState({ remainingTime: moment(rt).format("mm:ss") });
+
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
 
     render() {
         return (
             <RemainingTime>
-                {this.state.remainingTime}분
+                {this.state.remainingTime}
             </RemainingTime>
         );
     }
 }
 
 const RemainingTime = styled.div`
-    font-size:28px;
+    font-size:24px;
     font-weight:610;
     margin-bottom:20px;
 `;
