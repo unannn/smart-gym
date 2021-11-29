@@ -74,6 +74,7 @@ class DetailE extends React.Component {
     constructor(props) {
         super(props);
         this.deleteEquipment = this.deleteEquipment.bind(this);
+        this.updateEquipment = this.updateEquipment.bind(this);
         this.modalClose = this.modalClose.bind(this);
         this.videoOn = this.videoOn.bind(this);
         this.state = {
@@ -167,6 +168,7 @@ class DetailE extends React.Component {
                     }
                     else {
                         alert("운동기구 정보가 수정되었습니다.");
+                        this.props.loadItem();
                     }
 
                 })
