@@ -11,7 +11,7 @@ let InfoBox = styled.div`
 &:hover {
     background: #FFD2D5;
   }
-  left: -0.5%;
+  left: -5%;
    position: relative;
    width: 1080px;
    height: 40px;

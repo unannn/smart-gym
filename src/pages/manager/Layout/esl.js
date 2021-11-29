@@ -102,7 +102,6 @@ class ESLManage extends React.Component {
             }
         )
             .then((response) => {
-                console.log(response.data)
                 this.setState({
                     loading: true, // load되었으니 true,
                     ItemList: response.data,
@@ -119,7 +118,6 @@ class ESLManage extends React.Component {
     };
 
     parentFunction = (data) => {
-        console.log(data);
         this.setState({
             urlLink: data,
             Hvalue: "400px",
@@ -136,7 +134,6 @@ class ESLManage extends React.Component {
     }
     render() {
         const { ItemList } = this.state;
-        //console.log(ItemList);
         return (
             <div>
                 <ManagerBar></ManagerBar>

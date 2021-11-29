@@ -7,7 +7,7 @@ import jquery from "jquery";
 import axios from "axios";
 const RDList = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const KorRDList = ["월", "화", "수", "목", "금", "토", "일"];
-function StaticTimePickerLandscape({ id, start, end, RholiyD, reserveD, reloadF }) {
+function StaticTimePickerLandscape({ id, start, end, RholiyD, reserveD, reloadF, calenderReload }) {
     const operationUpdate = (start, end, e) => {
         console.log("OperUpdate");
         console.log($('input[name="Redu"]').val());
@@ -53,8 +53,9 @@ function StaticTimePickerLandscape({ id, start, end, RholiyD, reserveD, reloadF 
                     }
                     else {
                         alert("헬스장 운영정보가 정상적으로 등록되었습니다.");
-                        //{ reloadF() }
-                        window.location.reload();
+                        { reloadF() }
+                        { calenderReload() }
+                        //window.location.reload();
                     }
                 })
                 .catch((response) => {

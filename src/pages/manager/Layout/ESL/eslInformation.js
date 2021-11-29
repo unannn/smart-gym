@@ -153,7 +153,7 @@ class ESLInfo extends React.Component {
                             <input type="hidden" id="QrValue" />
                         </QRdiv>
                         <UnderBox>
-                            <label style={{ float: 'left', fontSize: '20px', width: '250px' }}>운동기구 사용법 확인하기</label>
+                            <label style={{ float: 'left', fontSize: '20px', width: '250px' }}>QR코드 스캔</label>
                             <Cell id="equipESL" style={{ position: 'relative', top: '-10px', left: '5%', textAlign: 'right', border: '0px', fontSize: '30px', width: '300px', height: '50px' }} disabled />
                         </UnderBox>
                     </div>

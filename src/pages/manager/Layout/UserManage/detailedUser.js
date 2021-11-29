@@ -57,9 +57,6 @@ let InfoCell = styled.input`
    font-weight: bold;
    `;
 class DetailU extends React.Component {
-    aa = function () {
-        console.log($("#userName").val());
-    }
     render() {
         return (
             <div>
@@ -75,7 +72,7 @@ class DetailU extends React.Component {
                         <InfoCell style={{ float: 'left', width: '300px' }} id="userIdV" disabled></InfoCell>
                         <Cell style={{ float: 'left', width: '300px' }} id="userPW">PW</Cell><br />
                         <InfoCell style={{ float: 'left', width: '300px' }} id="userPWV" disabled></InfoCell>
-                        <Cell style={{ float: 'left', width: '300px' }} id="userState">State</Cell><br />
+                        <Cell style={{ float: 'left', width: '300px' }} id="userState">Reservation State</Cell><br />
                         <InfoCell style={{ float: 'left', width: '300px' }} id="userStateV" disabled></InfoCell>
                         <Cell style={{ float: 'left', width: '300px' }} id="userPhone">Phone</Cell><br />
                         <InfoCell style={{ float: 'left', width: '300px' }} id="userPhoneV" disabled></InfoCell>

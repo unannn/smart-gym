@@ -17,7 +17,7 @@ import Footer from './component/footer';
 let EquiList = styled.div`
  position: absolute;
  left: -120px;
- top: -60px;
+ top: -48px;
    margin: 0.3px;
    width: 307px;
    height: 500px;
@@ -31,10 +31,10 @@ let EquiList = styled.div`
    `;
 let ReservationList = styled.div`
     position: absolute;
-    left: 175px;
-    top: -60px;
+    left: 220px;
+    top: -48px;
    margin: 0.3px;
-   width: 1100 px;
+   width: 1130px;
    height: 500px;
    font-size: 10pt;
    text-align: center;
@@ -72,7 +72,6 @@ let Cell = styled.li`
    text-align: left;
    list-style-type: none;
    `;
-let EEid;
 class ReservationLog extends React.Component {
     // 제일 common한 state값 초기 셋팅
     constructor(props) {
@@ -80,7 +79,6 @@ class ReservationLog extends React.Component {
         this.state = {
             loading: false,
             ItemList: [],
-            flog: "전체",
             RItemList: [],
         };
     }
@@ -98,28 +96,23 @@ class ReservationLog extends React.Component {
             }
         )
             .then((response) => {
-                console.log(response.data)
                 this.setState({
-                    loading: true, // load되었으니 true,
+                    loading: true,
                     ItemList: response.data,
-                    flog: "전체" // 비어있던 Itemlist는 data에 Item객체를 찾아넣어준다. ( Item : json파일에 있는 항목)
                 });
             })
             .catch((response) => {
                 console.error(response); // 에러표시
                 this.setState({
-                    loading: false // 이때는 load 가 false 유지
+                    loading: false
                 });
                 alert("error! 운동기구 목록 조회에 실패했습니다.");
             });
     };
     parentFunction = (data) => {
-        console.log("pare");
-        console.log(data);
         this.setState({
             RItemList: data // 이때는 load 가 false 유지
         });
-        console.log(this.state.RItemList);
     }
     componentDidMount() {
         this.loadItem();
@@ -166,7 +159,7 @@ class ReservationLog extends React.Component {
                             </div>
                             <div>
                                 <ListKey style={{ float: "left", left: '205px', top: '-184px', width: '1200px', height: "80px" }}>
-                                    <Cell style={{ fontSize: '17px', width: "150px" }}>ReservationID</Cell>
+                                    <Cell style={{ fontSize: '17px', width: "145px" }}>ReservationID</Cell>
                                     <Cell style={{ fontSize: '17px', width: "270px" }}>UserID</Cell>
                                     <Cell style={{ fontSize: '17px', width: "200px" }}>Equipment/Nth</Cell>
                                     <Cell style={{ fontSize: '17px', width: "190px" }}>StartTime</Cell>

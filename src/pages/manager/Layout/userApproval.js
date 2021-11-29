@@ -108,24 +108,19 @@ class UserA extends React.Component {
         this.state = {
             loading: false,
             ItemList: [],
-            flog: "전체", // 스프린트에서는 fakedata값이 있어서 그내용을 넣어두었었다.
         };
     }
     loadItem = async () => {
         $("#searchValue").val("검색하시려면 Filter를 바꿔주세요.");
         $("#searchValue").attr("disabled", true);
-        axios.get('http://localhost:8080/unAllowedUser/readAll') // json을 가져온다음
+        axios.get('http://localhost:8080/unAllowedUser/readAll')
             .then((data) => {
-                // data라는 이름으로 json 파일에 있는 값에 state값을 바꿔준다.
-                console.log(data.data)
                 this.setState({
-                    loading: true, // load되었으니 true,
+                    loading: true,
                     ItemList: data.data,
-                    flog: "전체" // 비어있던 Itemlist는 data에 Item객체를 찾아넣어준다. ( Item : json파일에 있는 항목)
                 });
             })
             .catch(e => {
-                // json이 로드되지않은 시간엔
                 console.error(e); // 에러표시
                 this.setState({
                     loading: false // 이때는 load 가 false 유지
@@ -156,14 +151,12 @@ class UserA extends React.Component {
                     }
                 )
                     .then((response) => {
-                        console.log(response.data)
                         this.setState((prev) => ({
                             loading: true, // load되었으니 true,
                             ItemList: response.data,
                         }));
                     })
                     .catch((response) => {
-                        console.log('Error!');
                         console.log(response);
                         alert("error! 해당 ID에 대해 검색에 실패했습니다.");
                     });
@@ -181,23 +174,19 @@ class UserA extends React.Component {
                     }
                 )
                     .then((response) => {
-                        console.log(response.data)
                         this.setState((prev) => ({
                             loading: true, // load되었으니 true,
                             ItemList: response.data,
                         }));
                     })
                     .catch((response) => {
-                        console.log('Error!');
                         console.log(response);
-
                         alert("error! 해당 이름에 대해 검색에 실패했습니다.");
                     });
             }
         }
     }
     searchText = function () {
-        console.log("필터변경");
         if ($("#FilterID").val() == 0)//All
         {
             $("#searchValue").val("검색하시려면 Filter를 바꿔주세요.");

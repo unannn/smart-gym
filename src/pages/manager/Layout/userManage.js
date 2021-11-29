@@ -118,7 +118,6 @@ class UserM extends React.Component {
         $("#searchValue").attr("disabled", true);
         axios.get('http://localhost:8080/allowedUser/readAll')
             .then((data) => {
-                console.log(data.data.data)
                 this.setState({
                     loading: true,
                     ItemList: data.data.data,
@@ -156,14 +155,12 @@ class UserM extends React.Component {
                     }
                 )
                     .then((response) => {
-                        console.log(response.data.data)
                         this.setState((prev) => ({
                             loading: true, // load되었으니 true,
                             ItemList: response.data.data,
                         }));
                     })
                     .catch((response) => {
-                        console.log('Error!');
                         console.log(response);
                         alert("error! 해당 ID에 대해 검색에 실패했습니다.");
                     });
@@ -181,16 +178,13 @@ class UserM extends React.Component {
                     }
                 )
                     .then((response) => {
-                        console.log(response.data.data)
                         this.setState((prev) => ({
                             loading: true, // load되었으니 true,
                             ItemList: response.data.data,
                         }));
                     })
                     .catch((response) => {
-                        console.log('Error!');
                         console.log(response);
-
                         alert("error! 해당 이름에 대해 검색에 실패했습니다.");
                     });
             }

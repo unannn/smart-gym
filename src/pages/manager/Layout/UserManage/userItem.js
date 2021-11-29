@@ -161,6 +161,15 @@ function UserItem({ key, UserId, UserName, UserAuthority, reloadF }) {
                 .then((response) => {
                     console.log(response.data);
                     alert("탈퇴 되었습니다.");
+                    $("#userNameV").val("");
+                    $("#userSexV").val("");
+                    $("#userIdV").val("");
+                    $("#userPWV").val("");
+                    $("#userStateV").val("");
+                    $("#userPhoneV").val("");
+                    $("#userEMailV").val("");
+                    $("#userSignUpV").val("");
+                    $("#userApprovalV").val("");
                     { reloadF() }
                 })
                 .catch((response) => {
