@@ -166,6 +166,7 @@ class LayoutE extends React.Component {
                     });
             }
             else {
+                $("#input-file").val("");
                 this.loadItem();
             }
         }
@@ -179,10 +180,13 @@ class LayoutE extends React.Component {
         }
     }
     rePrintImage = function (e) {
-        const imageFile = e.target.files[0];
-        const imageUrl = URL.createObjectURL(imageFile);
+        console.log("?");
+        let imageUrl;
+        if (e.target.files.length !== 0) {
+            const imageFile = e.target.files[0];
+            imageUrl = URL.createObjectURL(imageFile);
+        }
         $("#layoutImg").attr("src", imageUrl);
-
     }
     componentDidMount() {
         this.loadItem();
