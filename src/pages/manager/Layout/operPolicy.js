@@ -76,13 +76,13 @@ const KorRDList = ["월", "화", "수", "목", "금", "토", "일"];
 var rezValidDate = 0;
 var holidays = [];
 var selectedDay = "";
-let reRender = false;
 class OperPolicy extends React.Component {
     // 제일 common한 state값 초기 셋팅
     constructor(props) {
         super(props);
         this.holiyCreate = this.holiyCreate.bind(this);
         this.holiyDelete = this.holiyDelete.bind(this);
+        this.calenderReload = this.calenderReload.bind(this);
         const currentDate = moment();
         this.state = {
             loading: false,
@@ -100,11 +100,10 @@ class OperPolicy extends React.Component {
             isRezValid: true,
             flag: false,
             dayFlag: "",
-
+            reRender: false
         };
     }
     holiyRead = function () {
-        console.log("holiyRead");
         axios.get('http://localhost:8080/gymOperationInfo/holiday/read',
             {
             },
@@ -116,7 +115,6 @@ class OperPolicy extends React.Component {
             }
         )
             .then((response) => {
-                //console.log(response.data);
                 holidays = [];
                 for (let i = 0; i < (response.data).length; i++) {
                     let st = "";
@@ -167,10 +165,9 @@ class OperPolicy extends React.Component {
                 }
             )
                 .then((response) => {
-                    console.log(response.data);
                     selectedDay = "";
                     alert("휴무일로 변경 되었습니다.");
-                    window.location.reload();
+                    this.setState({ reRender: !this.state.reRender })
                 })
                 .catch((response) => {
                     console.log(response);
@@ -217,13 +214,11 @@ class OperPolicy extends React.Component {
                     }
                 )
                     .then((response) => {
-                        console.log(response.data);
                         selectedDay = "";
                         alert("영업일로 변경되었습니다.");
-                        window.location.reload();
+                        this.setState({ reRender: !this.state.reRender })
                     })
                     .catch((response) => {
-                        console.log('Error!');
                         console.log(response);
                         selectedDay = "";
                         alert("error! 영업일로 변경이 실패하였습니다.");
@@ -238,11 +233,9 @@ class OperPolicy extends React.Component {
         //gymOperationInformation Read
         axios.get('http://localhost:8080/gymOperationInfo/read') // json을 가져온다음
             .then((data) => {
-                // data라는 이름으로 json 파일에 있는 값에 state값을 바꿔준다.
-                //console.log(data.data);
                 rezValidDate = (data.data).gymOperationInfoReservationDuration;
                 this.setState({
-                    loading: true, // load되었으니 true,
+                    loading: true,
                     ItemList: (data.data),
                     rezValidDate: rezValidDate,
                     dayFlag: (data.data).gymOperationInfoRegularHoliday
@@ -261,7 +254,6 @@ class OperPolicy extends React.Component {
                 }
             })
             .catch(e => {
-                // json이 로드되지않은 시간엔
                 console.error(e); // 에러표시
                 this.setState({
                     loading: false // 이때는 load 가 false 유지
@@ -271,7 +263,6 @@ class OperPolicy extends React.Component {
         //gyminformation Read
         axios.get('http://localhost:8080/gymInfo/read') // json을 가져온다음
             .then((data) => {
-                //console.log(data.data)
                 this.setState({
                     loading: true,
                     InfoList: (data.data),
@@ -279,7 +270,7 @@ class OperPolicy extends React.Component {
                 $("input[name=GName]").val(data.data.gymInfoName);
                 $('input[name=GAddress]').val(data.data.gymInfoAddress);
                 $('input[name=GPhone]').val(data.data.gymInfoPhoneNumber);
-                console.log(this.state);
+
             })
             .catch(e => {
                 console.error(e);
@@ -299,8 +290,7 @@ class OperPolicy extends React.Component {
             isHoliday: data.isHoliday,
             isRezValidDay: data.isRezValidDay
         }, () => {
-            if (this.state.isHoliday) {
-                console.log("휴무일");
+            if (this.state.isHoliday) {//휴무일
                 this.setState({ isRezValid: false });
                 this.setState({ flag: true });
                 setTimeout(
@@ -308,38 +298,18 @@ class OperPolicy extends React.Component {
                     , 1000);
 
             }
-            else {
-                console.log("영업일");
+            else {//영업일
                 this.setState({ isRezValid: true })
                 this.setState({ flag: false });
                 this.holiyCreate(data.dayOfWeek);
             }
         })
     }
-    //내가 쓰던거
-    /*selectDate = (data) => {
-        selectedDay = (data.year) + (data.month) + (data.day);
+    calenderReload = function () {
         this.setState({
-            year: data.year,
-            month: data.month,
-            day: data.day,
-            isHoliday: data.isHoliday,
-            isRezValidDay: data.isRezValidDay
-        }, () => {
-            if (this.state.isHoliday) {
-                console.log("휴무일");
-                this.setState({ isRezValid: false });
-                this.setState({ flag: true });
-                this.holiyDelete(data.dayOfWeek);
-            }
-            else {
-                console.log("영업일");
-                this.setState({ isRezValid: true })
-                this.setState({ flag: false });
-                this.holiyCreate(data.dayOfWeek);
-            }
+            reRender: !this.state.reRender
         })
-    }*/
+    }
     componentDidMount() {
         this.loadItem();
         this.holiyRead();
@@ -378,6 +348,7 @@ class OperPolicy extends React.Component {
                                 RholiyD={ItemList.gymOperationInfoRegularHoliday}
                                 reserveD={ItemList.gymOperationInfoReservationDuration}
                                 reloadF={this.loadItem}
+                                calenderReload={this.calenderReload}
                             />
                         </GymOperinfoBox>
                         <div style={{ position: "absolute", left: "570px", top: "-67px" }}>
@@ -386,7 +357,7 @@ class OperPolicy extends React.Component {
                         </div>
                         <CalendarBox>
                             <Calendar onClickDate={this.selectDate} selectedDate={this.state}
-                                rezValidDate={this.state.rezValidDate} ></Calendar>
+                                rezValidDate={this.state.rezValidDate} reRender={this.state.reRender}></Calendar>
                         </CalendarBox>
                     </BodyBox>
                     <div>

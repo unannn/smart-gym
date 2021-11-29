@@ -151,12 +151,13 @@ class ESLMatch extends React.Component {
     EquipmentNameRead = function () {
         let Textflag = true;
         let TextValue = $("#EquipmentMatchID").val();
+        let SaveText = "";
         for (let i = 0; i < TextValue.length; i++) {
             if (TextValue[i] >= "0" && TextValue[i] <= "9") {
-
+                SaveText = SaveText + TextValue[i];
             }
             else {
-                $("#EquipmentMatchID").val("");
+                $("#EquipmentMatchID").val(SaveText);
                 Textflag = false;
                 break;
             }
@@ -226,9 +227,9 @@ class ESLMatch extends React.Component {
                         </Matchingdiv>
                         <br />
                         <InfoCell style={{ textAlign: 'center', width: '100px' }} id="EquipmentMatchID" onChange={this.EquipmentNameRead} placeholder={"only numbers"}></InfoCell><br />
-                        <img src="./icon/icon_equipment.png" style={{ width: "150px", heigth: "80px", cursor: "Default" }} /><br />
+                        <img src="./icon/icon_equipment.png" style={{ width: "140px", heigth: "80px", cursor: "Default" }} /><br />
                         <input style={{ textAlign: 'center', width: '220px', background: "white", border: "0", fontWeight: 'bold', fontSize: '16px' }} id="EquipmentNameMatched" disabled></input>
-                        <br /><br />
+                        <br />
                         <input type="hidden" id="originEquip" />
                         <input type="hidden" id="matchingID" />
                     </InfoBox>

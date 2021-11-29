@@ -56,7 +56,7 @@ let RowLineBox = styled.div`
     position: absolute;
     top: -52px;
     left: 25px;
-    width: 260px;
+    width: 270px;
     height: 1.5px;
     background: black;
    `;
@@ -87,10 +87,10 @@ class LayoutE extends React.Component {
         this.state = {
             loading: false,
             ItemList: [],
+            flag: true
         };
     }
     loadItem = async () => {
-        console.log($("input-file").val());
         axios.post('http://localhost:8080/equipment/readAll',
             {
                 select: 1
@@ -103,23 +103,21 @@ class LayoutE extends React.Component {
             }
         )
             .then((response) => {
-                console.log(response.data)
                 this.setState({
-                    loading: true, // load되었으니 true,
+                    loading: true,
                     ItemList: response.data,
                 });
             })
             .catch((response) => {
                 console.error(response); // 에러표시
                 this.setState({
-                    loading: false // 이때는 load 가 false 유지
+                    loading: false
                 });
                 alert("error! 운동기구 목록 조회에 실패했습니다.");
             });
         //배치도 조회
         axios.get('http://localhost:8080/gymInfo/equipmentLayout/read')
             .then((data) => {
-                //console.log(data);
                 //서버 실행이 안되서 빈 값이 들어오는 경우 디폴트 이미지 띄우기
                 if (data.data == " " || data.data == "" || data.data == null) {
                     $("#layoutImg").attr("src", "image/ImageNotFound_Layout.png");
@@ -129,7 +127,6 @@ class LayoutE extends React.Component {
                 }
             })
             .catch(e => {
-                // json이 로드되지않은 시간엔
                 console.error(e); // 에러표시
                 $("#layoutImg").attr("src", "image/ImageNotFound_Layout.png");
                 alert("error! 배치도 조회에 실패했습니다.");
@@ -137,7 +134,6 @@ class LayoutE extends React.Component {
 
     };
     layoutUpload = function () {
-        console.log("Layout Upload");
         var fileInput = document.querySelector("#input-file");
         const formData = new FormData();
         formData.append('gymInfoEquipmentLayout', fileInput.files[0]);
@@ -156,7 +152,6 @@ class LayoutE extends React.Component {
                     }
                 )
                     .then((response) => {
-                        console.log(response.data);
                         if (response.data) {
                             alert("배치도가 성공적으로 등록되었습니다.");
                         }
@@ -166,23 +161,24 @@ class LayoutE extends React.Component {
 
                     })
                     .catch((response) => {
-                        console.log('Error!');
                         console.log(response);
                         alert("error! 배치도 등록에 실패하였습니다.");
                     });
             }
+            else {
+                this.loadItem();
+            }
         }
+
     }
 
     layoutCancel = function () {
-        console.log("Layout Cancel");
         if (window.confirm("배치도 등록을 취소하시겠습니까?")) {
             alert("해당 이미지에 대해 새로운 등록 요청이 취소되었습니다.\n이미지 재선택 후, 등록 요청을 해주세요.");
             this.loadItem();
         }
     }
     rePrintImage = function (e) {
-        console.log("rePrint");
         const imageFile = e.target.files[0];
         const imageUrl = URL.createObjectURL(imageFile);
         $("#layoutImg").attr("src", imageUrl);
