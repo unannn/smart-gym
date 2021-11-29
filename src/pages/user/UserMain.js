@@ -407,6 +407,7 @@ var StyledTodayRezBoard = styled.div`
     text-align:left;
     font-size:20px;
     margin: 0 auto;
+    padding-top:20px;
 `;
 
 const UserMainStyle = styled.div`

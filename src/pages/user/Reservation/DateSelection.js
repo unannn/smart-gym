@@ -99,6 +99,9 @@ class DateSelection extends Component {
     }
 
     getSelectDateEquipList(year, month, day) {
+        console.log(year)
+        console.log(month)
+        console.log(day)
         axios.post('http://localhost:8080/reservation/readMyReservationOfSelectedDay',
             {
                 year: year,

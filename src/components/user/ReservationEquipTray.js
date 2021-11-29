@@ -4,24 +4,53 @@ import styled from "styled-components";
 import $ from "jquery";
 import Modal from './Modal';
 import InputButton from './InputButton';
+import moment from 'moment';
+import { scheduleJob } from 'node-schedule';
 
 class EquipmentItem extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-
+            timeCheck: true,
+            startTime: String(this.props.children.startTime.split('T')[1]).substring(0, 5),
+            endTime: String(this.props.children.endTime.split('T')[1]).substring(0, 5)
         }
     }
 
+    componentDidMount() {
+        this.setCanDeleteEquipment();
+        this.job = scheduleJob('0,5,10,15,20,25,30,35,40,45,50,55 * * * *', () => {
+            this.setCanDeleteEquipment();
+        })
+    }
+
+    setCanDeleteEquipment() {
+        const currentTime = moment().add(1, 'days');
+
+        this.setState({ timeCheck: this.state.startTime > currentTime.format('HH:mm') && String(currentTime.format('YYYY-MM-DD')) !== String(this.props.children.endTime.split('T')[0]) })
+
+        if (this.state.startTime > currentTime.format('HH:mm')) {
+            this.setState({ timeCheck: true })
+        }
+        else {
+            if (String(currentTime.format('YYYY-MM-DD')) === String(this.props.children.endTime.split('T')[0])) {
+                this.setState({ timeCheck: false })
+            }
+            else {
+                this.setState({ timeCheck: true })
+            }
+        }
+    }
+
+
     render(children) {
-        let startTime = String(this.props.children.startTime.split('T')[1]).substring(0, 5);
-        const endTime = String(this.props.children.endTime.split('T')[1]).substring(0, 5);
+
         return (
             <EquipmentItemStyle canDelete={this.props.canDelete}>
                 <EquipNameStyle>{this.props.children.equipmentName + ' ' + this.props.children.equipmentNameNth}</EquipNameStyle>
-                <ReservationTimeStyle>{startTime}~{endTime}</ReservationTimeStyle>
-                {this.props.canDelete ? <DeleteButtonStyle onClick={(e) => this.props.onClickDelete(this.props)}><img src="\image\x.png" alt="" width="20px" /></DeleteButtonStyle> : ''}
+                <ReservationTimeStyle>{this.state.startTime}~{this.state.endTime}</ReservationTimeStyle>
+                {this.props.canDelete && this.state.timeCheck ? <DeleteButtonStyle onClick={(e) => this.props.onClickDelete(this.props)}><img src="\image\x.png" alt="" width="20px" /></DeleteButtonStyle> : ''}
             </EquipmentItemStyle>
         );
     }
@@ -77,7 +106,13 @@ class ReservationEquipTray extends Component {
 
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        return { equipList: nextProps.equipList }
+        let equips = nextProps.equipList;
+        equips.sort((a, b) => {
+            if (a.startTime < b.startTime) return -1;
+            return 1;
+        });
+
+        return { equipList: equips }
     }
 
     componentDidMount() {
@@ -85,12 +120,15 @@ class ReservationEquipTray extends Component {
         $('.EquipScroll').scrollLeft(10000);
 
         let equips = this.state.equipList;
-        console.log("eq" + equips);
-        if (equips === null) equips = [];
 
-        // equips.push({
-        //     equipmentID: '10', equipmentName: '이 곳에 추가됩니다', startTime: '', endTime: ''
-        // })
+        if (equips === null) equips = [];
+        equips.sort((a, b) => {
+            if (a.startTime < b.startTime) return -1;
+            return 1;
+        })
+
+        console.log(equips);
+
 
         this.setState({ equipList: equips });
     }

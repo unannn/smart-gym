@@ -289,12 +289,8 @@ var TD = styled.td`
     height:80px;
     vertical-align : top;
     text-align:left;
-    /* border:1px #909090 solid; */
     border: ${props => props.isRezDay ? '2px tomato solid' : '0px #909090 solid'};
-    /* border-color : ${props => props.isRezDay ? 'tomato' : 'rgba(255,255,255,0.3)'}; */
 
-    /* border-right:${props => props.isRezDay && '1px #909090 solid'};
-    border-left:${props => props.isRezDay && '1px #909090 solid'}; */
     &:hover {
         background-color: #909090;
     }
