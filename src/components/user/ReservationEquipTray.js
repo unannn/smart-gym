@@ -26,7 +26,7 @@ class EquipmentItem extends Component {
     }
 
     setCanDeleteEquipment() {
-        const currentTime = moment().add(1, 'days');
+        const currentTime = moment();
 
         this.setState({ timeCheck: this.state.startTime > currentTime.format('HH:mm') && String(currentTime.format('YYYY-MM-DD')) !== String(this.props.children.endTime.split('T')[0]) })
 

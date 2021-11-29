@@ -37,10 +37,6 @@ class TimeSelectionModal extends Component {
     componentDidMount() {
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
-
-    }
-
     getSelectedBarTime(data) {
         this.setState({
             selectedStartTime: data.time.startTime,
@@ -81,10 +77,35 @@ class TimeSelectionModal extends Component {
                 }
             })
             .then((response) => {
-                const reservationTimeList = response.data.data;
+                const reservation = response.data.data;
+
                 if (response.data.success) {
-                    this.setState({ reservationTimeList: reservationTimeList })
-                    window.location.reload();
+                    switch (reservation) {
+                        case 0:         //성공
+                            this.props.closeModal();
+                            break;
+                        case 1:         //권한없음(블랙리스트)
+                            alert("예약 권한이 없습니다. 관리자에게 문의 하세요.");
+                            this.props.closeModal();
+                            break;
+                        case 2:         //관리자 승인 전
+                            alert("예약 권한이 없습니다. 관리자에게 문의 하세요.");
+
+                            break;
+                        case 3:         //기구 정보 없음
+                            alert("해당 기구가 존재하지 않습니다.");
+                            this.props.closeModal();
+                            break;
+                        case 4:         //예약 시간 겹침
+                            alert("이미 예약된 시간입니다. 다시 시간을 설정해 주세요.");
+                            this.forceUpdate();
+                            break;
+                        default:
+                            break;
+                    }
+                    if (reservation === 0) { // 성공
+
+                    }
                 }
             })
             .catch((response) => {

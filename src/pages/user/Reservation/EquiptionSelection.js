@@ -29,6 +29,18 @@ class DateSelection extends Component {
     }
 
     componentDidMount() {
+        this.getEquipListSelectedDay();
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.modal === true && this.state.modal === false) {
+            console.log(prevState.modal);
+            console.log(this.state.modal === false);
+            this.getEquipListSelectedDay();
+        }
+    }
+
+    getEquipListSelectedDay() {
         axios.post('http://localhost:8080/reservation/readMyReservationOfSelectedDay',
             {
                 year: this.props.location.state.year,
