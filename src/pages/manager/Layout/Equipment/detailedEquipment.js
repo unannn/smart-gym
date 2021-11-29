@@ -5,6 +5,7 @@ import $ from "jquery";
 import jquery from "jquery";
 import axios from "axios";
 import FindAccountModal from '../../../../components/user/Modal';
+import ReactPlayer from 'react-player';
 let EquiInfo = styled.div`
    position: absolute;
    top: -50px;
@@ -54,6 +55,17 @@ let ImgBox = styled.div`
    margin:0 auto;
    margin-bottom:10px;
    `;
+let VideoBox = styled.div`
+   position: absolute;
+   top: 100px;
+   left: -550px;
+   height: 380px;
+   width: 660px;
+   border: 10px solid gray;
+   background: black;
+   box-shadow : rgba(0,0,0,0.5) 0 0 0 9999px, rgba(0,0,0,0.5) 2px 2px 3px 3px;
+   z-index : 100;
+   `;
 const CList = ["chest", "back", "neck", "stomach", "triceps", "trapezius", "shoulder", "aerobic", "biceps", "lower_body", "waist", "etc"];
 const KorCList = ["가슴", "등", "목", "복부", "삼두", "승모근", "어깨", "유산소", "이두", "하체", "허리", "기타"];
 let textFlag = "none";
@@ -62,8 +74,25 @@ class DetailE extends React.Component {
     constructor(props) {
         super(props);
         this.deleteEquipment = this.deleteEquipment.bind(this);
+        this.modalClose = this.modalClose.bind(this);
+        this.videoOn = this.videoOn.bind(this);
+        this.state = {
+            videoFlag: false,
+            urlLink: "",
+        };
     }
-
+    modalClose = function () {
+        this.setState({
+            videoFlag: false
+        });
+    }
+    videoOn = function () {
+        console.log(this.state.videoFlag);
+        this.setState({
+            videoFlag: true,
+            urlLink: $("#Eurl").val()
+        });
+    }
     updateEquipment = function () {
         var fileInput = document.querySelector("#imageFileOpenInput");
         const formData = new FormData();
@@ -248,6 +277,11 @@ class DetailE extends React.Component {
                         <Button variant="btn btn-secondary" onClick={this.updateEquipment}>수정</Button>&nbsp;
                         <Button variant="btn btn-secondary" onClick={this.deleteEquipment}>삭제</Button>
                     </ButtonBox>
+                    <img src="./icon/icon_power.png" width="20px" style={{ position: "relative", top: "-143px", left: '190px', cursor: "pointer" }} onClick={this.videoOn} />
+                    {this.state.videoFlag && <VideoBox>
+                        <img src="./icon/icon_power_white.png" width="18px" style={{ position: "relative", top: "-40px", left: '325px', cursor: "pointer" }} onClick={this.modalClose} />
+                        <ReactPlayer style={{ position: "relative", top: "-25px", left: '0px' }} id="urlLink" url={this.state.urlLink} playing controls />
+                    </VideoBox>}
                 </EquiInfo>
             </div>
         )
