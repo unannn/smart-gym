@@ -176,6 +176,7 @@ class LayoutE extends React.Component {
     layoutCancel = function () {
         if (window.confirm("배치도 등록을 취소하시겠습니까?")) {
             alert("해당 이미지에 대해 새로운 등록 요청이 취소되었습니다.\n이미지 재선택 후, 등록 요청을 해주세요.");
+            $("#input-file").val("");
             this.loadItem();
         }
     }
