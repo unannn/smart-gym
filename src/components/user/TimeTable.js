@@ -34,6 +34,8 @@ class TimeTable extends Component {
             })
             .then((response) => {
                 const reservationTimeList = response.data.data;
+                this.props.getReservationData(reservationTimeList);
+
                 if (response.data.success) {
                     this.setState({ timeData: reservationTimeList });
                     this.canvas = document.querySelector("canvas");
@@ -52,6 +54,8 @@ class TimeTable extends Component {
                     reservationTimeList.forEach((value, index) => {
                         //운동시작시간에 해당하는 좌표와 종료시간의 좌표로 높이 구하기
                         console.log(this.filterTimeFormat(value.startTime));
+                        console.log(this.filterTimeFormat(value.endTime));
+
                         let y = parseInt(this.getYCoordinate(this.filterTimeFormat(value.startTime)));
                         let height = parseInt(this.getYCoordinate(this.filterTimeFormat(value.endTime)) - y);
 

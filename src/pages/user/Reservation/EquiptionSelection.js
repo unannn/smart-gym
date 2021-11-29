@@ -125,7 +125,7 @@ class DateSelection extends Component {
                     </StyledButtonArea>
                 </StyledLink>
                 {this.state.modal ? <TimeSelectionModal closeModal={this.closeModal.bind(this)}
-                    date={this.state.data} equipmentID={this.state.selectedEquipmentID}>
+                    date={this.state.data} equipmentID={this.state.selectedEquipmentID} userEquipList={this.state.equipList}>
                     {this.state.selectedEquip}
                 </TimeSelectionModal> : ''}
             </StyledDateSelection>

@@ -31,10 +31,12 @@ class TimeSelectionModal extends Component {
             guideMessage: ' ',
 
             reservationTimeList: []
+
         }
     }
 
     componentDidMount() {
+        console.log(this.props.userEquipList);
     }
 
     getSelectedBarTime(data) {
@@ -60,8 +62,6 @@ class TimeSelectionModal extends Component {
             endTimeHour += 1;
         }
 
-        console.log(dateFormat + this.getTimeFormat(this.state.startTimeHour, this.state.startTimeMinute))
-        console.log(dateFormat + this.getTimeFormat(endTimeHour, endTimeMinute))
 
         axios.post("http://localhost:8080/reservation/makeReservation",
             {
@@ -124,22 +124,29 @@ class TimeSelectionModal extends Component {
 
     checkOverlap() {
 
-        let start = this.state.startTimeHour + ":" + this.state.startTimeMinute;
+        let start = this.fillterTimeZero(this.state.startTimeHour) + ":" + this.fillterTimeZero(this.state.startTimeMinute);
         console.log(start)
         let exercieMinute = this.state.exerciseMinute;
         let startTime = this.changeTimeNumber(start);
         let endTime = startTime + exercieMinute / 60;
 
+        console.log(exercieMinute)
+        console.log(startTime)
+        console.log(endTime)
+        console.log(this.state.reservationTimeList.length)
+
         for (let index = 0; index < this.state.reservationTimeList.length; index++) {
             let time = this.state.reservationTimeList[index];
 
-            let reservedStartTime = this.changeTimeNumber(time.startTime);
-            let reservedEndTime = this.changeTimeNumber(time.endTime);
+            let reservedStartTime = this.changeTimeNumber(this.filterTimeFormat(time.startTime));
+            let reservedEndTime = this.changeTimeNumber(this.filterTimeFormat(time.endTime));
 
 
             //겹치는 시간 발생
             console.log(startTime);
             console.log(endTime);
+
+            console.log(time);
 
             if (endTime > reservedStartTime && startTime < reservedEndTime) {
                 console.log("asdf")
@@ -174,6 +181,18 @@ class TimeSelectionModal extends Component {
         });
     }
 
+    filterTimeFormat(time) {
+        if (time.length === 0) return time;
+
+        let filterTime = String(time.split('T')[1]).substring(0, 5);
+        return filterTime;
+    }
+
+    getSelectedDateEquipmentReservationData = (data) => {
+        console.log(data)
+        this.setState({ reservationTimeList: data })
+    }
+
     render() {
         let startHour = Array.from({ length: 24 }, (v, i) => i);
         let startHourOptions = startHour.map((value, index) => {
@@ -200,15 +219,15 @@ class TimeSelectionModal extends Component {
                     {this.props.children}
                 </EquipNameStyle>
                 <TimeTable selectTime={this.getSelectedBarTime.bind(this)}
-                    reservationTimeList={this.state.reservationTimeList}
+                    getReservationData={this.getSelectedDateEquipmentReservationData}
                     selectedData={{
                         year: this.props.date.year,
                         month: this.props.date.month,
                         day: this.props.date.day,
-                        equipmentID: this.props.equipmentID,
+                        equipmentID: this.props.equipmentID
                     }}></TimeTable>
                 <MessageStyle barColor={this.state.selectedBarColor}>
-                    {this.state.selectedStartTime} -  {this.state.selectedEndTime}
+                    {this.filterTimeFormat(this.state.selectedStartTime)} -  {this.filterTimeFormat(this.state.selectedEndTime)}
                 </MessageStyle>
                 <form onSubmit={this.handleSubmit.bind(this)} autoComplete={"off"}>
                     <ReservationTimeStyle>
