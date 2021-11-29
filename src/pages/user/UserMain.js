@@ -268,6 +268,7 @@ class UserMain extends React.Component {
 
 const TrayAlign = styled.div`
     text-align:left;
+    max-width:768px;
 `;
 
 var RedirectButtonStyle = styled.div`

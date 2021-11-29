@@ -104,7 +104,7 @@ function App() {
 
 const ContentStyle = styled.div`
     position: relative;
-    max-width: 1130px;
+    max-width: 768px;
     margin: 0 auto;
 `;
 

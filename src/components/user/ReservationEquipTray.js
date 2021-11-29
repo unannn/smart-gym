@@ -167,8 +167,10 @@ var StyledEquipLI = styled.li`
     /* font-weight:550; */
 `;
 var StyledEquipUL = styled.ul`
+    position:relatve;
     margin-bottom:0px;
     padding-left:0;
+    margin: 0 auto;
     list-style:none;
     overflow-x:scroll;
     overflow-y:hidden;
@@ -184,8 +186,9 @@ var StyledEquipUL = styled.ul`
 var StyledRezEquipList = styled.div`
     height:100px;
     width:100%;
-    max-width:614px;
     display:inline-block;
+    margin:0 auto;
+
     /* position: flex; */
     background-color:whitesmoke;
     

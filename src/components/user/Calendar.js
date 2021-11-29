@@ -274,10 +274,9 @@ class Calendar extends Component {
 var TH = styled.th`
     padding-bottom:3px;
     padding-top:3px;
-    width:90px;
+    width:109px;
     background-color:#404040;
     color:white;
-    
     font-size:16px;
     font-weight:590;
 `;
@@ -285,7 +284,8 @@ var TH = styled.th`
 
 var TD = styled.td`
     background-color:white;
-    width:90px;
+    width:109px;
+
     height:80px;
     vertical-align : top;
     text-align:left;
