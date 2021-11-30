@@ -10,6 +10,7 @@ import SignUp from './SignUp';
 import ManagerLogin from './ManagerLogin';
 import InputButton from '../../components/user/InputButton'
 import axios from "axios";
+import UserFooter from '../../components/user/UserFooter'
 
 class Login extends React.Component {
 
@@ -151,7 +152,7 @@ class Login extends React.Component {
 
         return (
             <LoginStyle>
-                <TitleStyle>SEJONG<br />GYM</TitleStyle>
+                <TitleStyle><img src="\image\Logo.png" alt="" width="300px" /></TitleStyle>
                 <div>
                     <Box>
                         <form onSubmit={this.handleSubmit.bind(this)} autoComplete={"off"}>
@@ -180,6 +181,7 @@ class Login extends React.Component {
                         관리자 로그인 {'>'}
                     </MangerLoginDiv>
                 </div>
+                <UserFooter></UserFooter>
                 {modal}
             </LoginStyle>
         )
@@ -234,6 +236,7 @@ let MangerLoginDiv = styled.div`
    margin-top:10px;
    font-size:14px;
    cursor: pointer;
+   margin-bottom:200px;
 `
 let StyledSpan = styled.span`
     display: inline-block;

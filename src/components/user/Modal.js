@@ -13,8 +13,11 @@ let ModalBackground = styled.div`
 `
 let StyledModal = styled.div`
     width: 98%;
+    @media screen and (min-width:500px){
+        width: 100%;
+    }
     //min-height: 100px;
-    max-width: 400px;
+    max-width: 420px;
     padding-left: 20px;
     text-align:center;
     margin:0 auto;

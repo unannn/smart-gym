@@ -61,7 +61,7 @@ function App() {
           <Route exact path='/user/centerinfo'>
             <ContentStyle><CenterInfo></CenterInfo></ContentStyle>
           </Route>
-          {logged && <UserFooter></UserFooter>}
+
 
 
           <Route exact path='/userManage'>
@@ -95,6 +95,7 @@ function App() {
             <ESLCreate />
           </Route>
         </Switch >
+        {logged && <UserFooter></UserFooter>}
       </div >
 
     </BrowserRouter >
@@ -104,7 +105,7 @@ function App() {
 
 const ContentStyle = styled.div`
     position: relative;
-    max-width: 1130px;
+    max-width: 768px;
     margin: 0 auto;
 `;
 

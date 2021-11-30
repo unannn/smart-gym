@@ -8,6 +8,7 @@ import moment from 'moment';
 import axios from "axios";
 import { gridColumnsTotalWidthSelector } from '@material-ui/data-grid';
 import isThisHour from 'date-fns/isThisHour/index';
+import $ from "jquery";
 
 class DateSelection extends Component {
     constructor(props) {
@@ -33,6 +34,8 @@ class DateSelection extends Component {
     }
 
     componentDidMount() {
+        $('.EquipScroll').scrollLeft(10000);
+
         const queryString = '?year=' + this.state.year + '&month=' + this.state.month;
 
         //여기서 휴일 받아오기
@@ -99,6 +102,9 @@ class DateSelection extends Component {
     }
 
     getSelectDateEquipList(year, month, day) {
+        console.log(year)
+        console.log(month)
+        console.log(day)
         axios.post('http://localhost:8080/reservation/readMyReservationOfSelectedDay',
             {
                 year: year,
@@ -114,7 +120,7 @@ class DateSelection extends Component {
             })
             .then((response) => {
                 const equipList = response.data.data;
-                this.setState({ equipList: equipList });
+                this.setState({ equipList: equipList }, () => $('.EquipScroll').scrollLeft(10000));
             })
             .catch((response) => {
                 console.log('Error');
@@ -147,6 +153,7 @@ class DateSelection extends Component {
         //기구리스트 가져오기
         this.getSelectDateEquipList(data.year, data.month, data.day);
 
+
     }
 
     onClickReservationButton(e) {
@@ -171,15 +178,10 @@ class DateSelection extends Component {
                     rezValidDate={this.state.rezValidDate}
                     reRender={this.state.reRender}
                 ></Calendar>
-                <TestButton onClick={() => {
-                    console.log("리렌더링버튼 클릭!")
-                    this.setState({ reRender: !this.state.reRender });
-
-                }}>캘린더 리렌더링 버튼</TestButton>
-
                 <br />
-                <ReservationEquipTray equipList={this.state.equipList}></ReservationEquipTray>
-                <br />
+                <TrayAlign>
+                    <ReservationEquipTray style={{ 'text-align': 'left' }} equipList={this.state.equipList}></ReservationEquipTray>
+                </TrayAlign>
                 <StyledLink to={{
                     pathname: "/user/reservation/equip",
                     state: {
@@ -200,8 +202,8 @@ class DateSelection extends Component {
     }
 }
 
-const TestButton = styled.div`
-background-color:red;
+const TrayAlign = styled.div`
+    text-align:left;
 `;
 
 var StyledMenuText = styled.div`
@@ -215,7 +217,7 @@ var StyledMenuText = styled.div`
 
 
 var StyledButtonArea = styled.div`
-    width:99%;
+    width:90%;
     max-width:500px;
     margin: 0 auto;
     padding-top:10px;

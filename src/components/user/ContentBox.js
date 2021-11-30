@@ -27,6 +27,7 @@ const BoxStyle = styled.div`
     vertical-align:middle;
     /* max-width:${props => props.width}; */
     height:${props => props.height};
+    min-height:130px;
     width:100%;
     margin: ${props => props.margin};
 `;

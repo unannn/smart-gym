@@ -117,7 +117,7 @@ class SignUp extends Component {
             return;
         }
 
-        axios.post('http://localhost:8080/unAllowedUser/idDuplicateCheck',
+        axios.post('http://localhost:8080/user/idDuplicateCheck',
             {
                 userID: this.state.userID,
             },

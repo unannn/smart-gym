@@ -7,6 +7,7 @@ import EquipList from '../../../components/user/EquipList';
 import TimeSelectionModal from './TimeSelectionModal';
 import { CollectionsOutlined } from '@material-ui/icons';
 import axios from "axios";
+import $ from "jquery";
 
 class DateSelection extends Component {
 
@@ -15,6 +16,7 @@ class DateSelection extends Component {
         console.log(this.props.location.state)
 
         this.state = {
+            deleteEquipModal: false,
             modal: false,
             data: null,
             equipList: [],
@@ -29,6 +31,19 @@ class DateSelection extends Component {
     }
 
     componentDidMount() {
+        $('.EquipScroll').scrollLeft(10000)
+        this.getEquipListSelectedDay();
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.modal === true && this.state.modal === false) {
+            console.log(prevState.modal);
+            console.log(this.state.modal === false);
+            this.getEquipListSelectedDay();
+        }
+    }
+
+    getEquipListSelectedDay() {
         axios.post('http://localhost:8080/reservation/readMyReservationOfSelectedDay',
             {
                 year: this.props.location.state.year,
@@ -44,7 +59,8 @@ class DateSelection extends Component {
             })
             .then((response) => {
                 const equipList = response.data.data;
-                this.setState({ equipList: equipList });
+
+                this.setState({ equipList: equipList }, () => $('.EquipScroll').scrollLeft(10000));
             })
             .catch((response) => {
                 console.log('Error');
@@ -82,6 +98,7 @@ class DateSelection extends Component {
                 const res = response.data;
                 if (res.success && res.data) {
                     console.log("success!!!")
+                    this.getEquipListSelectedDay();
                 }
 
             })
@@ -100,10 +117,10 @@ class DateSelection extends Component {
                 <StyledEquipBoard>
                     <EquipList openEquipRezModal={this.openEquipRezModal.bind(this)}></EquipList>
                 </StyledEquipBoard>
-                <br />
-                <ReservationEquipTray canDelete={true} equipList={this.state.equipList} cancelReservation={this.cancelReservation.bind(this)}></ReservationEquipTray>
-                <br />
-                <StyledLink to="/user">
+                <TrayAlign>
+                    <ReservationEquipTray canDelete={true} equipList={this.state.equipList} cancelReservation={this.cancelReservation.bind(this)}></ReservationEquipTray>
+                </TrayAlign>
+                <StyledLink to="/user/reservation/date">
                     <StyledButtonArea>
                         <StyledMenuText>
                             {this.state.data.month + '/' + this.state.data.day} 예약 완료
@@ -111,7 +128,7 @@ class DateSelection extends Component {
                     </StyledButtonArea>
                 </StyledLink>
                 {this.state.modal ? <TimeSelectionModal closeModal={this.closeModal.bind(this)}
-                    date={this.state.data} equipmentID={this.state.selectedEquipmentID}>
+                    date={this.state.data} equipmentID={this.state.selectedEquipmentID} userEquipList={this.state.equipList}>
                     {this.state.selectedEquip}
                 </TimeSelectionModal> : ''}
             </StyledDateSelection>
@@ -146,7 +163,7 @@ var StyledMenuText = styled.div`
 
 
 var StyledButtonArea = styled.div`
-    width:99%;
+    width:90%;
     max-width:500px;
     margin: 0 auto;
     padding-top:10px;
@@ -163,6 +180,9 @@ const StyledLink = styled(Link)`
     color:black;
 `;
 
-
+const TrayAlign = styled.div`
+    text-align:left;
+    margin-top:20px;
+`;
 
 export default withRouter(DateSelection);

@@ -4,6 +4,7 @@ import moment from 'moment';
 import { ModeComment, RestorePageSharp } from '@material-ui/icons';
 import { Pointer } from 'highcharts';
 import axios from 'axios';
+import { gridColumnsTotalWidthSelector } from '@material-ui/data-grid';
 
 class Day extends Component {
     constructor(props) {
@@ -16,6 +17,30 @@ class Day extends Component {
             isHoliday: this.props.isHoliday,
             isRezValidDay: this.props.isRezDay
         }
+    }
+
+    componentDidMount() {
+        console.log(this.props.rezValidDate)
+    }
+
+
+    isFirstRezValidDay() {
+        let todayMoment = moment()
+        if (todayMoment.format('YYYYMMDD') === (this.props.year + this.props.month + this.props.day)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    isFinalRezValidDay() {
+        let todayMoment = moment()
+
+        if (todayMoment.add(this.props.rezValidDate - 1, 'days').format('YYYYMMDD') === (this.props.year + this.props.month + this.props.day)) {
+            return true;
+        }
+
+        return false;
     }
 
     render() {
@@ -31,10 +56,11 @@ class Day extends Component {
             }, () => {
                 return this.props.onClickDate(this.state)
             });
-        }} isRezDay={this.props.isRezDay}>
+        }} isRezDay={this.props.isRezDay} isFinalRezValidDay={this.isFinalRezValidDay()} isFirstRezValidDay={this.isFirstRezValidDay()}>
             <ReservationDateStyle isRezDay={this.props.isRezDay}>
                 <DateStyle isSelected={this.props.isSelected} >
-                    <DateTextStyle isHoliday={this.props.isHoliday} isCurrentMonth={this.props.month === this.props.selectedMonth}>
+                    <DateTextStyle isHoliday={this.props.isHoliday} isCurrentMonth={this.props.month === this.props.selectedMonth}
+                        isSelected={this.props.isSelected}>
                         {this.props.day}
                     </DateTextStyle>
                 </DateStyle>
@@ -243,7 +269,7 @@ class Calendar extends Component {
 
                 const isSelected = Object.entries(selectedDate).toString() === Object.entries(date).toString();
 
-                return <Day keyValue={weekIndex * 7 + dayIndex} onClickDate={this.props.onClickDate} year={date.year}
+                return <Day keyValue={weekIndex * 7 + dayIndex} onClickDate={this.props.onClickDate} year={date.year} rezValidDate={this.props.rezValidDate}
                     month={date.month} day={date.day} dayOfWeek={date.dayOfWeek} selectedMonth={this.state.month} isSelected={isSelected}
                     isRezDay={this.isRezValidDay(todayDate, date.year + date.month + date.day)} isHoliday={this.isHoliday(date.month, date.day)} ></Day>
             })
@@ -256,7 +282,8 @@ class Calendar extends Component {
                 {this.state.year}.{this.state.month}
                 <span style={{ cursor: "pointer" }} onClick={this.clickNextMonth.bind(this)}>  {` >`}</span>
             </div>
-            <table>
+
+            <table style={{ 'border-collapse': 'separate', 'border-spacing': 0 }}>
                 <thead>
                     {tableHead}
                 </thead>
@@ -273,41 +300,54 @@ class Calendar extends Component {
 var TH = styled.th`
     padding-bottom:3px;
     padding-top:3px;
-    width:90px;
+    width:109px;
     background-color:#404040;
     color:white;
-    
     font-size:16px;
     font-weight:590;
 `;
 
 
 var TD = styled.td`
-    width:90px;
+    background-color:white;
+    width:109px;
+
     height:80px;
     vertical-align : top;
     text-align:left;
-    /* border:1px #909090 solid; */
-    border: ${props => props.isRezDay ? '2px tomato solid' : '0px #909090 solid'};
-    /* border-color : ${props => props.isRezDay ? 'tomato' : 'rgba(255,255,255,0.3)'}; */
+    
+    border-top: ${props => props.isRezDay ? '2px tomato solid' : '0px #909090 solid'};
+    border-bottom:${props => props.isRezDay ? '2px tomato solid' : '0px #909090 solid'};
+    border-left:${props => props.isFirstRezValidDay ? '2px tomato solid' : '0px #909090 solid'};
+    border-right:${props => props.isFinalRezValidDay ? '2px tomato solid' : '0px #909090 solid'};
+    border-radius:${props => props.isFirstRezValidDay ? '8% 0 0 8%' : ''};
+    border-radius:${props => props.isFinalRezValidDay ? '0 8% 8% 0' : ''};
 
-    /* border-right:${props => props.isRezDay && '1px #909090 solid'};
-    border-left:${props => props.isRezDay && '1px #909090 solid'}; */
+    @media screen and (min-width:500px){
+        border-top: ${props => props.isRezDay ? '3px tomato solid' : '0px #909090 solid'};
+        border-bottom:${props => props.isRezDay ? '3px tomato solid' : '0px #909090 solid'};
+        border-left:${props => props.isFirstRezValidDay ? '3px tomato solid' : '0px #909090 solid'};
+        border-right:${props => props.isFinalRezValidDay ? '3px tomato solid' : '0px #909090 solid'};
+
+    }
+
     &:hover {
         background-color: #909090;
     }
 `
 
 var DateStyle = styled.div`
-    background-color:${props => props.isSelected ? 'tomato' : 'white'}; 
+    background-color:${props => props.isSelected ? 'teal' : 'white'}; 
     border-radius: 50%;
     display: inline-block;
-    width:22px;
-    height:22px;
+    width:24px;
+    height:24px;
 `;
 
 var DateTextStyle = styled.div`
     color:${props => props.isHoliday ? 'red' : 'black'};
+    color:${props => props.isSelected && 'white'};
+    margin:0px 0 0 2px;
     
     display: inline-block;
     border-radius: 50%;

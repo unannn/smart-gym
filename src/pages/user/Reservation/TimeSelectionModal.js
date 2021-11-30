@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import TimeTable from '../../../components/user/TimeTable';
 import InputButton from '../../../components/user/InputButton';
 import axios from "axios";
+import moment from 'moment';
 
 
 class TimeSelectionModal extends Component {
@@ -31,14 +32,11 @@ class TimeSelectionModal extends Component {
             guideMessage: ' ',
 
             reservationTimeList: []
+
         }
     }
 
     componentDidMount() {
-    }
-
-    static getDerivedStateFromProps(nextProps, prevState) {
-
     }
 
     getSelectedBarTime(data) {
@@ -51,8 +49,6 @@ class TimeSelectionModal extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-
-        //서버에 요청보내기
         const date = this.props.date;
         const dateFormat = date.year + '-' + date.month + '-' + date.day + 'T';
         let endTimeHour = parseInt(this.state.startTimeHour);
@@ -64,33 +60,77 @@ class TimeSelectionModal extends Component {
             endTimeHour += 1;
         }
 
-        console.log(dateFormat + this.getTimeFormat(this.state.startTimeHour, this.state.startTimeMinute))
-        console.log(dateFormat + this.getTimeFormat(endTimeHour, endTimeMinute))
+        console.log(this.getTimeFormat(parseInt(this.state.startTimeHour), parseInt(this.state.startTimeMinute)));
+        console.log(moment().format("HH:mm:ss"));
 
-        axios.post("http://localhost:8080/reservation/makeReservation",
-            {
-                userID: window.sessionStorage.getItem('id'),
-                equipmentID: this.props.equipmentID,
-                startTime: dateFormat + this.getTimeFormat(this.state.startTimeHour, this.state.startTimeMinute),
-                endTime: dateFormat + this.getTimeFormat(endTimeHour, endTimeMinute)
-            },
-            {
-                headers: {
-                    'Content-type': 'application/json',
-                    'Accept': 'application/json'
-                }
+        // if (moment().format("HH:mm:ss") >= this.getTimeFormat(parseInt(this.state.startTimeHour), parseInt(this.state.startTimeMinute))) {
+        //     this.setState({
+        //         //예약가능시간 체크
+        //         isValid: false,
+        //         guideMessage: '현재 시각 이후부터 예약 가능합니다.'
+        //     })
+
+        //     return;
+        // }
+
+        if (this.state.isValid) {
+            axios.post("http://localhost:8080/reservation/makeReservation",
+                {
+                    userID: window.sessionStorage.getItem('id'),
+                    equipmentID: this.props.equipmentID,
+                    startTime: dateFormat + this.getTimeFormat(this.state.startTimeHour, this.state.startTimeMinute),
+                    endTime: dateFormat + this.getTimeFormat(endTimeHour, endTimeMinute)
+                },
+                {
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then((response) => {
+                    const reservation = response.data.data;
+
+                    if (response.data.success) {
+                        switch (reservation) {
+                            case 0:         //성공
+                                this.props.closeModal();
+                                break;
+                            case 1:         //권한없음(블랙리스트)
+                                alert("예약 권한이 없습니다. 관리자에게 문의 하세요.");
+                                this.props.closeModal();
+                                break;
+                            case 2:         //관리자 승인 전
+                                alert("예약 권한이 없습니다. 관리자에게 문의 하세요.");
+
+                                break;
+                            case 3:         //기구 정보 없음
+                                alert("해당 기구가 존재하지 않습니다.");
+                                this.props.closeModal();
+                                break;
+                            case 4:         //예약 시간 겹침
+                                alert("이미 예약된 시간입니다. 다시 시간을 설정해 주세요.");
+                                this.forceUpdate();
+                                break;
+                            default:
+                                break;
+                        }
+                        if (reservation === 0) { // 성공
+
+                        }
+                    }
+                })
+                .catch((response) => {
+                    console.log('Error');
+                    console.log(response);
+                })
+        }
+        else {
+            this.setState({
+                //예약가능시간 체크
+                isValid: false,
+                guideMessage: '예약 불가능한 시간 입니다.'
             })
-            .then((response) => {
-                const reservationTimeList = response.data.data;
-                if (response.data.success) {
-                    this.setState({ reservationTimeList: reservationTimeList })
-                    window.location.reload();
-                }
-            })
-            .catch((response) => {
-                console.log('Error');
-                console.log(response);
-            })
+        }
     }
 
     getTimeFormat(hour, minute) {
@@ -101,27 +141,47 @@ class TimeSelectionModal extends Component {
         return number / 10 < 1 ? '0' + number : number;
     }
 
+    getStringEndTime(startHour, startMinute, exerciseMiunute) {
+        let endTimeHour = startHour;
+        let endTimeMinute = startMinute + exerciseMiunute;
+        if (endTimeMinute >= 60) {
+            endTimeMinute -= 60;
+            endTimeHour += 1;
+        }
+
+        return this.fillterTimeZero(endTimeHour) + ':' + this.fillterTimeZero(endTimeMinute);
+    }
+
     checkOverlap() {
 
-        let start = this.state.startTimeHour + ":" + this.state.startTimeMinute;
-        console.log(start)
+        let start = this.fillterTimeZero(this.state.startTimeHour) + ":" + this.fillterTimeZero(this.state.startTimeMinute);
+        let end = this.getStringEndTime(parseInt(this.state.startTimeHour), parseInt(this.state.startTimeMinute), parseInt(this.state.exerciseMinute))
+
         let exercieMinute = this.state.exerciseMinute;
         let startTime = this.changeTimeNumber(start);
         let endTime = startTime + exercieMinute / 60;
 
+        if (moment().format("HH:mm") >= start) {
+            this.setState({
+                //예약가능시간 체크
+                isValid: false,
+                guideMessage: '현재 시각 이후부터 예약 가능합니다.'
+            })
+
+            return;
+        }
+
+
         for (let index = 0; index < this.state.reservationTimeList.length; index++) {
             let time = this.state.reservationTimeList[index];
 
-            let reservedStartTime = this.changeTimeNumber(time.startTime);
-            let reservedEndTime = this.changeTimeNumber(time.endTime);
+            let reservedStartTime = this.changeTimeNumber(this.filterTimeFormat(time.startTime));
+            let reservedEndTime = this.changeTimeNumber(this.filterTimeFormat(time.endTime));
 
 
             //겹치는 시간 발생
-            console.log(startTime);
-            console.log(endTime);
 
             if (endTime > reservedStartTime && startTime < reservedEndTime) {
-                console.log("asdf")
 
                 this.setState({
                     //예약가능시간 체크
@@ -132,12 +192,44 @@ class TimeSelectionModal extends Component {
                 return;
             }
         }
+
+        for (let index = 0; index < this.props.userEquipList.length; index++) {
+
+            if (String(this.props.userEquipList[index].equipmentID) === this.props.equipmentID) {
+
+                this.setState({
+                    //예약가능시간 체크
+                    isValid: false,
+                    guideMessage: '이미 오늘 예약한 기구 입니다.'
+                })
+                return;
+            }
+        }
+
+        for (let index = 0; index < this.props.userEquipList.length; index++) {
+            let equipStartTime = this.filterTimeFormat(this.props.userEquipList[index].startTime);
+            let equipEndTime = this.filterTimeFormat(this.props.userEquipList[index].endTime);
+
+            if (start < equipEndTime && end > equipStartTime) {
+                this.setState({
+                    //예약가능시간 체크
+                    isValid: false,
+                    guideMessage: '해당 시간에 '
+                        + this.props.userEquipList[index].equipmentName + this.props.userEquipList[index].equipmentNameNth
+                        + '이/가 예약되어 있습니다.'
+                })
+                return;
+            }
+        }
+
         this.setState({
             //예약가능시간 체크
             isValid: true,
             guideMessage: '예약 가능한 시간입니다.'
         });
     }
+
+
 
 
     changeTimeNumber(time) {
@@ -151,6 +243,17 @@ class TimeSelectionModal extends Component {
         this.setState({ [propertyName]: e.target.value }, () => {
             this.checkOverlap();
         });
+    }
+
+    filterTimeFormat(time) {
+        if (time.length === 0) return time;
+
+        let filterTime = String(time.split('T')[1]).substring(0, 5);
+        return filterTime;
+    }
+
+    getSelectedDateEquipmentReservationData = (data) => {
+        this.setState({ reservationTimeList: data })
     }
 
     render() {
@@ -179,15 +282,15 @@ class TimeSelectionModal extends Component {
                     {this.props.children}
                 </EquipNameStyle>
                 <TimeTable selectTime={this.getSelectedBarTime.bind(this)}
-                    reservationTimeList={this.state.reservationTimeList}
+                    getReservationData={this.getSelectedDateEquipmentReservationData}
                     selectedData={{
                         year: this.props.date.year,
                         month: this.props.date.month,
                         day: this.props.date.day,
-                        equipmentID: this.props.equipmentID,
+                        equipmentID: this.props.equipmentID
                     }}></TimeTable>
                 <MessageStyle barColor={this.state.selectedBarColor}>
-                    {this.state.selectedStartTime} -  {this.state.selectedEndTime}
+                    {this.filterTimeFormat(this.state.selectedStartTime)} -  {this.filterTimeFormat(this.state.selectedEndTime)}
                 </MessageStyle>
                 <form onSubmit={this.handleSubmit.bind(this)} autoComplete={"off"}>
                     <ReservationTimeStyle>
@@ -233,7 +336,7 @@ var SelectStyle = styled.select`
     font-size:40px;
 
     list-style:none;
-white-space:nowrap;
+    white-space:nowrap;
     background-color:rgba(255,255,255,0);
     ::-webkit-scrollbar{
         display:none;

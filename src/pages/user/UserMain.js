@@ -1,7 +1,5 @@
 import React from 'react';
 import styled from "styled-components";
-import TopBar from '../../components/user/TopBar';
-import { Link } from 'react-router-dom';
 import ReservationEquipTray from '../../components/user/ReservationEquipTray';
 import moment from 'moment';
 import axios from "axios";
@@ -22,7 +20,7 @@ class UserMain extends React.Component {
             day: currentDate.format('DD'),
             equipList: [],
             pageWidth: null,
-
+            pageHeight: null,
             existUsingEquipment: false,
             existNextUsingEquipment: false,
 
@@ -47,7 +45,7 @@ class UserMain extends React.Component {
 
         this.getCurrentEquipUsingInfo();
 
-        this.setState({ pageWidth: document.getElementById('main').clientWidth });
+        this.setState({ pageWidth: document.getElementById('main').clientWidth, pageHeight: document.getElementById('main').clientHeight });
 
         this.getCenterCongestion();
 
@@ -73,9 +71,7 @@ class UserMain extends React.Component {
             })
             .then((response) => {
                 const equipList = response.data.data;
-                console.log(equipList)
-                this.setState({ equipList: equipList });
-                this.findUsingEquipment(equipList)
+                this.setState({ equipList: equipList }, () => this.findUsingEquipment(equipList));
             })
             .catch((response) => {
                 console.log('Error');
@@ -106,8 +102,6 @@ class UserMain extends React.Component {
     findUsingEquipment(equipList) {
         let currentTime = moment().format('HH:mm');
         let i;
-        console.log(currentTime)
-        console.log('10:02' < '20:01')
 
         for (i = 0; i < equipList.length; i++) {
 
@@ -122,7 +116,7 @@ class UserMain extends React.Component {
                     usingEqiupmentStartTime: startTime,
                     usingEqiupmentEndTime: endTime,
                     usingEquipmentImage: equipList[i].equipmentImage,
-                    reservationID: equipList[i].reservationID,
+                    reservationID: equipList[i].reservationID
 
                 }, () => console.log(endTime))
             }
@@ -144,6 +138,12 @@ class UserMain extends React.Component {
                     existNextUsingEquipment: false
                 })
             }
+        }
+
+        if (i === equipList.length) {
+            this.setState({
+                existNextUsingEquipment: false
+            })
         }
     }
 
@@ -180,87 +180,96 @@ class UserMain extends React.Component {
     render() {
         const today = this.state.year + "년 " + this.state.month + "월 " + this.state.day + "일 현재";
         return (
-            <UserMainStyle id="main">
-                <StyledTodayRezBoard>
-                    <RedirectButtonStyle onClick={(e) => {
-                        this.getCenterCongestion();
-                        this.getCurrentEquipUsingInfo();
-                        console.log("새로고침!")
-                    }
+            <div>
+                <UserMainStyle id="main">
+                    <StyledTodayRezBoard>
+                        <RedirectButtonStyle onClick={(e) => {
+                            this.getCenterCongestion();
+                            this.getCurrentEquipUsingInfo();
+                            console.log("새로고침!")
+                        }
 
-                    } style={{ cursor: 'pointer' }}>
-                        새로고침
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
-                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
-                        </svg>
-                    </RedirectButtonStyle>
+                        } style={{ cursor: 'pointer' }}>
+                            새로고침
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
+                                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
+                            </svg>
+                        </RedirectButtonStyle>
 
-                    <StyledUserName>이윤환 님,</StyledUserName>
-                    <StyledDate>{today}</StyledDate>
+                        <StyledUserName>이윤환 님,</StyledUserName>
+                        <StyledDate>{today}</StyledDate>
 
-                    <RecentEquipStyle>
-                        {this.state.existUsingEquipment ?
-                            <div>
-                                <RecentEquipFrame>
-                                    <EquipTextStyle>
-                                        <EquipNameStyle>{this.state.usingEqiupmentName}</EquipNameStyle>
-                                        <EquipTimeStyle>{this.state.usingEqiupmentStartTime + '-' + this.state.usingEqiupmentEndTime}</EquipTimeStyle>
-                                    </EquipTextStyle>
-                                    <UsingText>사용 중 입니다.</UsingText>
-                                </RecentEquipFrame>
-                                <RecentEquipIOStyle>
-                                    <RecentEquipImage>
-                                        <img src={this.state.usingEquipmentImage} alt="" width="150px" onerror="this.src='https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg'" />
-                                    </RecentEquipImage>
-                                    <RecentEquipRightBottmStyle>
-                                        <RemainingTimeText>남은 시간</RemainingTimeText>
-                                        <Timer endTime={this.state.usingEqiupmentEndTime}></Timer>
-                                        <EndButton onClick={this.EndReservation.bind(this)}>사용 종료</EndButton>
-                                    </RecentEquipRightBottmStyle>
-                                </RecentEquipIOStyle>
-                            </div>
-                            : <EquipNameStyle>사용 중인 기구가 <br /> 없습니다.</EquipNameStyle>}
-
-
-                    </RecentEquipStyle>
-                    {/* 다음 운동기구 */}
-                    <ContentBox width={this.state.pageWidth + "px"} height='130px'
-                        backgroundColor={'#81D4FD'} border={' 1px #81D4FD solid'}>
-                        {this.state.existNextUsingEquipment ?
-                            <NextEquipStyle>
-                                <NextEquipTextStyle>
-                                    <NextEquipMessageStyle>다음에 사용할 기구</NextEquipMessageStyle>
-                                    <NextEquipNameStyle>{this.state.nextEqiupmentName}</NextEquipNameStyle>
-                                    <NextEquipTimeStyle>{this.state.nextEqiupmentStartTime + '-' + this.state.nextEqiupmentEndTime}</NextEquipTimeStyle>
-                                </NextEquipTextStyle>
-
-                                <NextEquipImage>
-                                    <img src={this.state.nextEquipmentImage} alt="" width="90px" />
-                                </NextEquipImage>
-                            </NextEquipStyle>
-                            : <div>
-                                <NextEquipNameStyle>다음에 사용할 기구가 <br /> 없습니다.</NextEquipNameStyle></div>}
+                        <RecentEquipStyle>
+                            {this.state.existUsingEquipment ?
+                                <div>
+                                    <RecentEquipFrame>
+                                        <EquipTextStyle>
+                                            <EquipNameStyle>{this.state.usingEqiupmentName}</EquipNameStyle>
+                                            <EquipTimeStyle>{this.state.usingEqiupmentStartTime + '-' + this.state.usingEqiupmentEndTime}</EquipTimeStyle>
+                                        </EquipTextStyle>
+                                        <UsingText>사용 중 입니다.</UsingText>
+                                    </RecentEquipFrame>
+                                    <RecentEquipIOStyle>
+                                        <RecentEquipImage>
+                                            <img src={this.state.usingEquipmentImage} alt="" width="100%" onerror="this.src='https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg'" />
+                                        </RecentEquipImage>
+                                        <RecentEquipRightBottmStyle>
+                                            <RemainingTimeText>남은 시간</RemainingTimeText>
+                                            <Timer endTime={this.state.usingEqiupmentEndTime}></Timer>
+                                            <EndButton onClick={this.EndReservation.bind(this)}>사용 종료</EndButton>
+                                        </RecentEquipRightBottmStyle>
+                                    </RecentEquipIOStyle>
+                                </div>
+                                : <EquipNameStyle>사용 중인 기구가 <br /> 없습니다.</EquipNameStyle>}
 
 
-                    </ContentBox>
-                    {/* 혼잡도, 타이머 */}
-                    <AddInfoStyle>
+                        </RecentEquipStyle>
+                        {/* 다음 운동기구 */}
+                        <ContentBox width={this.state.pageWidth + "px"} height={"100%"}
+                            backgroundColor={'#81D4FD'} border={' 1px #81D4FD solid'}>
+                            {this.state.existNextUsingEquipment ?
+                                <NextEquipStyle>
+                                    <NextEquipTextStyle>
+                                        <NextEquipMessageStyle>다음에 사용할 기구</NextEquipMessageStyle>
+                                        <NextEquipNameStyle>{this.state.nextEqiupmentName}</NextEquipNameStyle>
+                                        <NextEquipTimeStyle>{this.state.nextEqiupmentStartTime + '-' + this.state.nextEqiupmentEndTime}</NextEquipTimeStyle>
+                                    </NextEquipTextStyle>
 
-                        <Congestion percentage={this.state.congestion}></Congestion>
-                        <ContentBox width={this.state.pageWidth / 2 - 15 + "px"} height='130px' margin={'0 0 0 4px'}
-                            backgroundColor={'white'} border={' 1px #000000 solid'}>
-                            준비 중 입니다.
+                                    <NextEquipImage>
+                                        <img src={this.state.nextEquipmentImage} alt="" width="100%" />
+                                    </NextEquipImage>
+                                </NextEquipStyle>
+                                : <div>
+                                    <NextEquipNotExist>다음에 사용할 기구가 <br /> 없습니다.</NextEquipNotExist></div>}
+
+
                         </ContentBox>
-                    </AddInfoStyle>
+                        {/* 혼잡도, 타이머 */}
+                        <AddInfoStyle>
 
+                            <Congestion percentage={this.state.congestion}></Congestion>
+                            <ContentBox width={this.state.pageWidth / 2 - 15 + "px"} height='130px' margin={'0 0 0 4px'}
+                                backgroundColor={'white'} border={' 1px #000000 solid'}>
+                                준비 중 입니다.
+                            </ContentBox>
+                        </AddInfoStyle>
+
+                    </StyledTodayRezBoard>
+                    <br />
+                </UserMainStyle>
+                <TrayAlign>
                     <ReservationEquipTray equipList={this.state.equipList}></ReservationEquipTray>
-                </StyledTodayRezBoard>
-                <br />
-            </UserMainStyle>
+                </TrayAlign>
+            </div>
         )
     }
 }
+
+const TrayAlign = styled.div`
+    text-align:left;
+    max-width:768px;
+`;
 
 var RedirectButtonStyle = styled.div`
     
@@ -283,12 +292,18 @@ var RecentEquipStyle = styled.div`
 const RecentEquipFrame = styled.div`
     position: relative;
     display:flex;
-
+    @media screen and (min-width:500px){
+        font-size:28px;
+    }
 `;
 const EquipTextStyle = styled.div`
+
 `;
 const EquipNameStyle = styled.div`
     font-size:28px;
+    @media screen and (min-width:500px){
+        font-size:44px;
+    }
 `;
 const EquipTimeStyle = styled.div`
     text-align:center;
@@ -303,6 +318,7 @@ const UsingText = styled.div`
 const RecentEquipImage = styled.div`
     display:inline-block;
     margin-left:4px;
+    width:47%;
 `;
 
 
@@ -310,7 +326,7 @@ const RecentEquipImage = styled.div`
 const RecentEquipIOStyle = styled.div`
     position: relative;
     display:flex;
-    max-width:355px;
+    /* max-width:355px; */
 `;
 
 const RecentEquipRightBottmStyle = styled.div`
@@ -341,22 +357,44 @@ const EndButton = styled.div`
 const NextEquipImage = styled.div`
     margin: 12px 12px 12px 0;
     float:right;
+    max-width:40%;
 `;
 
 const NextEquipNameStyle = styled.div`
     font-size:24px;
     text-align:center;
-    padding-top:12px;
+    padding:20% 0 0 0 ;
+    @media screen and (min-width:500px){
+        font-size:40px;
+        padding:22% 0 0 0;
+    }
 `;
+
+const NextEquipNotExist = styled.div`
+font-size:24px;
+    text-align:center;
+    padding:10% 0 10% 0 ;
+    @media screen and (min-width:500px){
+        font-size:40px;
+        padding:11% 0 11% 0;
+    }
+`;
+
+
 const NextEquipMessageStyle = styled.div`
     text-align:center;
     font-size:16px;
+    @media screen and (min-width:500px){
+        font-size:24px;
+    }
 `;
 
 const NextEquipTimeStyle = styled.div`
     text-align:center;
     font-size:16px;
-
+    @media screen and (min-width:500px){
+        font-size:24px;
+    }
 `;
 
 const NextEquipStyle = styled.div`
@@ -370,7 +408,7 @@ const NextEquipStyle = styled.div`
 
 const NextEquipTextStyle = styled.div`
     display:inline-block;
-    padding-left:10px;
+    width:100%;
 `;
 
 
@@ -398,6 +436,7 @@ var StyledTodayRezBoard = styled.div`
     text-align:left;
     font-size:20px;
     margin: 0 auto;
+    padding-top:20px;
 `;
 
 const UserMainStyle = styled.div`

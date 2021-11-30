@@ -68,7 +68,7 @@ class CenterInfo extends Component {
                     </div>
                 </MyPageBoxStyle>
                 <MyPageBoxStyle>
-                    [사진]
+                    <img src="\image\map.png" alt="" width="100%" />
                 </MyPageBoxStyle>
             </div >
         );
@@ -89,6 +89,12 @@ const MyPageBoxStyle = styled.div`
 
 let StyledMyInfo = styled.div`
     margin:0 auto;
+    padding: 8% 0 8% 0;
+    font-size:24px;
+    @media screen and (min-width:500px){
+        padding: 3% 0 3% 0;
+        font-size:32px;
+    }
     text-align:center;
     font-size:24px;
     width:100%;
