@@ -21,6 +21,9 @@ class MyPage extends Component {
             email: null,
             modifyMode: false,
 
+            defaultPhoneNumber: null,
+            defaultEmail: null,
+
             changePasswordModal: false,
             recentPassword: '',
             newPassword: '',
@@ -28,11 +31,20 @@ class MyPage extends Component {
 
             deleteAccountModal: false,
             passwordCheck: '',
-            isMatchedPssword: true
+            isMatchedPssword: true,
+
+            isValidPhone: true,
+            isValidEmail: true,
+            phoneMessage: '',
+            emailMessage: ''
         }
     }
 
     componentDidMount() {
+        this.getUserInfo();
+    }
+
+    getUserInfo() {
         axios.post('http://localhost:8080/allowedUser/readUserInfo',
             {
                 userID: window.sessionStorage.getItem('id')
@@ -52,7 +64,10 @@ class MyPage extends Component {
                     password: userData.userPW,
                     sex: userData.userSex,
                     phoneNumber: userData.userPhone,
-                    email: userData.userEmail
+                    email: userData.userEmail,
+
+                    defaultPhoneNumber: userData.userPhone,
+                    defaultEmail: userData.userEmail,
                 })
             })
             .catch((response) => {
@@ -62,7 +77,7 @@ class MyPage extends Component {
     }
 
     handleChange(e, data) {
-        this.setState({ [data]: e.target.value }, () => console.log(this.state.passwordCheck));
+        this.setState({ [data]: e.target.value }, () => console.log(this.state[data]));
     }
 
     handleDeleteAccountSubmit(e) {
@@ -83,7 +98,7 @@ class MyPage extends Component {
                 const userData = response.data;
                 console.log(userData)
                 if (userData.success && userData.data === 0) {
-                    axios.post('http://localhost:8080/allowedUser/login',
+                    axios.post('http://localhost:8080/allowedUser/deleteUser',
                         {
                             userID: window.sessionStorage.getItem('id')
                         },
@@ -136,8 +151,149 @@ class MyPage extends Component {
         }
     }
 
-    deleteAccountOnclick() {
+    modifyMyInfo(e) {
 
+
+        if (this.state.isValidEmail && this.state.isValidPhone) {
+            axios.post('http://localhost:8080/allowedUser/updateUser',
+                {
+                    userID: window.sessionStorage.getItem('id'),
+                    userPW: this.state.password,
+                    userName: this.state.name,
+                    userSex: this.state.sex,
+                    userPhone: this.state.phoneNumber,
+                    userEmail: this.state.email
+                },
+                {
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then((response) => {
+                    const res = response.data;
+                    if (res.success) {
+                        console.log(res.data);
+                    }
+                    alert('수정이 완료 되었습니다.')
+
+                    this.getUserInfo();
+                    this.setState({ emailMessage: '', phoneMessage: '' });
+
+                })
+                .catch((response) => {
+                    console.log('Error');
+                    console.log(response);
+                });
+        }
+
+
+    }
+
+    handlePhoneBlur(e) {
+        //숫자 인지, 길이가 13 인지 검사
+        if (this.state.phoneNumber.length !== 11 || !/\d/.test(this.state.phoneNumber)) {
+            this.setState({
+                isValidPhone: false,
+                phoneMessage: '사용 불가능한 휴대번호 입니다.'
+            })
+            return;
+        }
+
+        axios.post('http://localhost:8080/user/phoneDuplicateCheck',
+            {
+                userPhone: this.state.phoneNumber,
+            },
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            }
+        )
+            .then((response) => {
+                const content = response.data;
+
+                if (content.data) { //사용가능한 휴대번호                    
+                    this.setState({
+                        isValidPhone: true,
+                        phoneMessage: '사용 가능한 휴대번호 입니다.'
+                    })
+                }
+                else {
+                    if (this.state.phoneNumber !== this.state.defaultPhoneNumber) {
+                        this.setState({
+                            isValidPhone: true,
+                            phoneMessage: ''
+                        })
+                    }
+                    else {
+                        this.setState({
+                            isValidPhone: false,
+                            phoneMessage: '이미 사용 중인 휴대번호 입니다.'
+                        })
+                    }
+                }
+            })
+            .catch((response) => {
+                console.log('Error');
+                console.log(response);
+            });
+
+    }
+
+    handleEmailBlur(e) {
+
+        const emailRegex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+
+
+        if (this.state.email === '' || !emailRegex.test(this.state.email)) {
+            this.setState({
+                isValidEmail: false,
+                emailMessage: '사용 불가능한 이메일 입니다.'
+            })
+            return;
+        }
+
+        axios.post('http://localhost:8080/user/emailDuplicateCheck',
+            {
+                userEmail: this.state.email,
+            },
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            }
+        )
+            .then((response) => {
+                const content = response.data;
+
+                if (content.data) { //사용가능한 이메일
+                    this.setState({
+                        isValidEmail: true,
+                        emailMessage: '사용 가능한 이메일 입니다.'
+                    })
+                }
+                else {
+                    if (this.state.email === this.state.defaultEmail) {
+                        this.setState({
+                            isValidEmail: true,
+                            emailMessage: ''
+                        })
+                    }
+                    else {
+                        this.setState({
+                            isValidEmail: false,
+                            emailMessage: '이미 사용 중인 이메일 입니다.'
+                        })
+                    }
+                }
+            })
+            .catch((response) => {
+                console.log('Error');
+                console.log(response);
+            });
     }
 
     render() {
@@ -164,37 +320,32 @@ class MyPage extends Component {
                 <MyPageBoxStyle>
                     <InputTitle>이름</InputTitle>
                     <UserDataLineStyle>
-                        <InputText type='text' onChange={(e) => this.handleChange(e, "name")} value={this.state.name}></InputText>
-                        <ModifyButtonStyle onCLick={() => { }}>
-                            수정
-                        </ModifyButtonStyle>
+                        <InputText type='text' value={this.state.name}></InputText>
+
                     </UserDataLineStyle>
 
                     <InputTitle>성별</InputTitle>
                     <UserDataLineStyle>
-                        <InputText type='text' onChange={(e) => this.handleChange(e, "sex")} value={this.state.sex}></InputText>
-                        <ModifyButtonStyle onCLick={() => { }}>
-                            수정
-                        </ModifyButtonStyle>
+                        <InputText type='text' value={this.state.sex}></InputText>
+
                     </UserDataLineStyle>
 
                     <InputTitle>휴대번호</InputTitle>
                     <UserDataLineStyle>
-                        <InputText type='text' onChange={(e) => this.handleChange(e, "phoneNumber")} value={this.state.phoneNumber}></InputText>
-                        <ModifyButtonStyle onCLick={() => { }}>
+                        <InputText type='text' onChange={(e) => this.handleChange(e, "phoneNumber")} value={this.state.phoneNumber} onBlur={this.handlePhoneBlur.bind(this)}></InputText>
+                        <ModifyButtonStyle onClick={(e) => this.modifyMyInfo(e)}>
                             수정
                         </ModifyButtonStyle>
                     </UserDataLineStyle>
-
+                    {this.state.isValidPhone ? <ValidMessageStyle>{this.state.phoneMessage}</ValidMessageStyle> : <ErrorMessageStyle>{this.state.phoneMessage}</ErrorMessageStyle>}
                     <InputTitle>이메일</InputTitle>
                     <UserDataLineStyle>
-                        <InputText type='text' onChange={(e) => this.handleChange(e, "email")} value={this.state.email} ></InputText>
-
-                        <ModifyButtonStyle onCLick={() => { }}>
+                        <InputText type='text' onChange={(e) => this.handleChange(e, "email")} value={this.state.email} onBlur={this.handleEmailBlur.bind(this)} ></InputText>
+                        <ModifyButtonStyle onClick={(e) => { this.modifyMyInfo(e) }}>
                             수정
                         </ModifyButtonStyle>
                     </UserDataLineStyle>
-
+                    {this.state.isValidEmail ? <ValidMessageStyle>{this.state.emailMessage}</ValidMessageStyle> : <ErrorMessageStyle>{this.state.emailMessage}</ErrorMessageStyle>}
                 </MyPageBoxStyle>
                 <MyPageBoxStyle>
                     <StyledButtonArea onClick={() => this.setState({ deleteAccountModal: true })}>
@@ -309,5 +460,21 @@ let InputTitle = styled.div`
                     margin: 0 auto;
                     width:300px;
                     `
+
+let ValidMessageStyle = styled.div`
+    color:green;
+    font-size:13px;
+    text-align:left;
+    margin: 0 auto;
+    width:225px;
+`;
+
+let ErrorMessageStyle = styled.div`
+    color:red;
+    font-size:13px;
+    text-align:left;
+    margin: 0 auto;
+    width:225px;
+`;
 
 export default MyPage;
