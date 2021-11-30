@@ -336,7 +336,7 @@ var SelectStyle = styled.select`
     font-size:40px;
 
     list-style:none;
-white-space:nowrap;
+    white-space:nowrap;
     background-color:rgba(255,255,255,0);
     ::-webkit-scrollbar{
         display:none;
