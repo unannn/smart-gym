@@ -303,7 +303,8 @@ class ESLCreate extends React.Component {
                         <SearchBox id="ESLCreateID" name="ESLCreateID" style={{ position: "relative", top: '-116.5px', left: '-590px' }} />
                         <ButtonCus variant="btn btn-secondary" onClick={this.ESLItemCreate} style={{ position: "relative", top: '-120px', left: '-585px' }}>ESL생성</ButtonCus>
                         <SearchBox id="EquipmentSearch" name="EquipmentSearch" style={{ position: "relative", top: '-116.5px', left: '-410px', width: "200px" }} placeholder="Equipment Name Search" onChange={this.equipmentSearchAPI} />
-                        <label style={{ color: 'red', fontSizeL: '15px', position: 'relative', top: '450px', left: "-530px" }} >*ESL 선택한 다음 운동기구를 선택하세요</label>
+                        <label style={{ color: 'red', fontSizeL: '15px', position: 'relative', top: '450px', left: "-365px" }} >*ESL 선택한 다음 운동기구를 선택하세요.</label>
+                        <label style={{ color: 'red', fontSizeL: '15px', position: 'relative', top: '450px', left: "-155px" }} >*ESL과 매칭이 안되어 있는 운동기구 목록입니다.</label>
                     </BodyBox >
                     <div style={{ position: 'relative', bottom: '-650px' }}>
                         <br />
