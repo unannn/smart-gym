@@ -45,7 +45,7 @@ const detailedRead = (EquipmentId, e) => {
         }
     )
         .then((response) => {
-            console.log(response.data);
+            console.log((response.data[0]).equipmentCategoryID.equipmentID);
             /*for (var key in (response.data[0])) {
                 console.log(key);//이름
                 console.log((response.data[0])[key]);//값
@@ -90,7 +90,6 @@ function EquipmentItem({ key, EquipmentId, EquipmentName, Category, EnthNumber }
         <div>
             <div style={{ cursor: 'pointer' }} onClick={(e) => { detailedRead(EquipmentId, e) }}>
                 <InfoBox className="component component--item_card" key={key}>
-                    <input type="hidden" id="Eid" value={EquipmentId} />
                     <Cell style={{ float: 'left', fontSize: '17px', width: "200px" }} id="nameE">&nbsp;{EquipmentName}</Cell>
                     <Cell style={{ float: 'left', fontSize: '17px', width: "50px" }} id="nameE">{EnthNumber}</Cell>
                     <Cell style={{ float: 'left', fontSize: '17px', width: "420px" }}>{Category}</Cell>

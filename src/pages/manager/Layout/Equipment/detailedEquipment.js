@@ -100,10 +100,7 @@ class DetailE extends React.Component {
         let flag = -1;
         textFlag = "none";
         Ccategory = "";
-        if (fileInput.files[0] == null) {
-            console.log(fileInput.files[0]);
-            console.log($("#Eimg").val());
-        }
+
         if ($('input[name="EquiState"]:checked').val() === "on") {
             flag = 2;
             textFlag = "on";
@@ -123,11 +120,10 @@ class DetailE extends React.Component {
         formData.append('equipmentImage', fileInput.files[0]);
         formData.append('equipmentInfoUpdateDTO.equipmentAvailable', flag);
         formData.append('equipmentInfoUpdateDTO.equipmentQRCode', $('#Eurl').val());
-        console.log("update");//axios
+
         for (let i = 0; i < 12; i++) {
             if ($("input:checkbox[name='equiPart']:checkbox[value=" + CList[i] + "]").is(":checked") == true) {
                 Ccategory = Ccategory + " " + KorCList[i];
-                console.log(Ccategory);
             }
         }
         formData.append('equipmentInfoUpdateDTO.equipmentCategoryList', Ccategory);
@@ -173,7 +169,6 @@ class DetailE extends React.Component {
 
                 })
                 .catch((response) => {
-                    console.log('Error!');
                     alert("error! 운동기구 등록에 실패했습니다.")
                 });
         }
