@@ -8,6 +8,7 @@ import moment from 'moment';
 import axios from "axios";
 import { gridColumnsTotalWidthSelector } from '@material-ui/data-grid';
 import isThisHour from 'date-fns/isThisHour/index';
+import $ from "jquery";
 
 class DateSelection extends Component {
     constructor(props) {
@@ -33,6 +34,8 @@ class DateSelection extends Component {
     }
 
     componentDidMount() {
+        $('.EquipScroll').scrollLeft(10000);
+
         const queryString = '?year=' + this.state.year + '&month=' + this.state.month;
 
         //여기서 휴일 받아오기
@@ -117,7 +120,7 @@ class DateSelection extends Component {
             })
             .then((response) => {
                 const equipList = response.data.data;
-                this.setState({ equipList: equipList });
+                this.setState({ equipList: equipList }, () => $('.EquipScroll').scrollLeft(10000));
             })
             .catch((response) => {
                 console.log('Error');
@@ -149,6 +152,7 @@ class DateSelection extends Component {
         })
         //기구리스트 가져오기
         this.getSelectDateEquipList(data.year, data.month, data.day);
+
 
     }
 

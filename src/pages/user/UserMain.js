@@ -74,8 +74,7 @@ class UserMain extends React.Component {
             .then((response) => {
                 const equipList = response.data.data;
                 console.log(equipList)
-                this.setState({ equipList: equipList });
-                this.findUsingEquipment(equipList)
+                this.setState({ equipList: equipList }, () => this.findUsingEquipment(equipList));
             })
             .catch((response) => {
                 console.log('Error');
@@ -122,7 +121,7 @@ class UserMain extends React.Component {
                     usingEqiupmentStartTime: startTime,
                     usingEqiupmentEndTime: endTime,
                     usingEquipmentImage: equipList[i].equipmentImage,
-                    reservationID: equipList[i].reservationID,
+                    reservationID: equipList[i].reservationID
 
                 }, () => console.log(endTime))
             }
@@ -144,6 +143,12 @@ class UserMain extends React.Component {
                     existNextUsingEquipment: false
                 })
             }
+        }
+
+        if (i === equipList.length) {
+            this.setState({
+                existNextUsingEquipment: false
+            })
         }
     }
 

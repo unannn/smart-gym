@@ -150,7 +150,7 @@ class ReservationEquipTray extends Component {
             modalOn: false,
             equipList: this.props.equipList
         })
-        window.location.reload();
+        // window.location.reload();
     }
 
     render() {

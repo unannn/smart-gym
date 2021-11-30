@@ -141,9 +141,22 @@ class TimeSelectionModal extends Component {
         return number / 10 < 1 ? '0' + number : number;
     }
 
+    getStringEndTime(startHour, startMinute, exerciseMiunute) {
+        let endTimeHour = startHour;
+        let endTimeMinute = startMinute + exerciseMiunute;
+        if (endTimeMinute >= 60) {
+            endTimeMinute -= 60;
+            endTimeHour += 1;
+        }
+
+        return this.fillterTimeZero(endTimeHour) + ':' + this.fillterTimeZero(endTimeMinute);
+    }
+
     checkOverlap() {
 
         let start = this.fillterTimeZero(this.state.startTimeHour) + ":" + this.fillterTimeZero(this.state.startTimeMinute);
+        let end = this.getStringEndTime(parseInt(this.state.startTimeHour), parseInt(this.state.startTimeMinute), parseInt(this.state.exerciseMinute))
+
         let exercieMinute = this.state.exerciseMinute;
         let startTime = this.changeTimeNumber(start);
         let endTime = startTime + exercieMinute / 60;
@@ -157,6 +170,7 @@ class TimeSelectionModal extends Component {
 
             return;
         }
+
 
         for (let index = 0; index < this.state.reservationTimeList.length; index++) {
             let time = this.state.reservationTimeList[index];
@@ -179,7 +193,6 @@ class TimeSelectionModal extends Component {
             }
         }
 
-        console.log(this.props.userEquipList)
         for (let index = 0; index < this.props.userEquipList.length; index++) {
 
             if (String(this.props.userEquipList[index].equipmentID) === this.props.equipmentID) {
@@ -193,7 +206,21 @@ class TimeSelectionModal extends Component {
             }
         }
 
+        for (let index = 0; index < this.props.userEquipList.length; index++) {
+            let equipStartTime = this.filterTimeFormat(this.props.userEquipList[index].startTime);
+            let equipEndTime = this.filterTimeFormat(this.props.userEquipList[index].endTime);
 
+            if (start < equipEndTime && end > equipStartTime) {
+                this.setState({
+                    //예약가능시간 체크
+                    isValid: false,
+                    guideMessage: '해당 시간에 '
+                        + this.props.userEquipList[index].equipmentName + this.props.userEquipList[index].equipmentNameNth
+                        + '이/가 예약되어 있습니다.'
+                })
+                return;
+            }
+        }
 
         this.setState({
             //예약가능시간 체크
@@ -201,6 +228,8 @@ class TimeSelectionModal extends Component {
             guideMessage: '예약 가능한 시간입니다.'
         });
     }
+
+
 
 
     changeTimeNumber(time) {

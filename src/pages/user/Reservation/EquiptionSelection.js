@@ -7,6 +7,7 @@ import EquipList from '../../../components/user/EquipList';
 import TimeSelectionModal from './TimeSelectionModal';
 import { CollectionsOutlined } from '@material-ui/icons';
 import axios from "axios";
+import $ from "jquery";
 
 class DateSelection extends Component {
 
@@ -15,6 +16,7 @@ class DateSelection extends Component {
         console.log(this.props.location.state)
 
         this.state = {
+            deleteEquipModal: false,
             modal: false,
             data: null,
             equipList: [],
@@ -29,6 +31,7 @@ class DateSelection extends Component {
     }
 
     componentDidMount() {
+        $('.EquipScroll').scrollLeft(10000)
         this.getEquipListSelectedDay();
     }
 
@@ -56,7 +59,8 @@ class DateSelection extends Component {
             })
             .then((response) => {
                 const equipList = response.data.data;
-                this.setState({ equipList: equipList });
+
+                this.setState({ equipList: equipList }, () => $('.EquipScroll').scrollLeft(10000));
             })
             .catch((response) => {
                 console.log('Error');
@@ -94,6 +98,7 @@ class DateSelection extends Component {
                 const res = response.data;
                 if (res.success && res.data) {
                     console.log("success!!!")
+                    this.getEquipListSelectedDay();
                 }
 
             })
