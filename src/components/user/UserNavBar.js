@@ -16,6 +16,10 @@ class UserNavBar extends Component {
 
     }
 
+    componentDidUpdate(prevProps) {
+
+    }
+
     onClickDecoration(e, index) {
 
         let selected = this.state.selected;
@@ -28,14 +32,23 @@ class UserNavBar extends Component {
         })
     }
 
-    render() {
-        let userNavList = [{ pathname: '/user', value: 'Home' }, { pathname: '/user/reservation/date', value: '기구 예약' },
-        { pathname: '/user/equipguide', value: '기구 안내' }, { pathname: '/user/mypage', value: '내 정보' }, { pathname: '/user/centerinfo', value: '센터 정보' }];
+    pathSelected(pathname) {
+        let pn = pathname.split(' ');
+        console.log(pn)
+        for (let index = 0; index < pn.length; index++) {
+            if (pn[index] === window.location.pathname) return true;
+        }
 
+        return false;
+    }
+
+    render() {
+        let userNavList = [{ pathname: '/user', value: 'Home' }, { pathname: '/user/reservation/date /user/reservation/equip', value: '기구 예약' },
+        { pathname: '/user/equipguide', value: '기구 안내' }, { pathname: '/user/mypage', value: '내 정보' }, { pathname: '/user/centerinfo', value: '센터 정보' }];
         console.log(window.location.pathname)
         let navBar = userNavList.map((element, index) => {
-            return <StyledLink to={element.pathname} key={element.value}>
-                <SpanStyle width={window.innerWidth / 5} selected={window.location.pathname === element.pathname}
+            return <StyledLink to={element.pathname.split(' ')[0]} key={element.value}>
+                <SpanStyle width={window.innerWidth / 5} selected={this.pathSelected(element.pathname)}
                     onClick={(e) => this.onClickDecoration(e, parseInt(index))}>
                     {element.value}
                 </SpanStyle>
@@ -85,11 +98,12 @@ const NavBarStyle = styled.div`
     background-color: white;
     /* margin-bottom:10px; */
 
-    margin-top:10px;
+    /* margin-top:10px; */
     /* height:60px; */
 `;
 const NavBarFrame = styled.div`
 padding-bottom:60px;
+width:60px;
 background-color: white;
 
 `;

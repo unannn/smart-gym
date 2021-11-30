@@ -193,7 +193,9 @@ const NoEquipmentMessage = styled.div`
     background-color:whitesmoke;
     text-align:center;
     font-size:20px;
-    padding: 30px 0 30px 0;
+    height:100%;
+
+    padding: 36px 0 36px 0;
 `;
 
 

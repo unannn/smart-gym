@@ -182,7 +182,6 @@ class DateSelection extends Component {
                 <TrayAlign>
                     <ReservationEquipTray style={{ 'text-align': 'left' }} equipList={this.state.equipList}></ReservationEquipTray>
                 </TrayAlign>
-                <br />
                 <StyledLink to={{
                     pathname: "/user/reservation/equip",
                     state: {
@@ -218,7 +217,7 @@ var StyledMenuText = styled.div`
 
 
 var StyledButtonArea = styled.div`
-    width:99%;
+    width:90%;
     max-width:500px;
     margin: 0 auto;
     padding-top:10px;

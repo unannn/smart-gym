@@ -300,7 +300,6 @@ class MyPage extends Component {
         return (
             <MypageStyle>
                 <br />
-                <br />
                 <MyPageBoxStyle>
                     <InputTitle>아이디</InputTitle>
                     <UserDataLineStyle>

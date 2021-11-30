@@ -117,12 +117,10 @@ class DateSelection extends Component {
                 <StyledEquipBoard>
                     <EquipList openEquipRezModal={this.openEquipRezModal.bind(this)}></EquipList>
                 </StyledEquipBoard>
-                <br />
                 <TrayAlign>
                     <ReservationEquipTray canDelete={true} equipList={this.state.equipList} cancelReservation={this.cancelReservation.bind(this)}></ReservationEquipTray>
                 </TrayAlign>
-                <br />
-                <StyledLink to="/user">
+                <StyledLink to="/user/reservation/date">
                     <StyledButtonArea>
                         <StyledMenuText>
                             {this.state.data.month + '/' + this.state.data.day} 예약 완료
@@ -165,7 +163,7 @@ var StyledMenuText = styled.div`
 
 
 var StyledButtonArea = styled.div`
-    width:99%;
+    width:90%;
     max-width:500px;
     margin: 0 auto;
     padding-top:10px;
@@ -184,6 +182,7 @@ const StyledLink = styled(Link)`
 
 const TrayAlign = styled.div`
     text-align:left;
+    margin-top:20px;
 `;
 
 export default withRouter(DateSelection);

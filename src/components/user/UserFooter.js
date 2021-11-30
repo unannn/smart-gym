@@ -43,11 +43,11 @@ let EmailBox = styled.div`
 
 let UserFooterStyle = styled.div`
     width: 100%;
-    height: 2.5rem;       
+    height: 2.5rem;
 `;
 
 let FooterWrap = styled.div`
-    padding-bottom: 2.5rem;       
+    padding-bottom: 2.5rem;
 `;
 
 export default UserFooter;

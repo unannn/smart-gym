@@ -71,7 +71,6 @@ class UserMain extends React.Component {
             })
             .then((response) => {
                 const equipList = response.data.data;
-                console.log(equipList)
                 this.setState({ equipList: equipList }, () => this.findUsingEquipment(equipList));
             })
             .catch((response) => {
@@ -103,8 +102,6 @@ class UserMain extends React.Component {
     findUsingEquipment(equipList) {
         let currentTime = moment().format('HH:mm');
         let i;
-        console.log(currentTime)
-        console.log('10:02' < '20:01')
 
         for (i = 0; i < equipList.length; i++) {
 
@@ -244,7 +241,7 @@ class UserMain extends React.Component {
                                     </NextEquipImage>
                                 </NextEquipStyle>
                                 : <div>
-                                    <NextEquipNameStyle>다음에 사용할 기구가 <br /> 없습니다.</NextEquipNameStyle></div>}
+                                    <NextEquipNotExist>다음에 사용할 기구가 <br /> 없습니다.</NextEquipNotExist></div>}
 
 
                         </ContentBox>
@@ -321,7 +318,7 @@ const UsingText = styled.div`
 const RecentEquipImage = styled.div`
     display:inline-block;
     margin-left:4px;
-    width:50%;
+    width:47%;
 `;
 
 
@@ -370,6 +367,16 @@ const NextEquipNameStyle = styled.div`
     @media screen and (min-width:500px){
         font-size:40px;
         padding:22% 0 0 0;
+    }
+`;
+
+const NextEquipNotExist = styled.div`
+font-size:24px;
+    text-align:center;
+    padding:10% 0 10% 0 ;
+    @media screen and (min-width:500px){
+        font-size:40px;
+        padding:11% 0 11% 0;
     }
 `;
 
