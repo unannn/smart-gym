@@ -61,7 +61,7 @@ function App() {
           <Route exact path='/user/centerinfo'>
             <ContentStyle><CenterInfo></CenterInfo></ContentStyle>
           </Route>
-          {logged && <UserFooter></UserFooter>}
+
 
 
           <Route exact path='/userManage'>
@@ -95,6 +95,7 @@ function App() {
             <ESLCreate />
           </Route>
         </Switch >
+        {logged && <UserFooter></UserFooter>}
       </div >
 
     </BrowserRouter >
