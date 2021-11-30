@@ -31,8 +31,6 @@ let Cell = styled.li`
    list-style-type: none;
    `;
 const CList = ["chest", "back", "neck", "stomach", "triceps", "trapezius", "shoulder", "aerobic", "biceps", "lower_body", "waist", "etc"];
-const KorCList = ["가슴", "등", "목", "복부", "삼두", "승모근", "어깨", "유산소", "이두", "하체", "허리", "기타"];
-//useState({ endTime: "", equipmentName: "", equipmentNameNth: "", reservationID: 0, startTime: "", userID: "" });
 
 function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber, apiNumber, setState, ESL }) {
     //apiNumber 0: Layout/1:Reservation/2:ESL
@@ -70,7 +68,6 @@ function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber,
         //ESL
         else if (apiNumber == 2) {
             let ESLState = -1;
-            console.log(ESL);
             //ESL
             axios.post('http://localhost:8080/esl/detailedRead',
                 {
@@ -86,7 +83,6 @@ function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber,
                 .then((response) => {
                     console.log(response.data);
                     ESLState = response.data.equipmentAvailable;
-
                     if (response.data.gymInfoName == "" || response.data.gymInfoName == " " || response.data.gymInfoName == null) {
                         $("#GymNameInfo").val("Gym Name unregistered");
                     }
@@ -94,19 +90,20 @@ function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber,
                         $("#GymNameInfo").val(response.data.gymInfoName);
                     }
                     $("#ESLNo").val("ESL ID:  " + response.data.eslID);
-                    $("#userName").val(response.data.userName + "회원님");
+                    $("#userName").val(response.data.userName + " 회원님");
                     $("#equipESL").val(response.data.equipmentName + " " + response.data.equipmentNameNth);
                     $("#QrValue").val(response.data.equipmentQRCode);
                     //els state
                     //사용불가(고장)
                     if (ESLState == 0) {
-                        $("#Times").val("운동기구 고장");
+                        $("#userName").val("");
+                        $("#Times").val("기구 사용 불가");
                         //$("#ESLNo").val(response.data.);
                     }
                     //예약 중
                     else if (ESLState == 1) {
                         console.log("1번상태");
-                        $("#Times").val(response.data.startTime + "~" + response.data.endTime);
+                        $("#Times").val(response.data.startTime + " - " + response.data.endTime);
                     }
                     //누구나 사용가능
                     else if (ESLState == 2) {
@@ -116,7 +113,7 @@ function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber,
                             $("#Times").val("다음 예약 생성까지");
                         }
                         else {
-                            $("#Times").val(response.data.startTime + "까지");
+                            $("#Times").val(response.data.startTime + " 까지");
                         }
                     }
                     //Not Matched
@@ -154,11 +151,6 @@ function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber,
                 }
             )
                 .then((response) => {
-                    console.log(response.data);
-                    /*for (var key in (response.data[0])) {
-                        console.log(key);//이름
-                        console.log((response.data[0])[key]);//값
-                    }*/
                     let i = -1;
                     for (var key in (response.data[0])) {
                         if ((response.data[0])[key] === 1) {
