@@ -369,4 +369,3 @@ var CalendarStyle = styled.div`
 
 
 export default Calendar;
-

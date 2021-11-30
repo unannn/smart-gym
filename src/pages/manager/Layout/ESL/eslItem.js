@@ -22,7 +22,7 @@ let InfoBox = styled.div`
    `;
 let Cell = styled.li`
    position: relative;
-   top:-5px;
+   top:-5px; 
    float: left;
    width: 220px;
    height: 100%;

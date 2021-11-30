@@ -95,6 +95,21 @@ let SearchBox = styled.input`
     left: 18px;
     border: 3px solid gray;
    `;
+let ButtonCus = styled.button`
+&:hover {
+    background: #FFA100;
+  }
+  background: #F8B935;
+  height: 38px;
+   border-radius: 5px;
+   padding:5px;
+   border: 0px;
+   margin:0 auto;
+   color: white;
+   margin-bottom:10px;
+   font-size: 16px;
+   width: 85px;
+   `;
 let sortFlag = 0;
 class ESLCreate extends React.Component {
     // 제일 common한 state값 초기 셋팅
@@ -102,6 +117,7 @@ class ESLCreate extends React.Component {
         super(props);
         this.ESLItemCreate = this.ESLItemCreate.bind(this);
         this.sortChange = this.sortChange.bind(this);
+        this.equipmentSearchAPI = this.equipmentSearchAPI.bind(this);
         this.state = {
             loading: false,
             ItemList: [],
@@ -114,19 +130,15 @@ class ESLCreate extends React.Component {
         //ESL목록 조회
         axios.get('http://localhost:8080/esl/read') // json을 가져온다음
             .then((data) => {
-                // data라는 이름으로 json 파일에 있는 값에 state값을 바꿔준다.
-                console.log(data.data)
                 this.setState({
                     loading: true, // load되었으니 true,
                     ESLItemList: data.data,
-                    flog: "전체" // 비어있던 Itemlist는 data에 Item객체를 찾아넣어준다. ( Item : json파일에 있는 항목)
                 });
             })
             .catch(e => {
-                // json이 로드되지않은 시간엔
                 console.error(e); // 에러표시
                 this.setState({
-                    loading: false // 이때는 load 가 false 유지
+                    loading: false
                 });
                 alert("error! 운동기구 목록 조회에 실패했습니다.");
             });
@@ -134,28 +146,21 @@ class ESLCreate extends React.Component {
         //console.log("sort: " + sortFlag)
         axios.get('http://localhost:8080/esl/readMatchableEquipmentList') // json을 가져온다음
             .then((data) => {
-                // data라는 이름으로 json 파일에 있는 값에 state값을 바꿔준다.
-                console.log(data.data)
                 this.setState({
-                    loading: true, // load되었으니 true,
+                    loading: true,
                     ItemList: data.data,
-                    flog: "전체" // 비어있던 Itemlist는 data에 Item객체를 찾아넣어준다. ( Item : json파일에 있는 항목)
                 });
             })
             .catch(e => {
-                // json이 로드되지않은 시간엔
                 console.error(e); // 에러표시
                 this.setState({
-                    loading: false // 이때는 load 가 false 유지
+                    loading: false
                 });
                 alert("error! 운동기구 목록 조회에 실패했습니다.");
             });
     };
 
     ESLItemCreate = function () {
-        console.log("Create");
-        console.log($("#ESLCreateID").val());
-
         axios.post('http://localhost:8080/esl/create',
             {
                 eslID: $("#ESLCreateID").val()
@@ -168,7 +173,6 @@ class ESLCreate extends React.Component {
             }
         )
             .then((response) => {
-                console.log(response.data);
                 if (response.data == 0) {
                     alert("ESL이 추가되었습니다.");
                     $("#ESLCreateID").val("");
@@ -204,8 +208,24 @@ class ESLCreate extends React.Component {
                 flag: true // 이때는 load 가 false 유지
             });
         }
-        console.log("flag: " + this.state.flag);
         this.loadItem();
+    }
+    equipmentSearchAPI = function () {
+        let url = "http://localhost:8080/esl/readMatchableExerciserLikeEquipmentName?likeEquipmentName=" + $("#EquipmentSearch").val();
+        axios.get(url) // json을 가져온다음
+            .then((data) => {
+                this.setState({
+                    loading: true,
+                    ItemList: data.data,
+                });
+            })
+            .catch(e => {
+                console.error(e); // 에러표시
+                this.setState({
+                    loading: false
+                });
+                alert("error! 운동기구 목록 조회에 실패했습니다.");
+            });
     }
     componentDidMount() {
         this.loadItem();
@@ -280,10 +300,11 @@ class ESLCreate extends React.Component {
                             </div>
                         </div>
                         <ESLMatch loadItem={this.loadItem} />
-                        <SearchBox id="ESLCreateID" name="ESLCreateID" style={{ position: "relative", top: '-116.5px', left: '-550px' }} />
-                        <Button variant="btn btn-secondary" onClick={this.ESLItemCreate} style={{ position: "relative", top: '-120px', left: '-545px' }}>ESL생성</Button>
-
-                        <label style={{ color: 'red', fontSizeL: '15px', position: 'relative', top: '500px', left: "-950px" }}>*ESL 선택한 다음 운동기구를 선택하세요</label>
+                        <SearchBox id="ESLCreateID" name="ESLCreateID" style={{ position: "relative", top: '-116.5px', left: '-590px' }} />
+                        <ButtonCus variant="btn btn-secondary" onClick={this.ESLItemCreate} style={{ position: "relative", top: '-120px', left: '-585px' }}>ESL생성</ButtonCus>
+                        <SearchBox id="EquipmentSearch" name="EquipmentSearch" style={{ position: "relative", top: '-116.5px', left: '-410px', width: "200px" }} placeholder="Equipment Name Search" onChange={this.equipmentSearchAPI} />
+                        <label style={{ color: 'red', fontSizeL: '15px', position: 'relative', top: '450px', left: "-365px" }} >*ESL 선택한 다음 운동기구를 선택하세요.</label>
+                        <label style={{ color: 'red', fontSizeL: '15px', position: 'relative', top: '450px', left: "-155px" }} >*ESL과 매칭이 안되어 있는 운동기구 목록입니다.</label>
                     </BodyBox >
                     <div style={{ position: 'relative', bottom: '-650px' }}>
                         <br />

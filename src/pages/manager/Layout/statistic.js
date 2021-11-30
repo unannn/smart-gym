@@ -52,7 +52,6 @@ class Statistic extends React.Component {
         this.state = {
             loading: false,
             ItemList: [],
-            flog: "전체", // 스프린트에서는 fakedata값이 있어서 그내용을 넣어두었었다.
             data: [],
             namev: [],
             chartKinds: ""
@@ -74,25 +73,19 @@ class Statistic extends React.Component {
             }
         )
             .then((response) => {
-                console.log(response.data);
                 chartName = [];
                 chartData = [];
                 for (let i = 0; i < response.data.length; i++) {
-                    console.log("chartName: " + response.data[i][0]);
                     chartName.push(response.data[i][0]);
                     chartData.push((response.data[i][1]));
                 }
-                console.log("chartName: " + chartName);
-                console.log("chartData: " + chartData);
                 this.setState({
                     data: chartData,
                     namev: chartName,
                     chartKinds: "연간 회원가입 수"
                 });
-                console.log("!" + this.state.data);
             })
             .catch((response) => {
-                console.log('Error!');
                 console.log(response);
                 alert("error! 그래프를 가져오는데 실패했습니다.");
             });
@@ -117,25 +110,19 @@ class Statistic extends React.Component {
                 }
             )
                 .then((response) => {
-                    console.log(response.data);
                     chartName = [];
                     chartData = [];
                     for (let i = 0; i < response.data.length; i++) {
-                        console.log("chartName: " + response.data[i][0]);
                         chartName.push(response.data[i][0]);
                         chartData.push((response.data[i][1]));
                     }
-                    console.log("chartName: " + chartName);
-                    console.log("chartData: " + chartData);
                     this.setState({
                         data: chartData,
                         namev: chartName,
                         chartKinds: textValue + "회원가입 수"
                     });
-                    console.log("!" + this.state.data);
                 })
                 .catch((response) => {
-                    console.log('Error!');
                     console.log(response);
                     alert("error! 그래프를 가져오는데 실패했습니다.");
                 });
@@ -157,12 +144,9 @@ class Statistic extends React.Component {
                 }
             )
                 .then((response) => {
-                    console.log(response.data);
                     chartName = [];
                     chartData = [];
-                    console.log(response.data.length);
                     for (let i = 0; i < response.data.length; i++) {
-                        console.log("chartName: " + response.data[i][0]);
                         chartName.push(response.data[i][0]);
                         chartData.push((response.data[i][1]));
                     }
@@ -175,7 +159,6 @@ class Statistic extends React.Component {
                     });
                 })
                 .catch((response) => {
-                    console.log('Error!');
                     console.log(response);
                     alert("error! 그래프를 가져오는데 실패했습니다.");
                 });
@@ -198,16 +181,12 @@ class Statistic extends React.Component {
                 }
             )
                 .then((response) => {
-                    console.log(response.data);
                     chartName = [];
                     chartData = [];
                     for (let i = 0; i < response.data.length; i++) {
-                        console.log("chartName: " + response.data[i][0]);
                         chartName.push(response.data[i][0]);
                         chartData.push((response.data[i][1]));
                     }
-                    console.log("chartName: " + chartName);
-                    console.log("chartData: " + chartData);
                     this.setState({
                         data: chartData,
                         namev: chartName,
@@ -215,7 +194,6 @@ class Statistic extends React.Component {
                     });
                 })
                 .catch((response) => {
-                    console.log('Error!');
                     console.log(response);
                     alert("error! 그래프를 가져오는데 실패했습니다.");
                 });
@@ -238,16 +216,12 @@ class Statistic extends React.Component {
                 }
             )
                 .then((response) => {
-                    console.log(response.data);
                     chartName = [];
                     chartData = [];
                     for (let i = 0; i < response.data.length; i++) {
-                        console.log("chartName: " + response.data[i][0]);
                         chartName.push(response.data[i][0]);
                         chartData.push((response.data[i][1]));
                     }
-                    console.log("chartName: " + chartName);
-                    console.log("chartData: " + chartData);
                     this.setState({
                         data: chartData,
                         namev: chartName,
@@ -255,7 +229,6 @@ class Statistic extends React.Component {
                     });
                 })
                 .catch((response) => {
-                    console.log('Error!');
                     console.log(response);
                     alert("error! 그래프를 가져오는데 실패했습니다.");
                 });
