@@ -96,7 +96,7 @@ function UserItem({ key, UserId, UserName, UserAuthority, reloadF }) {
             })
             .catch((response) => {
                 console.log('Error!');
-                alert("error! 해당 운동기구에 대한 조회를 할 수 없습니다.\n페이지를 새로고침합니다.");
+                alert("error! 해당 회원에 대한 조회를 할 수 없습니다.\n페이지를 새로고침합니다.");
                 window.location.reload();
             });
     }
@@ -130,7 +130,7 @@ function UserItem({ key, UserId, UserName, UserAuthority, reloadF }) {
                 .then((response) => {
                     console.log(response.data);
                     alert("예약 권한이 변경되었습니다.");
-                    { reloadF() };
+                    { detailedRead(UserId, e) }
                 })
                 .catch((response) => {
                     console.log('Error!');

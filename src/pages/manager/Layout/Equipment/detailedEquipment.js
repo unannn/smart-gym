@@ -215,10 +215,21 @@ class DetailE extends React.Component {
                 .then((response) => {
                     console.log(response.data);
                     alert("운동기구 정보가 삭제되었습니다.");
+                    for (let i = 0; i < CList.length; i++) {
+                        $("input:checkbox[name='equiPart']:checkbox[value=" + CList[i] + "]").prop('checked', false);
+                    }
+                    $("#Eid").val("");
+                    $("#Ename").val("");
+                    $("#ENth").val("");
+                    $("#ES3").val("");
+                    $("#Eimg").attr("src", "image/ImageNotFound.png");
+                    $("#Eurl").val("");
+                    $("input:radio[name='EquiState']:radio[value='on']").prop('checked', false);
+                    $("input:radio[name='EquiState']:radio[value='off']").prop('checked', false);
                     this.props.loadItem();
                 })
                 .catch((response) => {
-                    console.log('Error!');
+                    console.log(response);
                     alert("error! 운동기구 정보 삭제에 실패했습니다.");
                 });
         }

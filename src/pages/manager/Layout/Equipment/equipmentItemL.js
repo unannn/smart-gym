@@ -94,7 +94,7 @@ function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber,
                         $("#GymNameInfo").val(response.data.gymInfoName);
                     }
                     $("#ESLNo").val("ESL ID:  " + response.data.eslID);
-                    $("#userName").val(response.data.userName);
+                    $("#userName").val(response.data.userName + "회원님");
                     $("#equipESL").val(response.data.equipmentName + " " + response.data.equipmentNameNth);
                     $("#QrValue").val(response.data.equipmentQRCode);
                     //els state
