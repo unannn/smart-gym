@@ -150,8 +150,6 @@ class Statistic extends React.Component {
                         chartName.push(response.data[i][0]);
                         chartData.push((response.data[i][1]));
                     }
-                    console.log("chartName: " + chartName);
-                    console.log("chartData: " + chartData);
                     this.setState({
                         data: chartData,
                         namev: chartName,
@@ -248,7 +246,6 @@ class Statistic extends React.Component {
             }
             return result;
         };
-        //console.log(years);
         return (
             <div>
                 <ManagerBar></ManagerBar>
