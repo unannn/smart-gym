@@ -131,6 +131,7 @@ function UserItem({ key, UserId, UserName, UserAuthority, reloadF }) {
                     console.log(response.data);
                     alert("예약 권한이 변경되었습니다.");
                     { detailedRead(UserId, e) }
+                    { reloadF() }
                 })
                 .catch((response) => {
                     console.log('Error!');
