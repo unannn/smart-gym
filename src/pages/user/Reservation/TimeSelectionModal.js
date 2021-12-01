@@ -12,6 +12,7 @@ class TimeSelectionModal extends Component {
     constructor(props) {
         super(props);
 
+        const currentMoment = moment();
         this.state = {
             //timeTable에서 선택하여 조회한 시간
             selectedStartTime: '',
@@ -19,7 +20,7 @@ class TimeSelectionModal extends Component {
             selectedBarColor: 'grey',
 
             //예약하고자하는 시간
-            startTimeHour: '0',
+            startTimeHour: this.props.date.month + this.props.date.day === currentMoment.format('MMDD') ? currentMoment.format('HH') : '0',
             startTimeMinute: '0',
             exerciseMinute: '10',
 
@@ -37,6 +38,8 @@ class TimeSelectionModal extends Component {
     }
 
     componentDidMount() {
+        this.checkOverlap();
+
     }
 
     getSelectedBarTime(data) {
@@ -62,16 +65,6 @@ class TimeSelectionModal extends Component {
 
         console.log(this.getTimeFormat(parseInt(this.state.startTimeHour), parseInt(this.state.startTimeMinute)));
         console.log(moment().format("HH:mm:ss"));
-
-        // if (moment().format("HH:mm:ss") >= this.getTimeFormat(parseInt(this.state.startTimeHour), parseInt(this.state.startTimeMinute))) {
-        //     this.setState({
-        //         //예약가능시간 체크
-        //         isValid: false,
-        //         guideMessage: '현재 시각 이후부터 예약 가능합니다.'
-        //     })
-
-        //     return;
-        // }
 
         if (this.state.isValid) {
             axios.post("http://localhost:8080/reservation/makeReservation",
@@ -259,7 +252,20 @@ class TimeSelectionModal extends Component {
     render() {
         let startHour = Array.from({ length: 24 }, (v, i) => i);
         let startHourOptions = startHour.map((value, index) => {
-            return <OptionStyle value={value} key={'hour-' + value}>{value}</OptionStyle>
+            let currentTime = moment();
+            let date = this.props.date.month + this.props.date.day;
+
+            if (date !== currentTime.format('MMDD')) {
+                return <OptionStyle value={value} key={'hour-' + value} >{value}</OptionStyle>
+            }
+            else {
+                if (value >= currentTime.format('HH')) {
+                    return <OptionStyle value={value} key={'hour-' + value}>{value}</OptionStyle>
+                }
+                else {
+                    return '';
+                }
+            }
         })
 
         let StartMinute = Array.from({ length: 12 }, (v, i) => i * 5);
@@ -269,7 +275,7 @@ class TimeSelectionModal extends Component {
 
         let exerciseMinute = Array.from({ length: 7 }, (v, i) => i * 5 + 10);
         let exerciseMinuteOptions = exerciseMinute.map((value, index) => {
-            return <OptionStyle value={value} key={'exercise-time-' + value} > {value}</OptionStyle >
+            return <OptionStyle value={value} key={'exercise-time-' + value}> {value}</OptionStyle >
         })
 
 
@@ -313,7 +319,7 @@ class TimeSelectionModal extends Component {
                     {this.state.isValid ? <ValidMessageStyle>{this.state.guideMessage} </ValidMessageStyle> : <ErrorMessageStyle>{this.state.guideMessage}</ErrorMessageStyle>}
                     <InputButton type='submit' value='예약'></InputButton>
                 </form>
-            </Modal>
+            </Modal >
         );
     }
 }
@@ -343,7 +349,7 @@ var SelectStyle = styled.select`
     }
 `;
 var OptionStyle = styled.option`
-    font-size:20px;
+    font-size:16px;
 
 `;
 

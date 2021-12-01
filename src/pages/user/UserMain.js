@@ -37,12 +37,14 @@ class UserMain extends React.Component {
             nextEqiupmentEndTime: '11:15',
             nextEquipmentImage: '',
             nextReservationID: '',
-            congestion: 0
+            congestion: 0,
+
+            userName: ''
         }
     }
 
     componentDidMount() {
-
+        this.getUserInfo();
         this.getCurrentEquipUsingInfo();
 
         this.setState({ pageWidth: document.getElementById('main').clientWidth, pageHeight: document.getElementById('main').clientHeight });
@@ -53,6 +55,30 @@ class UserMain extends React.Component {
             this.getCenterCongestion();
             this.getCurrentEquipUsingInfo();
         })
+    }
+
+    getUserInfo() {
+        axios.post('http://localhost:8080/allowedUser/readUserInfo',
+            {
+                userID: window.sessionStorage.getItem('id')
+            },
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then((response) => {
+                const userData = response.data.data;
+                console.log(userData);
+                this.setState({
+                    userName: userData.userName,
+                })
+            })
+            .catch((response) => {
+                console.log('Error');
+                console.log(response);
+            });
     }
 
     getCurrentEquipUsingInfo() {
@@ -197,7 +223,7 @@ class UserMain extends React.Component {
                             </svg>
                         </RedirectButtonStyle>
 
-                        <StyledUserName>이윤환 님,</StyledUserName>
+                        <StyledUserName>{this.state.userName} 님,</StyledUserName>
                         <StyledDate>{today}</StyledDate>
 
                         <RecentEquipStyle>
