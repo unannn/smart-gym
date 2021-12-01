@@ -70,17 +70,13 @@ const detailedRead = (EquipmentId, e) => {
             $("#ES3").val((response.data[0]).equipmentCategoryID.equipmentImage);
             $("#Eimg").attr("src", (response.data[0]).equipmentCategoryID.equipmentImage);
             $("#Eurl").val((response.data[0]).equipmentCategoryID.equipmentQRCode);
-            if ((response.data[0]).equipmentCategoryID.equipmentAvailable === 2) {
-                $("input:radio[name='EquiState']:radio[value='on']").prop('checked', true);
-                $("input:radio[name='EquiState']:radio[value='off']").prop('checked', false);
-            }
-            else if ((response.data[0]).equipmentCategoryID.equipmentAvailable === 1) {
-                $("input:radio[name='EquiState']:radio[value='on']").prop('checked', true);
-                $("input:radio[name='EquiState']:radio[value='off']").prop('checked', false);
-            }
-            else {
+            if ((response.data[0]).equipmentCategoryID.equipmentAvailable === 0) {
                 $("input:radio[name='EquiState']:radio[value='on']").prop('checked', false);
                 $("input:radio[name='EquiState']:radio[value='off']").prop('checked', true);
+            }
+            else {
+                $("input:radio[name='EquiState']:radio[value='on']").prop('checked', true);
+                $("input:radio[name='EquiState']:radio[value='off']").prop('checked', false);
             }
         })
         .catch((response) => {
