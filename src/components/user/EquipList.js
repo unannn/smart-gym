@@ -33,12 +33,58 @@ class EquipList extends Component {
             })
             .then((response) => {
                 equips = response.data.data;
+                console.log(equips)
                 const initIndex = 0;
                 this.setState({
                     equips: equips,
                     selectedCategory: this.category[initIndex].name,
                     equipmentList: equips[this.category[initIndex].id]
-                }, () => console.log(this.state.equips['chest']))
+                })
+            })
+            .catch((response) => {
+                console.log('Error');
+                console.log(response);
+            });
+
+        return equips;
+    }
+
+    isAvaliableEquipment(method, equipmentID) {
+        let equips;
+        axios.get('http://localhost:8080/reservation/searchEquipmentByCategory',
+            {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then((response) => {
+                equips = response.data.data;
+                console.log(equips)
+                let categoryIndex;
+                let equipIndex;
+
+                category: for (categoryIndex = 0; categoryIndex < this.category.length; categoryIndex++) {
+                    for (equipIndex = 0; equipIndex < equips[this.category[categoryIndex].id].length; equipIndex++) {
+                        if (equips[this.category[categoryIndex].id][equipIndex].equipmentID === equipmentID) {
+                            if (equips[this.category[categoryIndex].id][equipIndex].equipmentAvailable === 0) {
+                                alert("사용 불가");
+                            }
+                            else {
+                                method();
+                            }
+                            break category;
+                        }
+                    }
+                }
+
+                this.setState({
+                    equips: equips,
+                    selectedCategory: this.category[categoryIndex].name,
+                    equipmentList: equips[this.category[categoryIndex].id]
+                }, () => {
+
+                })
             })
             .catch((response) => {
                 console.log('Error');
@@ -51,7 +97,9 @@ class EquipList extends Component {
     getEquipList() {
         // 나중에 아이디 적용할 것
         const selectedEquipList = this.state.equipmentList.map((equip) =>
-            <EquipmentLI id={equip.equipmentID} key={equip.equipmentID + equip.equipmentNameNth} onClick={this.props.openEquipRezModal}>
+            <EquipmentLI id={equip.equipmentID} key={equip.equipmentID + equip.equipmentNameNth} onClick={(e) => {
+                this.isAvaliableEquipment(() => this.props.openEquipRezModal(e), equip.equipmentID);
+            }}>
                 {equip.equipmentName + ' ' + equip.equipmentNameNth}
             </EquipmentLI>);
 

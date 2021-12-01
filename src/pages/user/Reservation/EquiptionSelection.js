@@ -25,8 +25,6 @@ class DateSelection extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        console.log("getDerivedStateFromProps");
-        console.log(nextProps.location.state.equipList);
         return { data: nextProps.location.state };
     }
 
@@ -69,7 +67,6 @@ class DateSelection extends Component {
     }
 
     openEquipRezModal(e) {
-        console.log(e.target.innerText)
         this.setState({
             modal: true,
             selectedEquip: e.target.innerText,
@@ -106,7 +103,6 @@ class DateSelection extends Component {
                 console.log('Error');
                 console.log(response);
             });
-
     }
 
 

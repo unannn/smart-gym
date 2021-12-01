@@ -343,7 +343,7 @@ var SelectStyle = styled.select`
     }
 `;
 var OptionStyle = styled.option`
-    font-size:20px;
+    font-size:16px;
 
 `;
 
