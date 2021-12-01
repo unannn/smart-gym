@@ -154,7 +154,7 @@ class TimeSelectionModal extends Component {
         let startTime = this.changeTimeNumber(start);
         let endTime = startTime + exercieMinute / 60;
 
-        if (moment().format("HH:mm") >= start) {
+        if (moment().format("HH:mm") >= start && (this.props.date.month + this.props.date.day === moment().format('MMDD'))) {
             this.setState({
                 //예약가능시간 체크
                 isValid: false,
