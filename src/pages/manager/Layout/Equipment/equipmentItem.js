@@ -70,7 +70,7 @@ const detailedRead = (EquipmentId, e) => {
             $("#ES3").val((response.data[0]).equipmentCategoryID.equipmentImage);
             $("#Eimg").attr("src", (response.data[0]).equipmentCategoryID.equipmentImage);
             $("#Eurl").val((response.data[0]).equipmentCategoryID.equipmentQRCode);
-            if ((response.data[0]).equipmentCategoryID.equipmentAvailable === 0) {
+            if ((response.data[0]).equipmentCategoryID.equipmentAvailable == 0) {
                 $("input:radio[name='EquiState']:radio[value='on']").prop('checked', false);
                 $("input:radio[name='EquiState']:radio[value='off']").prop('checked', true);
             }
