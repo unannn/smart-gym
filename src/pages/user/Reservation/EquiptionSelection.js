@@ -25,8 +25,6 @@ class DateSelection extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        console.log("getDerivedStateFromProps");
-        console.log(nextProps.location.state.equipList);
         return { data: nextProps.location.state };
     }
 
@@ -68,14 +66,8 @@ class DateSelection extends Component {
             });
     }
 
-    openEquipRezModal(e, isValid) {
-        console.log(isValid)
-        this.getEquipListSelectedDay();
+    openEquipRezModal(e) {
 
-        if (isValid === 0) {
-            alert('현재 예약이 불가능한 기구입니다.');
-            return;
-        }
         this.setState({
             modal: true,
             selectedEquip: e.target.innerText,
