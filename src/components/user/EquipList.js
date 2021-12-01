@@ -68,7 +68,7 @@ class EquipList extends Component {
                     for (equipIndex = 0; equipIndex < equips[this.category[categoryIndex].id].length; equipIndex++) {
                         if (equips[this.category[categoryIndex].id][equipIndex].equipmentID === equipmentID) {
                             if (equips[this.category[categoryIndex].id][equipIndex].equipmentAvailable === 0) {
-                                alert("사용 불가");
+                                alert("현재 예약이 불가능한 운동 기구입니다.");
                             }
                             else {
                                 method();
