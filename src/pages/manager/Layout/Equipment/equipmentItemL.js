@@ -110,7 +110,7 @@ function EquipmentItemL({ key, EquipmentId, EquipmentName, Category, EnthNumber,
                         console.log("2번상태");
                         $("#userName").val("모든 회원 사용 가능");
                         if (response.data.startTime == "") {
-                            $("#Times").val("다음 예약 생성까지");
+                            $("#Times").val(" - 까지");
                         }
                         else {
                             $("#Times").val(response.data.startTime + " 까지");
