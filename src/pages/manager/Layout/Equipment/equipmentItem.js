@@ -74,6 +74,10 @@ const detailedRead = (EquipmentId, e) => {
                 $("input:radio[name='EquiState']:radio[value='on']").prop('checked', true);
                 $("input:radio[name='EquiState']:radio[value='off']").prop('checked', false);
             }
+            else if ((response.data[0]).equipmentCategoryID.equipmentAvailable === 1) {
+                $("input:radio[name='EquiState']:radio[value='on']").prop('checked', true);
+                $("input:radio[name='EquiState']:radio[value='off']").prop('checked', false);
+            }
             else {
                 $("input:radio[name='EquiState']:radio[value='on']").prop('checked', false);
                 $("input:radio[name='EquiState']:radio[value='off']").prop('checked', true);
