@@ -277,10 +277,10 @@ class UserMain extends React.Component {
                             <Congestion percentage={this.state.congestion}></Congestion>
                             <ContentBox width={this.state.pageWidth / 2 - 15 + "px"} height='130px' margin={'0 0 0 4px'}
                                 backgroundColor={'white'} border={' 1px #000000 solid'}>
-                                준비 중 입니다.
+                                <img src="/image/fitness-ad.jpg" alt="" width="100%" height="130px"
+                                    style={{ "position": "absolute", "top": '0', "left": "0", "width": "100%", "height": "100%", "object-fit": "cover", "margin": "auto" }} />
                             </ContentBox>
                         </AddInfoStyle>
-
                     </StyledTodayRezBoard>
                     <br />
                 </UserMainStyle>

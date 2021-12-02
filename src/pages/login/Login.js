@@ -11,7 +11,7 @@ import ManagerLogin from './ManagerLogin';
 import InputButton from '../../components/user/InputButton'
 import axios from "axios";
 import UserFooter from '../../components/user/UserFooter'
-
+import Footer from '../manager/Layout/component/footer';
 class Login extends React.Component {
 
 
@@ -151,39 +151,41 @@ class Login extends React.Component {
         let modal = this.getCurrenOpenModal();
 
         return (
-            <LoginStyle>
-                <TitleStyle><img src="\image\Logo.png" alt="" width="300px" /></TitleStyle>
-                <div>
-                    <Box>
-                        <form onSubmit={this.handleSubmit.bind(this)} autoComplete={"off"}>
-                            <InputText type='text' name="id" onChange={(event) => this.handleIDChange(event)} value={this.state.account.userID || ''} placeholder="아이디 입력"></InputText>
-                            <br />
-                            <InputText type='password' name="password" onChange={(event) => this.handlePWChange(event)} value={this.state.account.userPW || ''} placeholder="비밀번호 입력"></InputText>
-                            {this.state.loginError ? <LoginErrorLog> {this.state.loginErrorMessage}</LoginErrorLog> : ''}
-                            <InputButton type="submit" value="로그인" onClick={this.login} />
-                        </form>
+            <div>
+                <LoginStyle>
+                    <TitleStyle><img src="\image\Logo.png" alt="" width="300px" /></TitleStyle>
+                    <div>
+                        <Box>
+                            <form onSubmit={this.handleSubmit.bind(this)} autoComplete={"off"}>
+                                <InputText type='text' name="id" onChange={(event) => this.handleIDChange(event)} value={this.state.account.userID || ''} placeholder="아이디 입력"></InputText>
+                                <br />
+                                <InputText type='password' name="password" onChange={(event) => this.handlePWChange(event)} value={this.state.account.userPW || ''} placeholder="비밀번호 입력"></InputText>
+                                {this.state.loginError ? <LoginErrorLog> {this.state.loginErrorMessage}</LoginErrorLog> : ''}
+                                <InputButton type="submit" value="로그인" onClick={this.login} />
+                            </form>
 
-                        <LoginMenu>
-                            <LoginMenuElement style={{ cursor: "pointer" }} onClick={() => this.setState({ findId: !this.state.findId })}>
-                                아이디 찾기
-                            </LoginMenuElement>
-                            <StyledSpan>|</StyledSpan>
-                            <LoginMenuElement style={{ cursor: "pointer" }} onClick={() => this.setState({ findPwd: !this.state.findPwd })}>
-                                비밀번호 찾기
-                            </LoginMenuElement>
-                            <StyledSpan>|</StyledSpan>
-                            <LoginMenuElement style={{ cursor: "pointer" }} onClick={() => this.setState({ signUp: !this.state.signUp })}>
-                                회원가입
-                            </LoginMenuElement>
-                        </LoginMenu>
-                    </Box>
-                    <MangerLoginDiv onClick={() => this.setState({ managerLogin: !this.state.managerLogin })}>
-                        관리자 로그인 {'>'}
-                    </MangerLoginDiv>
-                </div>
-                <UserFooter></UserFooter>
-                {modal}
-            </LoginStyle>
+                            <LoginMenu>
+                                <LoginMenuElement style={{ cursor: "pointer" }} onClick={() => this.setState({ findId: !this.state.findId })}>
+                                    아이디 찾기
+                                </LoginMenuElement>
+                                <StyledSpan>|</StyledSpan>
+                                <LoginMenuElement style={{ cursor: "pointer" }} onClick={() => this.setState({ findPwd: !this.state.findPwd })}>
+                                    비밀번호 찾기
+                                </LoginMenuElement>
+                                <StyledSpan>|</StyledSpan>
+                                <LoginMenuElement style={{ cursor: "pointer" }} onClick={() => this.setState({ signUp: !this.state.signUp })}>
+                                    회원가입
+                                </LoginMenuElement>
+                            </LoginMenu>
+                        </Box>
+                        <MangerLoginDiv onClick={() => this.setState({ managerLogin: !this.state.managerLogin })}>
+                            관리자 로그인 {'>'}
+                        </MangerLoginDiv>
+                    </div>
+                    {modal}
+                </LoginStyle>
+                <UserFooter isLoginPage={true}></UserFooter>
+            </div>
         )
     }
 
