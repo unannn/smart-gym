@@ -57,13 +57,13 @@ class CenterInfo extends Component {
                     <div>
                         센터 주소
                     </div>
-                    <div>[{String(this.state.gymInfoAddress).length > 1 ? this.state.gymInfoAddress : '등록된 주소가 없습니다.'}]</div>
+                    <div>[{String(this.state.gymInfoAddress).length > 1 ? this.state.gymInfoAddress : '등록된 주소가 없습니다.'} ]</div>
                     <br />
                     <div>
                         센터 전화번호
                     </div>
                     <div>
-                        <div>[{String(this.state.gymInfoPhoneNumber).length > 1 ? this.state.gymInfoPhoneNumber : '등록된 전화번호가 없습니다.'}]</div>
+                        <div>[{String(this.state.gymInfoPhoneNumber).length > 1 ? this.state.gymInfoPhoneNumber : '등록된 전화번호가 없습니다.'} ]</div>
 
                     </div>
                 </MyPageBoxStyle>

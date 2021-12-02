@@ -22,6 +22,9 @@ class SignUp extends Component {
             userPhone: '',
             userEmail: '',
 
+            maleChecked: 'true',
+            femaleChecked: false,
+
             //입력 유효성 정보
             isValidID: false,
             IDMessage: '',
@@ -92,6 +95,28 @@ class SignUp extends Component {
 
     handleNameChange(e) {
         this.setState({ userName: e.target.value })
+    }
+
+    handleNameCheckboxChange(e) {
+        console.log(e.target.checked)
+        if (e.target.value === "남자") {
+            if (e.target.checked) {
+                this.setState({
+                    userSex: e.target.value,
+                    maleChecked: true,
+                    femaleChecked: false
+                })
+            }
+        }
+        else if (e.target.value === "여자") {
+            if (e.target.checked) {
+                this.setState({
+                    userSex: e.target.value,
+                    maleChecked: false,
+                    femaleChecked: true
+                })
+            }
+        }
     }
 
     handleSexChange(e) {
@@ -323,7 +348,15 @@ class SignUp extends Component {
                         {this.state.isValidName ? <ValidMessageStyle>{this.state.nameMessage}</ValidMessageStyle> : <ErrorMessageStyle>{this.state.nameMessage}</ErrorMessageStyle>}
 
                         <InputTitle>성별</InputTitle>
-                        <InputText type='text' id="userSex" onChange={this.handleSexChange.bind(this)} value={this.state.userSex || ''}></InputText>
+                        {/* <InputText type='text' id="userSex" onChange={this.handleSexChange.bind(this)} value={this.state.userSex || ''}></InputText> */}
+                        <CheckBoxStyle>
+                            <SexInputStyle>
+                                <input type='checkbox' id="userSex" name="userSex" value='남자' onChange={this.handleNameCheckboxChange.bind(this)} checked={this.state.maleChecked} /> 남자
+                            </SexInputStyle>
+                            <SexInputStyle>
+                                <input type='checkbox' id="userSex" name="userSex" value='여자' onChange={this.handleNameCheckboxChange.bind(this)} checked={this.state.femaleChecked} /> 여자
+                            </SexInputStyle>
+                        </CheckBoxStyle>
 
                         {/* <label><input type="checkbox" name="sex" value="남자" onChange={this.handleMaleChange.bind(this)} />남자</label>
                         <label><input type="checkbox" name="sex" value="여자" defaultChecked />여자</label> */}
@@ -341,6 +374,12 @@ class SignUp extends Component {
         );
     }
 }
+
+let SexInputStyle = styled.div`
+    display:inline-block;
+    margin:0 20px 0 20px;
+`;
+let CheckBoxStyle = styled.div``;
 
 let InputTitle = styled.div`
     text-align:left;

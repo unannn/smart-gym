@@ -6,8 +6,8 @@ class UserFooter extends Component {
         return (
             <FooterWrap>
 
-                <UserFooterStyle>
-                    <hr />
+                <UserFooterStyle isLoginPage={this.props.isLoginPage}>
+                    <HrStyle />
                     <LabelBox>Copyright @sejong Capstone 2021</LabelBox>&nbsp;
                     <LabelBox>Team. Nine</LabelBox><br />
                     <LabelBox>FrontEnd: 김혜연/이윤환</LabelBox>&nbsp;
@@ -45,6 +45,10 @@ let UserFooterStyle = styled.div`
     width: 100%;
     height: 2.5rem;
 `;
+
+let HrStyle = styled.hr`
+
+`
 
 let FooterWrap = styled.div`
     padding-bottom: 2.5rem;
