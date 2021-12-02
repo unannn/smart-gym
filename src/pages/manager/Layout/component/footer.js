@@ -24,7 +24,7 @@ class Footer extends React.Component {
             <div>
                 <hr />
                 <LabelBox>Copyright @sejong Capstone 2021</LabelBox>&nbsp;
-                <LabelBox>Team. Nine</LabelBox><br />
+                <LabelBox>Team. HELL YEAH!</LabelBox><br />
                 <LabelBox>FrontEnd: 김혜연/이윤환</LabelBox>&nbsp;
                 <LabelBox>BackEnd: 김현솔/문혜린</LabelBox><br />
 
