@@ -90,6 +90,6 @@ https://youtu.be/Ougif8ey93Y
 -	그러면 우측 이미지와 같이 정말로 예약을 취소할 것인지를 묻는 메시지를 출력한다.<br><br>
 -	확인 버튼을 선택하면 예약이 취소되고 DB에 업데이트 된다.<br><br>
 
-<br><br><br><br><br><br>
+<br><br><br><br><br>
 
 
